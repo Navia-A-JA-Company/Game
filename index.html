@@ -117,12 +117,9 @@
 
         /* Start Screen */
         .start-screen {
-    text-align: center;
-    max-width: 500px;
-    background-image: url('your-background.png');
-    background-size: cover;
-    background-position: center;
-}
+            text-align: center;
+            max-width: 500px;
+        }
 
         .game-title {
             font-family: 'Orbitron', sans-serif;
@@ -872,7 +869,9 @@
     <div class="screen active" id="startScreen">
         <div class="start-screen">
             <h1 class="game-title">密室逃脫</h1>
-            <div class="box-cover">📦</div>
+            <div class="box-cover">
+                <img src="justanimage.jpg" alt="遊戲封面" style="width: 100%; height: 100%; object-fit: cover; border-radius: 20px;">
+            </div>
             <button class="start-btn" id="startGameBtn">開始遊戲</button>
             <p class="warning-text">⚠️ 請先仔細閱讀說明書才打開任何信封</p>
         </div>
