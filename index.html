@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>密室逃脫遊戲</title>
+    <title>密室逃脫：時光之謎</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
@@ -29,11 +29,7 @@
             --phone-gold: #c9a227;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Noto Sans HK', sans-serif;
@@ -41,12 +37,15 @@
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .screen {
             display: none;
             min-height: 100vh;
             padding: 20px;
+            width: 100%;
             animation: fadeIn 0.5s ease;
         }
 
@@ -97,9 +96,7 @@
             display: none;
         }
 
-        .timer-fixed.active {
-            display: block;
-        }
+        .timer-fixed.active { display: block; }
 
         .timer-display {
             font-family: 'Orbitron', sans-serif;
@@ -109,40 +106,16 @@
             letter-spacing: 3px;
         }
 
-        .timer-fixed.warning .timer-display {
-            color: var(--accent-3);
-            animation: pulse 1s infinite;
-        }
-
-        .timer-fixed.danger .timer-display {
-            color: var(--danger);
-            animation: pulse 0.5s infinite;
-        }
+        .timer-fixed.warning .timer-display { color: var(--accent-3); animation: pulse 1s infinite; }
+        .timer-fixed.danger .timer-display { color: var(--danger); animation: pulse 0.5s infinite; }
 
         /* Start Screen */
-        .start-screen {
-            text-align: center;
-            max-width: 500px;
-            position: relative;
-            z-index: 1;
-        }
+        .start-screen { text-align: center; max-width: 500px; position: relative; z-index: 1; }
 
         #startScreen {
-            background-image: url('./Justanimage.JPG');
+            background: linear-gradient(rgba(10, 10, 15, 0.8), rgba(10, 10, 15, 0.8)), url('https://images.unsplash.com/photo-1519074063912-ad2fe3f5190a?auto=format&fit=crop&q=80&w=1000');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        #startScreen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 10, 15, 0.7);
-            z-index: 0;
         }
 
         .game-title {
@@ -152,14 +125,13 @@
             background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
             margin-bottom: 30px;
             letter-spacing: 4px;
         }
 
         .box-cover {
-            width: 280px;
-            height: 280px;
+            width: 200px;
+            height: 200px;
             background: linear-gradient(145deg, var(--bg-card), var(--bg-secondary));
             border: 4px solid var(--accent-1);
             border-radius: 24px;
@@ -167,827 +139,177 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 6rem;
+            font-size: 5rem;
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--shadow-glow);
             animation: glow 3s infinite;
         }
 
         .start-btn {
-            padding: 20px 60px;
+            padding: 18px 50px;
             background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
             border: none;
             border-radius: 50px;
             font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 900;
             color: var(--bg-primary);
             cursor: pointer;
             transition: all 0.3s ease;
             box-shadow: 0 8px 30px var(--shadow-glow);
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
-        .start-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 40px var(--shadow-glow);
-        }
-
-        .start-btn:active {
-            transform: translateY(0) scale(0.98);
-        }
+        .start-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 40px var(--shadow-glow); }
 
         .warning-text {
-            font-size: 1rem;
+            font-size: 0.9rem;
             color: var(--accent-3);
-            padding: 16px 24px;
-            background: rgba(255, 107, 53, 0.15);
-            border: 2px solid var(--accent-3);
+            padding: 12px 20px;
+            background: rgba(255, 107, 53, 0.1);
+            border: 1px solid var(--accent-3);
             border-radius: 12px;
-            max-width: 400px;
         }
 
-        /* Timer Setup Screen */
-        .timer-setup {
-            text-align: center;
-            max-width: 450px;
-        }
-
+        /* Timer Setup */
         .timer-big {
             font-family: 'Orbitron', sans-serif;
-            font-size: 5rem;
+            font-size: 4rem;
             font-weight: 900;
             color: var(--accent-2);
-            text-shadow: 0 0 30px var(--shadow-blue);
-            margin: 40px 0;
-            letter-spacing: 8px;
+            text-shadow: 0 0 20px var(--shadow-blue);
+            margin: 30px 0;
         }
 
-        .timer-label {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        /* Envelope Screen */
-        .envelope-screen {
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .envelope-icon {
-            font-size: 8rem;
-            margin-bottom: 30px;
-            animation: bounce 1.5s infinite;
-        }
-
+        /* Envelope */
+        .envelope-icon { font-size: 6rem; margin-bottom: 20px; animation: bounce 1.5s infinite; }
         .envelope-message {
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.8;
             padding: 30px;
             background: var(--bg-card);
             border-radius: 20px;
-            border: 3px solid var(--accent-1);
-            box-shadow: 0 0 30px var(--shadow-glow);
+            border: 2px solid var(--accent-1);
         }
 
-        .auto-skip-indicator {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
+        .progress-bar { width: 200px; height: 6px; background: var(--bg-button); border-radius: 3px; margin: 15px auto; overflow: hidden; }
+        .progress-fill { height: 100%; width: 0%; background: var(--accent-1); transition: width 0.1s linear; }
 
-        .progress-bar {
-            width: 200px;
-            height: 6px;
-            background: var(--bg-button);
-            border-radius: 3px;
-            margin: 15px auto 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-            border-radius: 3px;
-            transition: width 0.1s linear;
-        }
-
-        /* Phone Screen with Video Background */
-        .phone-screen {
-            position: relative;
-            width: 100%;
-            min-height: 100vh;
-        }
-
-        .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.4;
-        }
-
-        /* Rotary Phone Container */
+        /* Phone */
         .rotary-phone-container {
-            background: linear-gradient(145deg, var(--phone-green), var(--phone-green-dark));
-            border-radius: 40px 40px 30px 30px;
-            padding: 30px;
-            max-width: 380px;
-            width: 100%;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.8),
-                inset 0 2px 10px rgba(255, 255, 255, 0.1),
-                0 0 0 8px var(--phone-green-dark);
-            position: relative;
-        }
-
-        .phone-handset {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 280px;
-            height: 50px;
-            background: linear-gradient(180deg, var(--phone-green-light), var(--phone-green-dark));
+            background: var(--phone-green);
             border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .phone-handset::before,
-        .phone-handset::after {
-            content: '';
-            position: absolute;
-            width: 50px;
-            height: 30px;
-            background: var(--phone-green-dark);
-            border-radius: 10px;
-            top: 10px;
-        }
-
-        .phone-handset::before {
-            left: 15px;
-        }
-
-        .phone-handset::after {
-            right: 15px;
-        }
-
-        .phone-header {
-            text-align: center;
-            margin: 30px 0 20px;
-        }
-
-        .phone-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--phone-gold);
-            letter-spacing: 2px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+            padding: 25px;
+            max-width: 360px;
+            width: 100%;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            position: relative;
         }
 
         .phone-display {
-            background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
-            border-radius: 12px;
-            padding: 15px 20px;
+            background: #000;
+            border-radius: 10px;
+            padding: 15px;
             margin-bottom: 20px;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow:
-                inset 0 2px 10px rgba(0, 0, 0, 0.8),
-                0 1px 0 rgba(255, 255, 255, 0.1);
+            text-align: center;
             border: 2px solid var(--phone-green-dark);
         }
 
-        .display-number {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: var(--accent-1);
-            text-shadow: 0 0 10px var(--accent-1);
-        }
-
-        .display-number.empty {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            opacity: 0.6;
-            text-shadow: none;
-        }
-
-        /* Rotary Dial */
-        .rotary-dial-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
+        .display-number { font-family: 'JetBrains Mono', monospace; font-size: 1.5rem; color: var(--accent-1); }
 
         .rotary-dial {
-            width: 280px;
-            height: 280px;
+            width: 240px;
+            height: 240px;
+            background: #222;
             border-radius: 50%;
-            background: linear-gradient(145deg, #3a3a3a, #1a1a1a);
+            margin: 0 auto 20px;
             position: relative;
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.6),
-                inset 0 2px 5px rgba(255, 255, 255, 0.1),
-                inset 0 -5px 15px rgba(0, 0, 0, 0.5);
-            cursor: grab;
-            user-select: none;
-            touch-action: none;
-        }
-
-        .rotary-dial.dialing {
-            cursor: grabbing;
+            box-shadow: inset 0 0 20px #000;
         }
 
         .dial-plate {
+            width: 100%;
+            height: 100%;
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #2a2a2a, #0a0a0a);
-            transition: transform 0.1s linear;
-        }
-
-        .dial-plate.returning {
-            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .finger-stop {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 30px;
-            background: linear-gradient(180deg, #888, #444);
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            z-index: 10;
-        }
-
-        .dial-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
-            box-shadow:
-                0 5px 15px rgba(0, 0, 0, 0.5),
-                inset 0 2px 5px rgba(255, 255, 255, 0.2);
-            z-index: 5;
-        }
-
-        .dial-center-inner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #888, #555);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .dial-hole {
             position: absolute;
-            width: 36px;
-            height: 36px;
+            width: 35px;
+            height: 35px;
+            background: #000;
             border-radius: 50%;
-            background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
-            box-shadow:
-                inset 0 3px 8px rgba(0, 0, 0, 0.8),
-                0 1px 2px rgba(255, 255, 255, 0.1);
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-        }
-
-        .dial-hole:hover {
-            box-shadow:
-                inset 0 3px 8px rgba(0, 0, 0, 0.8),
-                0 0 15px var(--accent-1);
-        }
-
-        .dial-hole:active {
-            transform: scale(0.95);
-        }
-
-        .dial-number {
-            position: absolute;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.1rem;
-            font-weight: 700;
             color: var(--phone-gold);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            pointer-events: none;
+            font-weight: bold;
+            font-family: 'JetBrains Mono';
         }
 
-        .phone-actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
+        .phone-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .action-btn { padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; }
+        .action-btn.clear { background: #800; color: white; }
+        .action-btn.call { background: var(--accent-1); color: black; }
 
-        .action-btn {
-            padding: 14px;
-            border: none;
+        /* Password Slots */
+        .password-display { display: flex; gap: 10px; margin-bottom: 20px; }
+        .password-slot {
+            width: 50px;
+            height: 65px;
+            background: var(--bg-button);
+            border: 2px solid var(--accent-2);
             border-radius: 10px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
         }
+        .password-slot.active { border-color: var(--accent-1); box-shadow: 0 0 10px var(--accent-1); }
 
-        .action-btn.clear {
-            background: linear-gradient(135deg, #8B0000, #5a0000);
-            color: white;
-            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
-        }
-
-        .action-btn.call {
-            background: linear-gradient(135deg, var(--accent-1), #00aa66);
-            color: var(--bg-primary);
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
-        }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .action-btn:active {
-            transform: translateY(1px);
-        }
-
-        .phone-status {
-            text-align: center;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 700;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .phone-status.show {
-            opacity: 1;
-        }
-
-        .phone-status.error {
-            background: rgba(255, 71, 87, 0.2);
-            color: var(--danger);
-            border: 2px solid var(--danger);
-        }
-
-        .phone-status.success {
-            background: rgba(0, 255, 136, 0.2);
-            color: var(--accent-1);
-            border: 2px solid var(--accent-1);
-        }
-
-        .dial-instruction {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: var(--phone-gold);
-            opacity: 0.8;
-        }
+        .password-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .password-key { padding: 15px; background: var(--bg-button); border: none; border-radius: 8px; color: white; cursor: pointer; }
 
         /* Success Overlay */
         .success-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
             display: none;
             align-items: center;
             justify-content: center;
             z-index: 2000;
-            animation: fadeIn 0.3s ease;
         }
+        .success-overlay.show { display: flex; }
+        .success-content { text-align: center; padding: 40px; background: var(--bg-card); border-radius: 20px; border: 2px solid var(--accent-1); }
 
-        .success-overlay.show {
-            display: flex;
-        }
+        /* Direction Grid */
+        .direction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px; }
+        .direction-btn { padding: 20px; background: var(--bg-card); border: 2px solid var(--accent-2); border-radius: 12px; color: white; cursor: pointer; }
 
-        .success-content {
-            text-align: center;
-            padding: 50px;
-            background: var(--bg-card);
-            border-radius: 30px;
-            border: 4px solid var(--accent-1);
-            box-shadow: 0 0 60px var(--shadow-glow);
-            max-width: 450px;
-        }
+        .status-msg { margin-top: 15px; font-weight: bold; min-height: 24px; }
+        .status-msg.error { color: var(--danger); animation: shake 0.4s ease; }
 
-        .success-icon {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            animation: bounce 1s infinite;
-        }
-
-        .success-title {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--accent-1);
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .success-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        /* Password Input Screen */
-        .password-screen {
-            text-align: center;
-            max-width: 450px;
-        }
-
-        .level-prompt {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.8;
-            padding: 25px;
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 2px solid var(--accent-2);
-            margin-bottom: 35px;
-        }
-
-        .password-display {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .password-slot {
-            width: 65px;
-            height: 85px;
-            background: var(--bg-primary);
-            border: 3px solid var(--accent-2);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--text-primary);
-            transition: all 0.2s ease;
-        }
-
-        .password-slot.active {
-            border-color: var(--accent-1);
-            box-shadow: 0 0 20px var(--shadow-glow);
-        }
-
-        .password-slot.filled {
-            color: var(--accent-1);
-        }
-
-        .password-keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            max-width: 280px;
-            margin: 0 auto 25px;
-        }
-
-        .password-key {
-            padding: 18px;
-            background: var(--bg-button);
-            border: none;
-            border-radius: 14px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .password-key:hover {
-            background: var(--accent-2);
-            color: var(--bg-primary);
-            transform: scale(1.05);
-        }
-
-        .password-key:active {
-            transform: scale(0.95);
-        }
-
-        .password-key.backspace {
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            color: white;
-        }
-
-        .password-key.submit {
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            color: var(--bg-primary);
-        }
-
-        .input-status {
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 700;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .input-status.show {
-            opacity: 1;
-        }
-
-        .input-status.error {
-            background: rgba(255, 71, 87, 0.2);
-            color: var(--danger);
-            border: 2px solid var(--danger);
-            animation: shake 0.5s ease;
-        }
-
-        /* Choice Screen */
-        .choice-screen {
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .choice-prompt {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 40px;
-            line-height: 1.8;
-        }
-
-        .choice-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .choice-btn {
-            padding: 25px 30px;
-            background: var(--bg-card);
-            border: 3px solid var(--accent-2);
-            border-radius: 20px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            line-height: 1.6;
-        }
-
-        .choice-btn:hover {
-            border-color: var(--accent-1);
-            background: rgba(0, 255, 136, 0.1);
-            transform: translateX(10px);
-        }
-
-        .choice-btn .time-effect {
-            display: block;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: var(--accent-3);
-        }
-
-        .choice-btn.positive .time-effect {
-            color: var(--accent-1);
-        }
-
-        /* Random Questions Screen */
-        .questions-screen {
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .question-card {
-            background: var(--bg-card);
-            border: 3px solid var(--accent-2);
-            border-radius: 24px;
-            padding: 40px 30px;
-            margin-bottom: 30px;
-        }
-
-        .question-text {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.8;
-        }
-
-        .question-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        .question-btn {
-            padding: 18px 30px;
-            border: none;
-            border-radius: 14px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .question-btn.new {
-            background: var(--bg-button);
-            color: var(--text-primary);
-            border: 2px solid var(--accent-2);
-        }
-
-        .question-btn.proceed {
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            color: var(--bg-primary);
-        }
-
-        .question-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        /* Direction Choice Screen */
-        .direction-screen {
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .direction-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .direction-btn {
-            padding: 30px 20px;
-            background: var(--bg-card);
-            border: 3px solid var(--accent-2);
-            border-radius: 20px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .direction-btn:hover {
-            border-color: var(--accent-1);
-            background: rgba(0, 255, 136, 0.1);
-            transform: scale(1.05);
-        }
-
-        .direction-btn .english {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
-        /* Victory Screen */
-        .victory-screen {
-            text-align: center;
-            max-width: 550px;
-        }
-
-        .victory-video {
-            width: 100%;
-            max-width: 500px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        }
-
-        .victory-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-3));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-        }
-
-        .victory-instruction {
-            font-size: 1.1rem;
-            color: var(--accent-1);
-            padding: 20px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--accent-1);
-            border-radius: 16px;
-            margin-bottom: 30px;
-        }
-
-        .feedback-text {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            padding: 20px;
-            background: var(--bg-card);
-            border-radius: 16px;
-        }
-
-        .trophy-icon {
-            font-size: 6rem;
-            margin-bottom: 20px;
-            animation: bounce 1.5s infinite;
-        }
-
-        /* Time Modifier Display */
         .time-modifier {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            padding: 12px 20px;
-            border-radius: 12px;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            z-index: 1001;
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.3s ease;
+            position: fixed; top: 80px; right: 20px; padding: 10px 20px; border-radius: 10px;
+            font-weight: bold; opacity: 0; transition: 0.3s; z-index: 1001;
         }
-
-        .time-modifier.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .time-modifier.add {
-            background: linear-gradient(135deg, var(--accent-1), #00cc6a);
-            color: var(--bg-primary);
-        }
-
-        .time-modifier.subtract {
-            background: linear-gradient(135deg, var(--danger), #ff6b81);
-            color: white;
-        }
-
-        /* Responsive */
-        @media (max-width: 480px) {
-            .game-title { font-size: 1.8rem; }
-            .box-cover { width: 220px; height: 220px; font-size: 4rem; }
-            .timer-big { font-size: 3.5rem; }
-            .envelope-message { font-size: 1.4rem; padding: 20px; }
-            .rotary-phone-container { padding: 20px; max-width: 340px; }
-            .rotary-dial { width: 240px; height: 240px; }
-            .dial-plate { width: 210px; height: 210px; }
-            .dial-hole { width: 30px; height: 30px; }
-            .dial-number { font-size: 0.95rem; }
-            .dial-center { width: 65px; height: 65px; }
-            .dial-center-inner { width: 40px; height: 40px; }
-            .display-number { font-size: 1.4rem; }
-            .password-slot { width: 55px; height: 70px; font-size: 1.8rem; }
-            .level-prompt { font-size: 1.2rem; }
-            .choice-btn { font-size: 1rem; padding: 20px; }
-            .victory-title { font-size: 1.5rem; }
-        }
+        .time-modifier.show { opacity: 1; }
+        .time-modifier.add { background: var(--success); color: black; }
+        .time-modifier.sub { background: var(--danger); color: white; }
     </style>
 </head>
 <body>
-    <!-- Fixed Timer -->
+
     <div class="timer-fixed" id="timerFixed">
         <div class="timer-display" id="timerDisplay">45:00</div>
     </div>
 
-    <!-- Time Modifier Popup -->
     <div class="time-modifier" id="timeModifier"></div>
 
-    <!-- Screen 1: Start Screen -->
+    <!-- Screen 1: Start -->
     <div class="screen active" id="startScreen">
         <div class="start-screen">
             <h1 class="game-title">密室逃脫</h1>
@@ -999,576 +321,351 @@
 
     <!-- Screen 2: Timer Setup -->
     <div class="screen" id="timerSetupScreen">
-        <div class="timer-setup">
-            <h2 class="game-title" style="font-size: 1.8rem;">準備開始</h2>
-            <p class="timer-label">倒計時</p>
+        <div class="text-center">
+            <h2 class="game-title">準備開始</h2>
             <div class="timer-big">45:00</div>
-            <button class="start-btn" id="startTimerBtn">開始計時</button>
+            <button class="start-btn" id="startTimerBtn">啟動倒計時</button>
         </div>
     </div>
 
-    <!-- Screen 3: Envelope 1 Instruction -->
+    <!-- Screen 3: Envelope 1 -->
     <div class="screen" id="envelope1Screen">
-        <div class="envelope-screen">
+        <div class="text-center">
             <div class="envelope-icon">✉️</div>
-            <div class="envelope-message">請打開1號信封<br>並先閱讀引文</div>
-            <div class="auto-skip-indicator">
-                自動跳轉中...
-                <div class="progress-bar"><div class="progress-fill" id="progress1"></div></div>
-            </div>
+            <div class="envelope-message">請打開 1 號信封<br>並閱讀引文</div>
+            <div class="progress-bar"><div class="progress-fill" id="progress1"></div></div>
         </div>
     </div>
 
-    <!-- Screen 4: Rotary Phone Level -->
+    <!-- Screen 4: Phone -->
     <div class="screen" id="phoneScreen">
-        <video class="video-background" id="bgVideo" autoplay muted loop playsinline>
-            <source src="background.mp4" type="video/mp4">
-        </video>
         <div class="rotary-phone-container">
-            <div class="phone-handset"></div>
-            <div class="phone-header"><h2 class="phone-title">📞 撥號電話</h2></div>
             <div class="phone-display">
-                <div class="display-number empty" id="phoneDisplay">輸入號碼</div>
+                <div class="display-number" id="phoneDisplay">請撥號</div>
             </div>
-            <div class="rotary-dial-wrapper">
-                <div class="rotary-dial" id="rotaryDial">
-                    <div class="dial-plate" id="dialPlate"></div>
-                    <div class="finger-stop"></div>
-                    <div class="dial-center"><div class="dial-center-inner"></div></div>
-                </div>
+            <div class="rotary-dial">
+                <div class="dial-plate" id="dialPlate"></div>
             </div>
             <div class="phone-actions">
                 <button class="action-btn clear" id="phoneClearBtn">清除</button>
                 <button class="action-btn call" id="phoneCallBtn">撥打</button>
             </div>
-            <div class="dial-instruction">將手指放入數字孔，順時針旋轉至擋片後放開</div>
-            <div class="phone-status" id="phoneStatus"></div>
+            <div class="status-msg" id="phoneStatus"></div>
         </div>
     </div>
 
-    <!-- Screen 5: Level 2 - 4-digit Password -->
+    <!-- Screen 5: Level 2 -->
     <div class="screen" id="level2Screen">
-        <div class="password-screen">
-            <div class="level-prompt">🔒 你現在需要找到四位數字密碼<br>破解鐵閘密碼鎖</div>
-            <div class="password-display" id="password2Display">
-                <div class="password-slot active">_</div>
-                <div class="password-slot">_</div>
-                <div class="password-slot">_</div>
-                <div class="password-slot">_</div>
-            </div>
-            <div class="password-keypad">
-                <button class="password-key" data-num="1">1</button>
-                <button class="password-key" data-num="2">2</button>
-                <button class="password-key" data-num="3">3</button>
-                <button class="password-key" data-num="4">4</button>
-                <button class="password-key" data-num="5">5</button>
-                <button class="password-key" data-num="6">6</button>
-                <button class="password-key" data-num="7">7</button>
-                <button class="password-key" data-num="8">8</button>
-                <button class="password-key" data-num="9">9</button>
-                <button class="password-key backspace" data-num="back">⌫</button>
-                <button class="password-key" data-num="0">0</button>
-                <button class="password-key submit" data-num="submit">✓</button>
-            </div>
-            <div class="input-status" id="level2Status"></div>
+        <h2 class="game-title" style="font-size: 1.5rem;">🔒 破解鐵閘密碼</h2>
+        <div class="password-display" id="pass2Display">
+            <div class="password-slot active">_</div>
+            <div class="password-slot">_</div>
+            <div class="password-slot">_</div>
+            <div class="password-slot">_</div>
         </div>
+        <div class="password-keypad" id="keypad2">
+            <button class="password-key">1</button><button class="password-key">2</button><button class="password-key">3</button>
+            <button class="password-key">4</button><button class="password-key">5</button><button class="password-key">6</button>
+            <button class="password-key">7</button><button class="password-key">8</button><button class="password-key">9</button>
+            <button class="password-key" style="background:#555">⌫</button><button class="password-key">0</button><button class="password-key" style="background:var(--accent-1);color:black">✓</button>
+        </div>
+        <div class="status-msg" id="level2Status"></div>
     </div>
 
-    <!-- Screen 6: Level 3 - 2-digit Number -->
+    <!-- Screen 6: Level 3 -->
     <div class="screen" id="level3Screen">
-        <div class="password-screen">
-            <div class="level-prompt">🚃 電車站號碼咁多…<br>睇嚟要搵一個兩位數字號碼<br>先可以去到中環</div>
-            <div class="password-display" id="password3Display">
-                <div class="password-slot active">_</div>
-                <div class="password-slot">_</div>
-            </div>
-            <div class="password-keypad">
-                <button class="password-key" data-num="1">1</button>
-                <button class="password-key" data-num="2">2</button>
-                <button class="password-key" data-num="3">3</button>
-                <button class="password-key" data-num="4">4</button>
-                <button class="password-key" data-num="5">5</button>
-                <button class="password-key" data-num="6">6</button>
-                <button class="password-key" data-num="7">7</button>
-                <button class="password-key" data-num="8">8</button>
-                <button class="password-key" data-num="9">9</button>
-                <button class="password-key backspace" data-num="back">⌫</button>
-                <button class="password-key" data-num="0">0</button>
-                <button class="password-key submit" data-num="submit">✓</button>
-            </div>
-            <div class="input-status" id="level3Status"></div>
+        <h2 class="game-title" style="font-size: 1.5rem;">🚃 尋找電車站號碼</h2>
+        <div class="password-display" id="pass3Display">
+            <div class="password-slot active">_</div>
+            <div class="password-slot">_</div>
         </div>
+        <div class="password-keypad" id="keypad3">
+            <button class="password-key">1</button><button class="password-key">2</button><button class="password-key">3</button>
+            <button class="password-key">4</button><button class="password-key">5</button><button class="password-key">6</button>
+            <button class="password-key">7</button><button class="password-key">8</button><button class="password-key">9</button>
+            <button class="password-key" style="background:#555">⌫</button><button class="password-key">0</button><button class="password-key" style="background:var(--accent-1);color:black">✓</button>
+        </div>
+        <div class="status-msg" id="level3Status"></div>
     </div>
 
-    <!-- Screen 7: Level 4 - Choice -->
+    <!-- Screen 7: Choice -->
     <div class="screen" id="level4Screen">
-        <div class="choice-screen">
-            <div class="choice-prompt">🚃 電車仲有排先到站⋯⋯</div>
-            <div class="choice-buttons">
-                <button class="choice-btn positive" id="choice1Btn">
-                    反正冇嘢做！趁依段時間好好了解吓身邊嘅街坊！
-                    <span class="time-effect">⏰ +7 分鐘</span>
-                </button>
-                <button class="choice-btn" id="choice2Btn">
-                    時間過得咁快⋯電車好似就嚟到
-                    <span class="time-effect">⏰ -7 分鐘</span>
-                </button>
-            </div>
+        <div class="text-center" style="max-width: 400px;">
+            <p style="margin-bottom: 20px; font-size: 1.2rem;">🚃 電車仲有排先到站⋯⋯</p>
+            <button class="direction-btn" id="choice1" style="width:100%; margin-bottom:10px;">
+                趁依段時間好好了解吓身邊嘅街坊！<br><small style="color:var(--accent-1)">⏰ +7 分鐘</small>
+            </button>
+            <button class="direction-btn" id="choice2" style="width:100%;">
+                時間過得咁快⋯電車好似就嚟到<br><small style="color:var(--danger)">⏰ -7 分鐘</small>
+            </button>
         </div>
     </div>
 
-    <!-- Screen 8: Random Questions -->
+    <!-- Screen 8: Questions -->
     <div class="screen" id="questionsScreen">
-        <div class="questions-screen">
-            <div class="question-card">
-                <p class="question-text" id="questionText">問題載入中...</p>
-            </div>
-            <div class="question-actions">
-                <button class="question-btn new" id="newQuestionBtn">🎲 下一條問題</button>
-                <button class="question-btn proceed" id="proceedBtn">🚃 電車終於到站！</button>
-            </div>
+        <div class="text-center" style="max-width: 400px;">
+            <div class="envelope-message" id="questionText" style="margin-bottom: 20px;">問題載入中...</div>
+            <button class="start-btn" id="nextQuestion" style="font-size: 1rem;">🎲 下一條問題</button>
+            <button class="start-btn" id="finishQuestions" style="font-size: 1rem; background: var(--accent-2);">🚃 電車終於到站！</button>
         </div>
     </div>
 
-    <!-- Screen 9: Envelope 5 Instruction -->
+    <!-- Screen 9: Envelope 5 -->
     <div class="screen" id="envelope5Screen">
-        <div class="envelope-screen">
+        <div class="text-center">
             <div class="envelope-icon">✉️</div>
-            <div class="envelope-message">現在請打開5號信封</div>
-            <div class="auto-skip-indicator">
-                自動跳轉中...
-                <div class="progress-bar"><div class="progress-fill" id="progress5"></div></div>
-            </div>
+            <div class="envelope-message">現在請打開 5 號信封</div>
+            <div class="progress-bar"><div class="progress-fill" id="progress5"></div></div>
         </div>
     </div>
 
-    <!-- Screen 10: Direction Choice -->
+    <!-- Screen 10: Direction -->
     <div class="screen" id="directionScreen">
-        <div class="direction-screen">
-            <div class="level-prompt">🗺️ 唔知究竟邊個方向先可以行到電車總站⋯<br><br>睇嚟要善用地圖搵出太平山嘅位置</div>
-            <div class="direction-grid">
-                <button class="direction-btn" data-dir="east">東<span class="english">East</span></button>
-                <button class="direction-btn" data-dir="south">南<span class="english">South</span></button>
-                <button class="direction-btn" data-dir="west">西<span class="english">West</span></button>
-                <button class="direction-btn" data-dir="north">北<span class="english">North</span></button>
-            </div>
-            <div class="input-status" id="directionStatus"></div>
+        <h2 class="game-title" style="font-size: 1.2rem;">🗺️ 太平山喺邊個方向？</h2>
+        <div class="direction-grid">
+            <button class="direction-btn" data-dir="east">東 East</button>
+            <button class="direction-btn" data-dir="south">南 South</button>
+            <button class="direction-btn" data-dir="west">西 West</button>
+            <button class="direction-btn" data-dir="north">北 North</button>
         </div>
+        <div class="status-msg" id="dirStatus"></div>
     </div>
 
-    <!-- Screen 11: Victory Video -->
-    <div class="screen" id="victoryVideoScreen">
-        <div class="victory-screen">
-            <video class="victory-video" id="victoryVideo" playsinline>
-                <source src="victory.mp4" type="video/mp4">
-            </video>
-        </div>
-    </div>
-
-    <!-- Screen 12: Final Victory -->
+    <!-- Screen 11: Final -->
     <div class="screen" id="finalScreen">
-        <div class="victory-screen">
-            <div class="trophy-icon">🏆</div>
-            <h1 class="victory-title">恭喜你成功準時到達比賽現場並成功通關！</h1>
-            <p class="victory-instruction">📖 請大家閱讀說明書第七頁</p>
-            <div class="feedback-text">希望你有個好的遊戲體驗！<br><br>若你有任何想法或意見提供<br>歡迎填寫說明書最後的產品回饋表</div>
+        <div class="text-center">
+            <div class="envelope-icon">🏆</div>
+            <h1 class="game-title">成功通關！</h1>
+            <p style="margin-bottom: 20px;">📖 請閱讀說明書第七頁</p>
+            <div class="envelope-message" style="font-size: 1rem;">希望你有個好的遊戲體驗！</div>
         </div>
     </div>
 
-    <!-- Success Overlay -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-content">
-            <div class="success-icon" id="successIcon">🎉</div>
-            <h2 class="success-title" id="successTitle">成功！</h2>
-            <p class="success-subtitle" id="successSubtitle">繼續下一關</p>
+            <div id="successIcon" style="font-size: 4rem; margin-bottom: 10px;">🎉</div>
+            <h2 id="successTitle" style="color:var(--accent-1)">成功！</h2>
+            <p id="successSubtitle">準備進入下一關</p>
         </div>
     </div>
 
     <script>
-        // ========== AUDIO CONTEXT ==========
-        let audioContext = null;
+        // State
+        let totalSeconds = 45 * 60;
+        let timerInterval = null;
+        let currentPhoneNum = "";
+        let currentPass2 = "";
+        let currentPass3 = "";
 
-        function getAudioContext() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioContext.state === 'suspended') audioContext.resume();
-            return audioContext;
-        }
+        const questions = [
+            "你最喜歡香港嘅邊個地方？", "如果可以去世界任何地方，你會去邊度？", 
+            "你覺得香港最好食嘅嘢係乜？", "你細個最鍾意玩咩遊戲？", 
+            "你最難忘嘅童年回憶？", "如果你可以擁有一種超能力，你會揀乜？"
+        ];
 
-        function playTone(frequency, duration) {
-            const ctx = getAudioContext();
-            if (!ctx) return;
-            const oscillator = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-            oscillator.connect(gainNode);
-            gainNode.connect(ctx.destination);
-            oscillator.frequency.value = frequency;
-            oscillator.type = 'sine';
-            gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-            oscillator.start(ctx.currentTime);
-            oscillator.stop(ctx.currentTime + duration);
-        }
+        // Audio Helpers
+        const playSound = (freq, dur) => {
+            const ctx = new (window.AudioContext || window.webkitAudioContext)();
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
+            osc.connect(gain); gain.connect(ctx.destination);
+            osc.frequency.value = freq; gain.gain.setValueAtTime(0.1, ctx.currentTime);
+            osc.start(); osc.stop(ctx.currentTime + dur);
+        };
 
-        function playSuccessSound() {
-            [{ freq: 523.25, time: 0 }, { freq: 659.25, time: 0.12 }, { freq: 783.99, time: 0.24 }, { freq: 1046.50, time: 0.36 }]
-                .forEach(note => setTimeout(() => playTone(note.freq, 0.2), note.time * 1000));
-        }
-
-        function playErrorSound() {
-            playTone(200, 0.15);
-            setTimeout(() => playTone(150, 0.2), 100);
-        }
-
-        function playUnlockSound() {
-            setTimeout(() => playTone(800, 0.05), 0);
-            setTimeout(() => playTone(600, 0.05), 50);
-            setTimeout(() => playTone(1200, 0.1), 100);
-            setTimeout(() => { playTone(523, 0.15); playTone(659, 0.15); }, 200);
-            setTimeout(() => playTone(784, 0.2), 350);
-        }
-
-        function playRotaryClickSound() {
-            const ctx = getAudioContext();
-            if (!ctx) return;
-            const oscillator = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-            const filter = ctx.createBiquadFilter();
-            oscillator.connect(filter);
-            filter.connect(gainNode);
-            gainNode.connect(ctx.destination);
-            filter.type = 'lowpass';
-            filter.frequency.value = 800;
-            oscillator.type = 'square';
-            oscillator.frequency.value = 100;
-            gainNode.gain.setValueAtTime(0.4, ctx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-            oscillator.start(ctx.currentTime);
-            oscillator.stop(ctx.currentTime + 0.05);
-        }
-
-        function playDialReturnSound(duration) {
-            const ctx = getAudioContext();
-            if (!ctx) return;
-            const clickCount = Math.floor(duration * 12);
-            for (let i = 0; i < clickCount; i++) {
-                setTimeout(() => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.type = 'square';
-                    osc.frequency.value = 150 + Math.random() * 50;
-                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.03);
-                    osc.start(ctx.currentTime);
-                    osc.stop(ctx.currentTime + 0.03);
-                }, i * (duration * 1000 / clickCount));
-            }
-        }
-
-        // ========== TIMER ==========
-        let timerInterval = null, totalSeconds = 45 * 60, timerRunning = false;
-
-        function updateTimerDisplay() {
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            document.getElementById('timerDisplay').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            const timerFixed = document.getElementById('timerFixed');
-            timerFixed.classList.remove('warning', 'danger');
-            if (totalSeconds <= 60) timerFixed.classList.add('danger');
-            else if (totalSeconds <= 300) timerFixed.classList.add('warning');
-        }
-
-        function startTimer() {
-            if (timerRunning) return;
-            timerRunning = true;
-            document.getElementById('timerFixed').classList.add('active');
-            timerInterval = setInterval(() => {
-                if (totalSeconds > 0) { totalSeconds--; updateTimerDisplay(); }
-                else clearInterval(timerInterval);
-            }, 1000);
-        }
-
-        function modifyTime(seconds, isAdd) {
-            totalSeconds += seconds;
-            if (totalSeconds < 0) totalSeconds = 0;
-            updateTimerDisplay();
-            const modifier = document.getElementById('timeModifier');
-            modifier.textContent = isAdd ? `+${Math.abs(seconds / 60)} 分鐘` : `-${Math.abs(seconds / 60)} 分鐘`;
-            modifier.className = `time-modifier show ${isAdd ? 'add' : 'subtract'}`;
-            setTimeout(() => modifier.classList.remove('show'), 2500);
-        }
-
-        // ========== SCREEN NAVIGATION ==========
-        function showScreen(screenId) {
+        // Navigation
+        function showScreen(id) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+            document.getElementById(id).classList.add('active');
         }
 
-        function showSuccess(icon, title, subtitle, callback, delay = 3000) {
+        function showOverlay(icon, title, sub, dur, cb) {
             const overlay = document.getElementById('successOverlay');
             document.getElementById('successIcon').textContent = icon;
             document.getElementById('successTitle').textContent = title;
-            document.getElementById('successSubtitle').textContent = subtitle;
+            document.getElementById('successSubtitle').textContent = sub;
             overlay.classList.add('show');
-            playSuccessSound();
-            setTimeout(() => { overlay.classList.remove('show'); if (callback) callback(); }, delay);
+            playSound(800, 0.2);
+            setTimeout(() => {
+                overlay.classList.remove('show');
+                if(cb) cb();
+            }, dur);
         }
 
-        function autoSkip(progressId, duration, callback) {
-            const progressEl = document.getElementById(progressId);
-            let elapsed = 0;
-            const interval = setInterval(() => {
-                elapsed += 100;
-                progressEl.style.width = `${(elapsed / duration) * 100}%`;
-                if (elapsed >= duration) { clearInterval(interval); callback(); }
-            }, 100);
+        // Timer Logic
+        function startTimer() {
+            if (timerInterval) return;
+            document.getElementById('timerFixed').classList.add('active');
+            timerInterval = setInterval(() => {
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    return;
+                }
+                totalSeconds--;
+                const m = Math.floor(totalSeconds / 60);
+                const s = totalSeconds % 60;
+                document.getElementById('timerDisplay').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+                
+                const timerBox = document.getElementById('timerFixed');
+                if (totalSeconds < 300) timerBox.classList.add('danger');
+                else if (totalSeconds < 600) timerBox.classList.add('warning');
+            }, 1000);
         }
 
-        // ========== ROTARY DIAL PHONE ==========
-        const phoneConfig = {
-            correct: { '56123517': { audio: '豬肉榮.m4a', name: '豬肉榮' } },
-            wrong: {
-                '63589512': { audio: '李太.m4a', message: '打錯了！這是李太的電話。' },
-                '97621245': { audio: '吳哥.m4a', message: '打錯了！這是吳哥的電話。' }
+        function modifyTime(sec, isAdd) {
+            totalSeconds += sec;
+            const mod = document.getElementById('timeModifier');
+            mod.textContent = `${isAdd ? '+' : '-'}${Math.abs(sec/60)} 分鐘`;
+            mod.className = `time-modifier show ${isAdd ? 'add' : 'sub'}`;
+            setTimeout(() => mod.classList.remove('show'), 2000);
+        }
+
+        // Rotary Dial Setup
+        function initDial() {
+            const plate = document.getElementById('dialPlate');
+            plate.innerHTML = '';
+            const nums = ['1','2','3','4','5','6','7','8','9','0'];
+            nums.forEach((n, i) => {
+                const angle = (i * 30 - 60) * (Math.PI / 180);
+                const hole = document.createElement('div');
+                hole.className = 'dial-hole';
+                hole.textContent = n;
+                hole.style.left = `${120 + 85 * Math.cos(angle) - 17}px`;
+                hole.style.top = `${120 + 85 * Math.sin(angle) - 17}px`;
+                hole.onclick = () => {
+                    if (currentPhoneNum.length < 8) {
+                        currentPhoneNum += n;
+                        document.getElementById('phoneDisplay').textContent = currentPhoneNum;
+                        playSound(400, 0.1);
+                        plate.style.transform = `rotate(${(i+1)*30}deg)`;
+                        setTimeout(() => plate.style.transform = 'rotate(0deg)', 300);
+                    }
+                };
+                plate.appendChild(hole);
+            });
+        }
+
+        // Event Listeners
+        document.getElementById('startGameBtn').onclick = () => showScreen('timerSetupScreen');
+        
+        document.getElementById('startTimerBtn').onclick = () => {
+            startTimer();
+            showScreen('envelope1Screen');
+            let p = 0;
+            const bar = document.getElementById('progress1');
+            const iv = setInterval(() => {
+                p += 1;
+                bar.style.width = p + '%';
+                if (p >= 100) {
+                    clearInterval(iv);
+                    initDial();
+                    showScreen('phoneScreen');
+                }
+            }, 50);
+        };
+
+        document.getElementById('phoneClearBtn').onclick = () => {
+            currentPhoneNum = "";
+            document.getElementById('phoneDisplay').textContent = "請撥號";
+        };
+
+        document.getElementById('phoneCallBtn').onclick = () => {
+            const status = document.getElementById('phoneStatus');
+            if (currentPhoneNum === "56123517") {
+                showOverlay('📞', '通話成功', '請打開 2 號信封', 3000, () => showScreen('level2Screen'));
+            } else {
+                status.textContent = "❌ 號碼錯誤";
+                status.className = "status-msg error";
+                playSound(200, 0.3);
+                setTimeout(() => status.textContent = "", 2000);
             }
         };
 
-        let phoneNumber = '', isDialing = false;
-        const dialNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-        const startAngle = -60, angleStep = 30;
+        // Keypad Logic
+        function handleKeypad(key, type) {
+            let pass = type === 2 ? currentPass2 : currentPass3;
+            let limit = type === 2 ? 4 : 2;
+            let displayId = type === 2 ? 'pass2Display' : 'pass3Display';
+            let statusId = type === 2 ? 'level2Status' : 'level3Status';
+            let correct = type === 2 ? "3122" : "72";
 
-        function initRotaryDial() {
-            const dialPlate = document.getElementById('dialPlate');
-            const dialSize = window.innerWidth <= 480 ? 210 : 250;
-            const holeSize = window.innerWidth <= 480 ? 30 : 36;
-            const adjustedHoleRadius = window.innerWidth <= 480 ? 75 : 90;
-            const numberRadius = window.innerWidth <= 480 ? 95 : 115;
-            dialPlate.innerHTML = '';
+            if (key === '⌫') pass = pass.slice(0, -1);
+            else if (key === '✓') {
+                if (pass === correct) {
+                    if (type === 2) showOverlay('🔓', '密碼正確', '請打開 3 號信封', 3000, () => showScreen('level3Screen'));
+                    else showOverlay('🚃', '號碼正確', '請打開 4 號信封', 3000, () => showScreen('level4Screen'));
+                } else {
+                    const s = document.getElementById(statusId);
+                    s.textContent = "❌ 錯誤"; s.className = "status-msg error";
+                    playSound(200, 0.3);
+                }
+            } else if (pass.length < limit) {
+                pass += key;
+                playSound(500, 0.05);
+            }
 
-            dialNumbers.forEach((num, index) => {
-                const angle = (startAngle + index * angleStep) * (Math.PI / 180);
-                const holeX = dialSize / 2 + adjustedHoleRadius * Math.sin(angle) - holeSize / 2;
-                const holeY = dialSize / 2 - adjustedHoleRadius * Math.cos(angle) - holeSize / 2;
-
-                const hole = document.createElement('div');
-                hole.className = 'dial-hole';
-                hole.dataset.num = num;
-                hole.style.cssText = `left:${holeX}px;top:${holeY}px;width:${holeSize}px;height:${holeSize}px`;
-                dialPlate.appendChild(hole);
-
-                const numX = dialSize / 2 + numberRadius * Math.sin(angle);
-                const numY = dialSize / 2 - numberRadius * Math.cos(angle);
-                const numLabel = document.createElement('div');
-                numLabel.className = 'dial-number';
-                numLabel.textContent = num;
-                numLabel.style.cssText = `left:${numX}px;top:${numY}px;transform:translate(-50%,-50%)`;
-                dialPlate.appendChild(numLabel);
-            });
-        }
-
-        function getDialAngleForNumber(num) {
-            const index = dialNumbers.indexOf(num);
-            return index === -1 ? 0 : (index + 1) * angleStep + 40;
-        }
-
-        function dialNumber(num) {
-            if (isDialing || phoneNumber.length >= 8) return;
-            isDialing = true;
-            const dialPlate = document.getElementById('dialPlate');
-            const rotaryDial = document.getElementById('rotaryDial');
-            rotaryDial.classList.add('dialing');
-            const targetAngle = getDialAngleForNumber(num);
-
-            dialPlate.style.transition = 'transform 0.15s ease-out';
-            dialPlate.style.transform = `rotate(${targetAngle}deg)`;
-            playRotaryClickSound();
-
-            setTimeout(() => {
-                dialPlate.classList.add('returning');
-                dialPlate.style.transition = '';
-                dialPlate.style.transform = 'rotate(0deg)';
-                const returnDuration = 0.3 + (targetAngle / 360) * 0.5;
-                playDialReturnSound(returnDuration);
-
-                setTimeout(() => {
-                    dialPlate.classList.remove('returning');
-                    rotaryDial.classList.remove('dialing');
-                    isDialing = false;
-                    phoneNumber += num;
-                    updatePhoneDisplay();
-                }, returnDuration * 1000 + 100);
-            }, 200);
-        }
-
-        function updatePhoneDisplay() {
-            const display = document.getElementById('phoneDisplay');
-            if (phoneNumber === '') {
-                display.textContent = '輸入號碼';
-                display.classList.add('empty');
-            } else {
-                display.textContent = phoneNumber;
-                display.classList.remove('empty');
+            if (type === 2) currentPass2 = pass; else currentPass3 = pass;
+            
+            const slots = document.getElementById(displayId).children;
+            for(let i=0; i<slots.length; i++) {
+                slots[i].textContent = pass[i] || "_";
+                slots[i].className = `password-slot ${i === pass.length ? 'active' : ''}`;
             }
         }
 
-        function showPhoneStatus(message, type) {
-            const status = document.getElementById('phoneStatus');
-            status.textContent = message;
-            status.className = `phone-status show ${type}`;
-            setTimeout(() => status.classList.remove('show'), 3000);
-        }
+        document.getElementById('keypad2').onclick = (e) => {
+            if(e.target.tagName === 'BUTTON') handleKeypad(e.target.textContent, 2);
+        };
+        document.getElementById('keypad3').onclick = (e) => {
+            if(e.target.tagName === 'BUTTON') handleKeypad(e.target.textContent, 3);
+        };
 
-        function checkPhoneNumber() {
-            if (phoneNumber === '') { showPhoneStatus('請先輸入號碼', 'error'); playErrorSound(); return; }
-            if (phoneConfig.correct[phoneNumber]) {
-                new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(() => {});
-                showSuccess('🎉', '恭喜你成功通過第一關', '現在請打開2號信封', () => showScreen('level2Screen'), 15000);
-            } else if (phoneConfig.wrong[phoneNumber]) {
-                new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(() => {});
-                showPhoneStatus(phoneConfig.wrong[phoneNumber].message, 'error');
-                playErrorSound();
-            } else { showPhoneStatus('號碼錯誤，請重試！', 'error'); playErrorSound(); }
-        }
+        // Choice & Questions
+        document.getElementById('choice1').onclick = () => {
+            modifyTime(7 * 60, true);
+            document.getElementById('questionText').textContent = questions[0];
+            showScreen('questionsScreen');
+        };
+        document.getElementById('choice2').onclick = () => {
+            modifyTime(-7 * 60, false);
+            triggerEnvelope5();
+        };
 
-        // ========== LEVEL 2 & 3 ==========
-        let password2 = '', password3 = '';
-        const correctPassword2 = '3122', correctPassword3 = '72';
+        document.getElementById('nextQuestion').onclick = () => {
+            const q = questions[Math.floor(Math.random()*questions.length)];
+            document.getElementById('questionText').textContent = q;
+            playSound(600, 0.1);
+        };
 
-        function updatePassword2Display() {
-            const slots = document.getElementById('password2Display').querySelectorAll('.password-slot');
-            slots.forEach((slot, i) => {
-                slot.classList.remove('active', 'filled');
-                if (i < password2.length) { slot.textContent = password2[i]; slot.classList.add('filled'); }
-                else if (i === password2.length) { slot.textContent = '_'; slot.classList.add('active'); }
-                else slot.textContent = '_';
-            });
-        }
+        document.getElementById('finishQuestions').onclick = () => triggerEnvelope5();
 
-        function updatePassword3Display() {
-            const slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
-            slots.forEach((slot, i) => {
-                slot.classList.remove('active', 'filled');
-                if (i < password3.length) { slot.textContent = password3[i]; slot.classList.add('filled'); }
-                else if (i === password3.length) { slot.textContent = '_'; slot.classList.add('active'); }
-                else slot.textContent = '_';
-            });
-        }
-
-        function showInputStatus(elementId, message, type) {
-            const status = document.getElementById(elementId);
-            status.textContent = message;
-            status.className = `input-status show ${type}`;
-            setTimeout(() => status.classList.remove('show'), 3000);
-        }
-
-        function checkPassword2() {
-            if (password2.length < 4) { showInputStatus('level2Status', '請輸入完整密碼', 'error'); playErrorSound(); return; }
-            if (password2 === correctPassword2) {
-                playUnlockSound();
-                showSuccess('🔓', '恭喜你成功破解第二關', '現在請打開3號信封', () => { password3 = ''; updatePassword3Display(); showScreen('level3Screen'); }, 15000);
-            } else { showInputStatus('level2Status', '密碼錯誤，請重試！', 'error'); playErrorSound(); }
-        }
-
-        function checkPassword3() {
-            if (password3.length < 2) { showInputStatus('level3Status', '請輸入完整號碼', 'error'); playErrorSound(); return; }
-            if (password3 === correctPassword3) {
-                playSuccessSound();
-                showSuccess('🚃', '恭喜你成功破解第三關', '現在請打開4號信封', () => showScreen('level4Screen'), 15000);
-            } else { showInputStatus('level3Status', '號碼錯誤，請重試！', 'error'); playErrorSound(); }
-        }
-
-        // ========== RANDOM QUESTIONS ========== randomQuestions = [
-            "你最喜歡香港嘅邊個地方？", "如果可以去世界任何地方，你會去邊度？", "你覺得香港最好食嘅嘢係乜？",
-            "你細個最鍾意玩咩遊戲？", "你最難忘嘅童年回？", "如果你可以擁有一種超能力，你會揀乜？",
-            "你最欣賞身邊邊個人？點解？", "你覺得最能表香港嘅係乜嘢？", "你最近學識咗啲乜新嘢？",
-            "如果你只可以食一種嘢一世，你會揀乜？", "你覺得朋友最重要嘅特質係乜？", "你最想實現嘅願望係乜？",
-            "你覺得人生最緊要嘅係乜嘢？", "你最鍾意嘅節日係邊個？點解？", "如果你可以同任何人食飯，你會揀邊個？"
-        ];
-
-        function showRandomQuestion() {
-            document.getElementById('questionText').textContent = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
-            playTone(600, 0.1);
-        }
-
-        function checkDirection(direction) {
-            if (direction === 'east') {
-                playSuccessSound();
-                showScreen('victScreen');
-                const video = document.getElementById('victoryVideo');
-                video.play().catch(() => setTimeout(() => showScreen('finalScreen'), 1000));
-                video.addEventListener showScreen('finalScreen'));
-                setTimeout(() => { if (document.getElementById('victoryVideoScreen').classList')) showScreen('finalScreen'); }, 8000);
-            } else { showInputStatus('directionStatus', '方向錯誤試！', 'error'); playErrorSound(); }
-        }
-
-        // ======== LISTENERS ==========
-        document.addEventListener('DOMContentLoaded', () => {
-            initRotaryDial();
-            window.addEventListener('resizeRotaryDial);
-
-            document.getElementById('startGame', () => { getAudioContext(); showScreen('timerSetupScreen'); });
-            document.getElementById('startTimerBtn').addEventListener('click', () => {
-                startTimer();
-                showScreen('envelope1autoSkip('progress1', 15000, () => { showScreen'); initRotaryDial(); document.getElementById('bgVideocatch(() => {}); });
-            });
-
-            document.getElementById('dialPlate').addEventListener('click', (e) => {
-                const hole.target.closest('.dial-hole');
-                if (hole && !isDialing) dialNumber(hole.dataset});
-
-            document.getElementById('dialPlate').addEventListener('touchen {
-                const touch = e.changedTouches[0];
-                const hole = document.elementFromPoint(touch.clientX, touch.clientY)?.');
-                if (hole && !isDialing) { e.preventDefault(); dialNumber(hole.dataset.num); }
-            });
-
-            document.getElementById('phoneClearBtn').addEventListener('click', () => { phoneNumber = ''; playTone(300, 0.1); });
-            document.getElementById('phoneCallBtn').addEventListener('clickPhoneNumber);
-
-            document.quer2Screen .password-key').forEach(key => {
-                key.addEventListener('click', ()
-                    const num = key.dataset.num;
-                    if (num === 'back') { password2 = password2.slice(0, -1); updatePassword2Display(); playTone(300, 0.08); }
-                    else if (num === 'submit') checkPassword2();
-                    else if (password2.length < 4) { password2 += num; updatePassword2Display(); playTone(500, 0.08); }
-                });
-            });
-
-            document.querySelectorAll('#level3Screen .password-key').forEach(key => {('click', () => num = key.dataset.num;
-                 'back') { password3 = password3.slice(0, -1); updatePassword3Display(); playTone(300, 0.08); }
-                    else if (num === else if (password3.length < 2) { password3 += num; updatePassworone(500, 0.08); }
-                });
-            });
-
-            document.getElementById('choice1Btn').addEventListener('click', () => { modifyTime(7 * 60, true); showScreen('questionsScreen'); showRandomQuestion(); });
-            document.getElementById('addEventListener('click', () => { modifyTime(-7 * 60, false); showScreen('envelope5Screen'); autoSkip('progress5 () => showScreen('directionScreen')); });
-            document.getElementById('newQuestionBtn').addEventListener('click', showRandomQuestion);
-            document.getElementById('proceedBtn').addEventListener(' showScreen('envelope5Screen'); autoSkip('progress5', 15000, () => showScreen('directionScreen')); });
-
-            document.querySelectorAll('.direction-btn').forEach(btn => btn.addEventListener('click', ().dataset.dir)));
-
-            document.addEventListenere) => {
-                const active('.screen.active');
-                if (!activeScreen) return;
-                const screenId = activeScreen.id;
-
-                if (screenId === 'phoneScreen' && !
-                    if (e.key >= '0' && e.key <= '9' && phoneNumber.length < 8Number(e.key if (e.key === 'Backspace') { phoneNumber = phoneNumber.slice(0,oneDisplay(); }
-                    else if (e.key === 'Enter') checkPhoneNumber();
-                } else if (screenId === 'level2Screen') {
-                    if '0' && e. && password2.length < 4) { password2 += e.key; updatePassword2Display(); playTone(500, 0.08); }
-                    else if (e.key === 'Backspace') { password2 = password2.slice(0, -1); updatePasswor
-                    else if (e.key === 'Enter') checkPassword2();
-                } else if (screen3Screen') {
-                    if (e.key >= '0 password3.length < 2) { password3 += e.key; updatePassword3.08); }
-                    else if (e.key === 'Backspace') { password3 = password3.slice(0, -1); }
-                    else if (e.key === 'Enter')
+        function triggerEnvelope5() {
+            showScreen('envelope5Screen');
+            let p = 0;
+            const bar = document.getElementById('progress5');
+            const iv = setInterval(() => {
+                p += 2;
+                bar.style.width = p + '%';
+                if (p >= 100) {
+                    clearInterval(iv);
+                    showScreen('directionScreen');
                 }
-            });
+            }, 50);
+        }
+
+        // Direction
+        document.querySelectorAll('.direction-btn').forEach(btn => {
+            btn.onclick = () => {
+                if (btn.dataset.dir === 'east') {
+                    showOverlay('✨', '抵達終點', '恭喜通關', 3000, () => showScreen('finalScreen'));
+                } else {
+                    const s = document.getElementById('dirStatus');
+                    s.textContent = "❌ 方向錯誤"; s.className = "status-msg error";
+                    playSound(200, 0.3);
+                }
+            };
         });
+
     </script>
 </body>
 </html>
