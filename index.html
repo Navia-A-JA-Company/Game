@@ -139,24 +139,6 @@
             z-index: 1;
         }
 
-        #startScreen {
-            background-image: url('./Justanimage.JPG');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        #startScreen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 10, 15, 0.7);
-            z-index: 0;
-        }
-
         .game-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
@@ -238,296 +220,6 @@
             font-size: 1.2rem;
             color: var(--text-secondary);
             margin-bottom: 20px;
-        }
-
-        /* WINDOWS LOGIN SCREEN */
-        .windows-screen {
-            width: 100%;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--windows-blue), var(--windows-dark));
-            position: relative;
-            overflow: hidden;
-        }
-
-        .windows-screen::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
-            background-size: cover;
-            opacity: 0.2;
-        }
-
-        .windows-login-container {
-            background: var(--windows-gray);
-            border-radius: 12px;
-            width: 100%;
-            max-width: 450px;
-            overflow: hidden;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            animation: windowsSlideUp 0.8s ease-out;
-        }
-
-        @keyframes windowsSlideUp {
-            from { transform: translateY(50px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-
-        .windows-header {
-            background: var(--windows-blue);
-            padding: 25px 30px;
-            text-align: center;
-            position: relative;
-        }
-
-        .windows-header::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 20px;
-            right: 20px;
-            height: 20px;
-            background: var(--windows-blue);
-            clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 50% 0);
-            opacity: 0.8;
-        }
-
-        .windows-logo {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 15px;
-        }
-
-        .windows-logo-icon {
-            font-size: 2.5rem;
-            color: white;
-        }
-
-        .windows-logo-text {
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 2rem;
-            font-weight: 600;
-            color: white;
-            letter-spacing: -1px;
-        }
-
-        .windows-subtitle {
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 400;
-        }
-
-        .windows-body {
-            padding: 40px 35px 35px;
-        }
-
-        .windows-password-section {
-            margin-bottom: 30px;
-        }
-
-        .windows-label {
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 0.95rem;
-            color: #666;
-            margin-bottom: 8px;
-            display: block;
-            font-weight: 600;
-        }
-
-        .windows-input-group {
-            position: relative;
-            margin-bottom: 25px;
-        }
-
-        .windows-input {
-            width: 100%;
-            padding: 16px 20px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 1.1rem;
-            color: var(--windows-text);
-            background: white;
-            transition: all 0.3s ease;
-        }
-
-        .windows-input:focus {
-            outline: none;
-            border-color: var(--windows-blue);
-            box-shadow: 0 0 0 3px rgba(0, 120, 212, 0.2);
-        }
-
-        .windows-input::placeholder {
-            color: #999;
-        }
-
-        .windows-input.error {
-            border-color: var(--danger);
-            animation: shake 0.5s ease;
-        }
-
-        .windows-button {
-            width: 100%;
-            padding: 16px;
-            background: var(--windows-blue);
-            border: none;
-            border-radius: 8px;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .windows-button:hover {
-            background: var(--windows-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0, 120, 212, 0.3);
-        }
-
-        .windows-button:active {
-            transform: translateY(0);
-        }
-
-        .windows-button-icon {
-            font-size: 1.2rem;
-        }
-
-        .windows-footer {
-            margin-top: 25px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-            text-align: center;
-        }
-
-        .windows-hint {
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.5;
-        }
-
-        .windows-hint strong {
-            color: var(--windows-blue);
-            font-weight: 600;
-        }
-
-        .windows-status {
-            padding: 12px 20px;
-            border-radius: 6px;
-            margin-top: 20px;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-align: center;
-            opacity: 0;
-            transform: translateY(-10px);
-            transition: all 0.3s ease;
-        }
-
-        .windows-status.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .windows-status.error {
-            background: rgba(255, 71, 87, 0.1);
-            color: var(--danger);
-            border: 1px solid rgba(255, 71, 87, 0.3);
-        }
-
-        .windows-status.success {
-            background: rgba(46, 213, 115, 0.1);
-            color: var(--success);
-            border: 1px solid rgba(46, 213, 115, 0.3);
-        }
-
-        .windows-skip-option {
-            margin-top: 25px;
-            padding: 20px;
-            background: rgba(0, 120, 212, 0.05);
-            border-radius: 8px;
-            border: 1px solid rgba(0, 120, 212, 0.2);
-        }
-
-        .windows-skip-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 12px;
-        }
-
-        .windows-skip-icon {
-            font-size: 1.5rem;
-            color: var(--windows-blue);
-        }
-
-        .windows-skip-title {
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--windows-blue);
-        }
-
-        .windows-skip-text {
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .windows-skip-buttons {
-            display: flex;
-            gap: 12px;
-        }
-
-        .windows-skip-btn {
-            flex: 1;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-family: 'Segoe UI', sans-serif;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .windows-skip-btn.skip {
-            background: #f8f9fa;
-            color: #666;
-            border: 1px solid #ddd;
-        }
-
-        .windows-skip-btn.skip:hover {
-            background: #e9ecef;
-            color: #495057;
-        }
-
-        .windows-skip-btn.bonus {
-            background: linear-gradient(135deg, var(--accent-1), #00cc6a);
-            color: var(--bg-primary);
-            font-weight: 700;
-        }
-
-        .windows-skip-btn.bonus:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.3);
         }
 
         /* Computer Terminal Screen */
@@ -772,14 +464,6 @@
             background: rgba(0, 255, 0, 0.2);
             color: var(--terminal-green);
             border: 2px solid var(--terminal-green);
-        }
-
-        .terminal-hint {
-            text-align: center;
-            font-size: 0.9rem;
-            color: rgba(0, 255, 0, 0.6);
-            margin-top: 15px;
-            font-style: italic;
         }
 
         /* Phone Screen with Video Background */
@@ -1288,8 +972,28 @@
             color: var(--bg-primary);
         }
 
+        .question-btn.skip {
+            background: linear-gradient(135deg, #ffd700, #ffb800);
+            color: var(--bg-primary);
+        }
+
         .question-btn:hover {
             transform: translateY(-3px);
+        }
+
+        .questions-time-info {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--accent-1);
+            border-radius: 16px;
+            padding: 15px 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .time-info-text {
+            font-size: 1rem;
+            color: var(--accent-1);
+            font-weight: 700;
         }
 
         /* Victory Screen */
@@ -1370,9 +1074,6 @@
             .game-title { font-size: 1.8rem; }
             .box-cover { width: 220px; height: 220px; font-size: 4rem; }
             .timer-big { font-size: 3.5rem; }
-            .windows-login-container { max-width: 90%; }
-            .windows-body { padding: 30px 25px; }
-            .windows-skip-buttons { flex-direction: column; }
             .terminal-container { padding: 15px; }
             .terminal-slot { width: 50px; height: 70px; font-size: 1.8rem; }
             .terminal-keyboard { grid-template-columns: repeat(6, 1fr); }
@@ -1424,65 +1125,7 @@
         </div>
     </div>
 
-    <!-- Screen 3: WINDOWS LOGIN SCREEN -->
-    <div class="screen" id="windowsLoginScreen">
-        <div class="windows-screen">
-            <div class="windows-login-container">
-                <div class="windows-header">
-                    <div class="windows-logo">
-                        <div class="windows-logo-icon">💻</div>
-                        <div class="windows-logo-text">Windows</div>
-                    </div>
-                    <div class="windows-subtitle">系統登入</div>
-                </div>
-                <div class="windows-body">
-                    <div class="windows-password-section">
-                        <label class="windows-label">請輸入四位驗證碼：</label>
-                        <div class="windows-input-group">
-                            <input type="text" 
-                                   class="windows-input" 
-                                   id="windowsPasswordInput"
-                                   placeholder="輸入 VRDU"
-                                   maxlength="4"
-                                   autocomplete="off">
-                        </div>
-                        <button class="windows-button" id="windowsLoginBtn">
-                            <span class="windows-button-icon">🔓</span>
-                            登入系統
-                        </button>
-                    </div>
-                    
-                    <div class="windows-skip-option">
-                        <div class="windows-skip-header">
-                            <div class="windows-skip-icon">⏱️</div>
-                            <div class="windows-skip-title">時間獎勵</div>
-                        </div>
-                        <div class="windows-skip-text">
-                            你可以選擇跳過此關卡，但會錯過獲得額外5分鐘的機會！
-                        </div>
-                        <div class="windows-skip-buttons">
-                            <button class="windows-skip-btn skip" id="windowsSkipBtn">
-                                ⏭️ 跳過此關
-                            </button>
-                            <button class="windows-skip-btn bonus" id="windowsBonusBtn">
-                                🎯 解鎖密碼 (+5分鐘)
-                            </button>
-                        </div>
-                    </div>
-                    
-                    <div class="windows-status" id="windowsStatus"></div>
-                    <div class="windows-footer">
-                        <p class="windows-hint">
-                            <strong>提示：</strong> 輸入4個大寫英文字母作為密碼<br>
-                            參考：VRDU
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 4: Terminal Computer Password -->
+    <!-- Screen 3: Terminal Computer Password -->
     <div class="screen" id="terminalScreen">
         <div class="terminal-screen">
             <div class="terminal-container">
@@ -1552,16 +1195,12 @@
                     <button class="terminal-key enter" data-key="enter">↵ 確認</button>
                 </div>
                 <div class="terminal-status-message" id="terminalStatus"></div>
-                <div class="terminal-hint">提示：輸入4個大寫英文字母作為密碼 (VRDU)</div>
             </div>
         </div>
     </div>
 
-    <!-- Screen 5: Rotary Phone Level -->
+    <!-- Screen 4: Rotary Phone Level -->
     <div class="screen" id="phoneScreen">
-        <video class="video-background" id="bgVideo" autoplay muted loop playsinline>
-            <source src="background.mp4" type="video/mp4">
-        </video>
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
             <div class="phone-header"><h2 class="phone-title">📞 撥號電話</h2></div>
@@ -1584,7 +1223,7 @@
         </div>
     </div>
 
-    <!-- Screen 6: 4-digit Password (鐵閘解鎖) -->
+    <!-- Screen 5: 4-digit Password (鐵閘解鎖) -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
             <div class="level-prompt">🔒 你現在需要找到四位數字密碼<br>破解鐵閘密碼鎖</div>
@@ -1612,20 +1251,24 @@
         </div>
     </div>
 
-    <!-- Screen 7: Random Questions -->
+    <!-- Screen 6: Random Questions -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
+            <div class="questions-time-info">
+                <p class="time-info-text">⚠️ 回答此問題可獲得額外5分鐘！<br>或選擇跳過直接進入下一關</p>
+            </div>
             <div class="question-card">
                 <p class="question-text" id="questionText">問題載入中...</p>
             </div>
             <div class="question-actions">
                 <button class="question-btn new" id="newQuestionBtn">🎲 下一條問題</button>
-                <button class="question-btn proceed" id="proceedBtn">🚃 繼續遊戲</button>
+                <button class="question-btn proceed" id="proceedBtn">✅ 回答問題 (+5分鐘)</button>
+                <button class="question-btn skip" id="skipQuestionBtn">⏭️ 跳過此關</button>
             </div>
         </div>
     </div>
 
-    <!-- Screen 8: 2-digit Number (電車站編號) -->
+    <!-- Screen 7: 2-digit Number (電車站編號) -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
             <div class="level-prompt">🚃 電車站號碼咁多…<br>睇嚟要搵一個兩位數字號碼<br>先可以去到中環</div>
@@ -1651,7 +1294,7 @@
         </div>
     </div>
 
-    <!-- Screen 9: Final Victory -->
+    <!-- Screen 8: Final Victory -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
@@ -1852,64 +1495,6 @@
             setTimeout(() => { overlay.classList.remove('show'); if (callback) callback(); }, delay);
         }
 
-        // ========== WINDOWS LOGIN SCREEN ==========
-        function showWindowsStatus(message, type) {
-            const status = document.getElementById('windowsStatus');
-            status.textContent = message;
-            status.className = `windows-status show ${type}`;
-            setTimeout(() => status.classList.remove('show'), 3000);
-        }
-
-        function checkWindowsLogin() {
-            const input = document.getElementById('windowsPasswordInput');
-            const password = input.value.trim().toUpperCase();
-            
-            if (password.length < 4) {
-                showWindowsStatus('錯誤：密碼必須為4個字符', 'error');
-                playErrorSound();
-                input.classList.add('error');
-                setTimeout(() => input.classList.remove('error'), 500);
-                return;
-            }
-
-            if (password === 'VRDU') {
-                playTerminalAccessSound();
-                showWindowsStatus('登入成功！系統解鎖中...', 'success');
-                
-                // Add 5 minutes bonus time
-                modifyTime(300, true);
-                
-                setTimeout(() => {
-                    showSuccess('💻', '系統登入成功', '獲得+5分鐘獎勵！', () => {
-                        showScreen('phoneScreen');
-                        initRotaryDial();
-                        document.getElementById('bgVideo').play().catch(() => {});
-                    }, 3000);
-                }, 1500);
-            } else {
-                showWindowsStatus('錯誤：登入失敗，密碼不正確', 'error');
-                playErrorSound();
-                input.classList.add('error');
-                setTimeout(() => {
-                    input.classList.remove('error');
-                    input.value = '';
-                }, 1000);
-            }
-        }
-
-        function skipWindowsLevel() {
-            playTone(400, 0.2);
-            setTimeout(() => playTone(300, 0.2), 200);
-            
-            showWindowsStatus('跳過此關，繼續遊戲...', 'error');
-            
-            setTimeout(() => {
-                showScreen('phoneScreen');
-                initRotaryDial();
-                document.getElementById('bgVideo').play().catch(() => {});
-            }, 1500);
-        }
-
         // ========== TERMINAL COMPUTER PASSWORD ==========
         let terminalPassword = '';
         const correctTerminalPassword = 'VRDU';
@@ -1949,7 +1534,6 @@
                 showSuccess('💾', '系統登入成功', '終端機已解鎖！', () => {
                     showScreen('phoneScreen');
                     initRotaryDial();
-                    document.getElementById('bgVideo').play().catch(() => {});
                 }, 3000);
             } else {
                 showTerminalStatus('錯誤：登入失敗，密碼不正確', 'error');
@@ -2059,10 +1643,15 @@
         function checkPhoneNumber() {
             if (phoneNumber === '') { showPhoneStatus('請先輸入號碼', 'error'); playErrorSound(); return; }
             if (phoneConfig.correct[phoneNumber]) {
-                new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(() => {});
+                // Play audio if available
+                if (phoneConfig.correct[phoneNumber].audio) {
+                    new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(() => {});
+                }
                 showSuccess('🎉', '恭喜你成功通過第一關', '現在請破解鐵閘密碼', () => showScreen('level2Screen'), 15000);
             } else if (phoneConfig.wrong[phoneNumber]) {
-                new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(() => {});
+                if (phoneConfig.wrong[phoneNumber].audio) {
+                    new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(() => {});
+                }
                 showPhoneStatus(phoneConfig.wrong[phoneNumber].message, 'error');
                 playErrorSound();
             } else { showPhoneStatus('號碼錯誤，請重試！', 'error'); playErrorSound(); }
@@ -2127,13 +1716,36 @@
             "你覺得人生最緊要嘅係乜嘢？", "你最鍾意嘅節日係邊個？點解？", "如果你可以同任何人食飯，你會揀邊個？"
         ];
 
+        let questionAnswered = false;
+
         function showRandomQuestion() {
             document.getElementById('questionText').textContent = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
+            questionAnswered = false;
             playTone(600, 0.1);
+        }
+
+        function answerQuestion() {
+            if (questionAnswered) return;
+            questionAnswered = true;
+            modifyTime(300, true); // Add 5 minutes (300 seconds)
+            showSuccess('⏱️', '回答問題成功', '獲得+5分鐘獎勵！', () => {
+                showScreen('level3Screen');
+            }, 3000);
+        }
+
+        function skipQuestion() {
+            questionAnswered = true;
+            showScreen('level3Screen');
         }
 
         // ========== EVENT LISTENERS ==========
         document.addEventListener('DOMContentLoaded', () => {
+            // Fix: Initialize rotary dial on page load
+            initRotaryDial();
+
+            // Fix: Update timer display initially
+            updateTimerDisplay();
+
             window.addEventListener('resize', initRotaryDial);
 
             document.getElementById('startGameBtn').addEventListener('click', () => {
@@ -2143,32 +1755,8 @@
 
             document.getElementById('startTimerBtn').addEventListener('click', () => {
                 startTimer();
-                showScreen('windowsLoginScreen'); // Changed to show Windows login screen first
-            });
-
-            // Windows Login Screen Event Listeners
-            document.getElementById('windowsLoginBtn').addEventListener('click', checkWindowsLogin);
-            document.getElementById('windowsSkipBtn').addEventListener('click', skipWindowsLevel);
-            document.getElementById('windowsBonusBtn').addEventListener('click', () => {
-                document.getElementById('windowsPasswordInput').value = 'VRDU';
-                checkWindowsLogin();
-            });
-
-            document.getElementById('windowsPasswordInput').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
-                    checkWindowsLogin();
-                }
-                // Only allow uppercase letters
-                if (e.key.length === 1 && /[a-zA-Z]/.test(e.key)) {
-                    setTimeout(() => {
-                        const input = document.getElementById('windowsPasswordInput');
-                        input.value = input.value.toUpperCase();
-                    }, 0);
-                }
-            });
-
-            document.getElementById('windowsPasswordInput').addEventListener('input', (e) => {
-                e.target.value = e.target.value.toUpperCase();
+                showScreen('terminalScreen');
+                updateTerminalPasswordDisplay();
             });
 
             // Terminal keyboard event listeners
@@ -2193,23 +1781,25 @@
             // Keyboard support for terminal
             document.addEventListener('keydown', (e) => {
                 const activeScreen = document.querySelector('.screen.active');
-                if (!activeScreen || activeScreen.id !== 'terminalScreen') return;
+                if (!activeScreen) return;
                 
-                const key = e.key.toUpperCase();
-                
-                if (key === 'BACKSPACE') {
-                    terminalPassword = terminalPassword.slice(0, -1);
-                    updateTerminalPasswordDisplay();
-                    playTerminalKeySound();
-                    e.preventDefault();
-                } else if (key === 'ENTER') {
-                    checkTerminalPassword();
-                    e.preventDefault();
-                } else if (/^[A-Z]$/.test(key) && terminalPassword.length < 4) {
-                    terminalPassword += key;
-                    updateTerminalPasswordDisplay();
-                    playTerminalKeySound();
-                    e.preventDefault();
+                if (activeScreen.id === 'terminalScreen') {
+                    const key = e.key.toUpperCase();
+                    
+                    if (key === 'BACKSPACE') {
+                        terminalPassword = terminalPassword.slice(0, -1);
+                        updateTerminalPasswordDisplay();
+                        playTerminalKeySound();
+                        e.preventDefault();
+                    } else if (key === 'ENTER') {
+                        checkTerminalPassword();
+                        e.preventDefault();
+                    } else if (/^[A-Z]$/.test(key) && terminalPassword.length < 4) {
+                        terminalPassword += key;
+                        updateTerminalPasswordDisplay();
+                        playTerminalKeySound();
+                        e.preventDefault();
+                    }
                 }
             });
 
@@ -2249,10 +1839,10 @@
                 });
             });
 
+            // Questions screen event listeners
             document.getElementById('newQuestionBtn').addEventListener('click', showRandomQuestion);
-            document.getElementById('proceedBtn').addEventListener('click', () => {
-                showScreen('level3Screen');
-            });
+            document.getElementById('proceedBtn').addEventListener('click', answerQuestion);
+            document.getElementById('skipQuestionBtn').addEventListener('click', skipQuestion);
         });
     </script>
 </body>
