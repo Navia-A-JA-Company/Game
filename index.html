@@ -27,6 +27,8 @@
             --phone-green-light: #2a6a5a;
             --phone-green-dark: #0f2f28;
             --phone-gold: #c9a227;
+            --terminal-green: #00ff00;
+            --terminal-bg: #001100;
         }
 
         * {
@@ -81,6 +83,11 @@
             0%, 100% { transform: translateX(0); }
             20%, 60% { transform: translateX(-8px); }
             40%, 80% { transform: translateX(8px); }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.8; }
         }
 
         /* Timer Display */
@@ -272,6 +279,258 @@
             background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
             border-radius: 3px;
             transition: width 0.1s linear;
+        }
+
+        /* Computer Terminal Screen - NEW */
+        .terminal-screen {
+            width: 100%;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .terminal-container {
+            background: var(--terminal-bg);
+            border-radius: 20px;
+            padding: 25px;
+            border: 4px solid var(--terminal-green);
+            box-shadow: 
+                0 0 40px rgba(0, 255, 0, 0.4),
+                inset 0 0 20px rgba(0, 255, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terminal-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                linear-gradient(transparent 50%, rgba(0, 255, 0, 0.05) 50%),
+                linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+            background-size: 100% 2px, 10px 100%;
+            pointer-events: none;
+            opacity: 0.3;
+        }
+
+        .terminal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--terminal-green);
+        }
+
+        .terminal-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.4rem;
+            color: var(--terminal-green);
+            letter-spacing: 2px;
+            flex-grow: 1;
+        }
+
+        .terminal-status {
+            display: flex;
+            gap: 8px;
+        }
+
+        .status-led {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .led-red {
+            background: #ff4757;
+            box-shadow: 0 0 8px #ff4757;
+            animation: flicker 2s infinite;
+        }
+
+        .led-yellow {
+            background: #ffd700;
+            box-shadow: 0 0 8px #ffd700;
+        }
+
+        .led-green {
+            background: var(--terminal-green);
+            box-shadow: 0 0 8px var(--terminal-green);
+        }
+
+        .terminal-content {
+            margin-bottom: 25px;
+            min-height: 200px;
+        }
+
+        .terminal-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--terminal-green);
+            line-height: 1.6;
+            margin-bottom: 10px;
+            white-space: pre-wrap;
+        }
+
+        .terminal-line {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--terminal-green);
+            margin-bottom: 8px;
+        }
+
+        .terminal-prompt {
+            color: var(--accent-2);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .terminal-input-line {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .terminal-cursor {
+            display: inline-block;
+            width: 8px;
+            height: 18px;
+            background-color: var(--terminal-green);
+            margin-left: 2px;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .terminal-input {
+            background: transparent;
+            border: none;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            color: var(--terminal-green);
+            outline: none;
+            flex-grow: 1;
+            letter-spacing: 1px;
+        }
+
+        .terminal-input::placeholder {
+            color: rgba(0, 255, 0, 0.5);
+        }
+
+        .terminal-password-display {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .terminal-slot {
+            width: 70px;
+            height: 90px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid var(--terminal-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--terminal-green);
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .terminal-slot.active {
+            border-color: var(--accent-2);
+            box-shadow: 0 0 20px var(--shadow-blue);
+            animation: pulse 1s infinite;
+        }
+
+        .terminal-slot.filled {
+            background: rgba(0, 255, 0, 0.1);
+            text-shadow: 0 0 10px var(--terminal-green);
+        }
+
+        .terminal-keyboard {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 8px;
+            margin-top: 25px;
+        }
+
+        .terminal-key {
+            padding: 14px 5px;
+            background: rgba(0, 20, 0, 0.8);
+            border: 2px solid var(--terminal-green);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--terminal-green);
+            cursor: pointer;
+            transition: all 0.15s ease;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .terminal-key:hover {
+            background: rgba(0, 255, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .terminal-key:active {
+            transform: translateY(1px);
+        }
+
+        .terminal-key.backspace {
+            grid-column: span 2;
+            background: rgba(139, 0, 0, 0.8);
+            border-color: #ff4757;
+        }
+
+        .terminal-key.enter {
+            grid-column: span 2;
+            background: rgba(0, 100, 0, 0.8);
+        }
+
+        .terminal-status-message {
+            text-align: center;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .terminal-status-message.show {
+            opacity: 1;
+        }
+
+        .terminal-status-message.error {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff4757;
+            border: 2px solid #ff4757;
+            animation: shake 0.5s ease;
+        }
+
+        .terminal-status-message.success {
+            background: rgba(0, 255, 0, 0.2);
+            color: var(--terminal-green);
+            border: 2px solid var(--terminal-green);
+        }
+
+        .terminal-hint {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(0, 255, 0, 0.6);
+            margin-top: 15px;
+            font-style: italic;
         }
 
         /* Phone Screen with Video Background */
@@ -975,6 +1234,14 @@
             .level-prompt { font-size: 1.2rem; }
             .choice-btn { font-size: 1rem; padding: 20px; }
             .victory-title { font-size: 1.5rem; }
+            .terminal-container { padding: 15px; }
+            .terminal-slot { width: 50px; height: 70px; font-size: 1.8rem; }
+            .terminal-keyboard { grid-template-columns: repeat(6, 1fr); }
+            .terminal-key { padding: 10px 3px; font-size: 0.8rem; }
+        }
+
+        @media (max-width: 768px) {
+            .terminal-keyboard { grid-template-columns: repeat(8, 1fr); }
         }
     </style>
 </head>
@@ -1007,7 +1274,89 @@
         </div>
     </div>
 
-    <!-- Screen 3: Envelope 1 Instruction -->
+    <!-- Screen 3: Terminal Computer Password (NEW FIRST GAME) -->
+    <div class="screen" id="terminalScreen">
+        <div class="terminal-screen">
+            <div class="terminal-container">
+                <div class="terminal-header">
+                    <h2 class="terminal-title">SYSTEM ACCESS TERMINAL v1.0</h2>
+                    <div class="terminal-status">
+                        <div class="status-led led-red"></div>
+                        <div class="status-led led-yellow"></div>
+                        <div class="status-led led-green"></div>
+                    </div>
+                </div>
+                <div class="terminal-content">
+                    <div class="terminal-text">
+╔══════════════════════════════════════════════════════════════════╗
+║                                                                  ║
+║  ██╗   ██╗██████╗ ██████╗  █████╗ ██╗   ██╗                     ║
+║  ██║   ██║██╔══██╗██╔══██╗██╔══██╗██║   ██║                     ║
+║  ██║   ██║██████╔╝██║  ██║███████║██║   ██║                     ║
+║  ██║   ██║██╔══██╗██║  ██║██╔══██║██║   ██║                     ║
+║  ╚██████╔╝██║  ██║██████╔╝██║  ██║╚██████╔╝                     ║
+║   ╚═════╝ ╚═╝  ╚═╝╚═════╝ ╚═╝  ╚═╝ ╚═════╝                      ║
+║                                                                  ║
+║  SECURE ACCESS SYSTEM                                            ║
+║  ===================                                            ║
+║                                                                  ║
+║  [STATUS] Initializing system...                                ║
+║  [STATUS] System ready.                                         ║
+║  [STATUS] Waiting for password input...                         ║
+║                                                                  ║
+║  Please enter the 4-letter access code:                         ║
+║                                                                  ║
+╚══════════════════════════════════════════════════════════════════╝
+                    </div>
+                </div>
+                <div class="terminal-password-display" id="terminalPasswordDisplay">
+                    <div class="terminal-slot active">_</div>
+                    <div class="terminal-slot">_</div>
+                    <div class="terminal-slot">_</div>
+                    <div class="terminal-slot">_</div>
+                </div>
+                <div class="terminal-keyboard" id="terminalKeyboard">
+                    <!-- Letters A-M -->
+                    <button class="terminal-key" data-key="A">A</button>
+                    <button class="terminal-key" data-key="B">B</button>
+                    <button class="terminal-key" data-key="C">C</button>
+                    <button class="terminal-key" data-key="D">D</button>
+                    <button class="terminal-key" data-key="E">E</button>
+                    <button class="terminal-key" data-key="F">F</button>
+                    <button class="terminal-key" data-key="G">G</button>
+                    <button class="terminal-key" data-key="H">H</button>
+                    <button class="terminal-key" data-key="I">I</button>
+                    <button class="terminal-key" data-key="J">J</button>
+                    <button class="terminal-key" data-key="K">K</button>
+                    <button class="terminal-key" data-key="L">L</button>
+                    <button class="terminal-key" data-key="M">M</button>
+                    
+                    <!-- Letters N-Z -->
+                    <button class="terminal-key" data-key="N">N</button>
+                    <button class="terminal-key" data-key="O">O</button>
+                    <button class="terminal-key" data-key="P">P</button>
+                    <button class="terminal-key" data-key="Q">Q</button>
+                    <button class="terminal-key" data-key="R">R</button>
+                    <button class="terminal-key" data-key="S">S</button>
+                    <button class="terminal-key" data-key="T">T</button>
+                    <button class="terminal-key" data-key="U">U</button>
+                    <button class="terminal-key" data-key="V">V</button>
+                    <button class="terminal-key" data-key="W">W</button>
+                    <button class="terminal-key" data-key="X">X</button>
+                    <button class="terminal-key" data-key="Y">Y</button>
+                    <button class="terminal-key" data-key="Z">Z</button>
+                    
+                    <!-- Control keys -->
+                    <button class="terminal-key backspace" data-key="backspace">⌫ BACKSPACE</button>
+                    <button class="terminal-key enter" data-key="enter">↵ ENTER</button>
+                </div>
+                <div class="terminal-status-message" id="terminalStatus"></div>
+                <div class="terminal-hint">提示：輸入4個大寫英文字母作為密碼</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 4: Envelope 1 Instruction -->
     <div class="screen" id="envelope1Screen">
         <div class="envelope-screen">
             <div class="envelope-icon">✉️</div>
@@ -1019,7 +1368,7 @@
         </div>
     </div>
 
-    <!-- Screen 4: Rotary Phone Level -->
+    <!-- Screen 5: Rotary Phone Level -->
     <div class="screen" id="phoneScreen">
         <video class="video-background" id="bgVideo" autoplay muted loop playsinline>
             <source src="background.mp4" type="video/mp4">
@@ -1046,7 +1395,7 @@
         </div>
     </div>
 
-    <!-- Screen 5: Level 2 - 4-digit Password -->
+    <!-- Screen 6: Level 2 - 4-digit Password -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
             <div class="level-prompt">🔒 你現在需要找到四位數字密碼<br>破解鐵閘密碼鎖</div>
@@ -1074,7 +1423,7 @@
         </div>
     </div>
 
-    <!-- Screen 6: Level 3 - 2-digit Number -->
+    <!-- Screen 7: Level 3 - 2-digit Number -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
             <div class="level-prompt">🚃 電車站號碼咁多…<br>睇嚟要搵一個兩位數字號碼<br>先可以去到中環</div>
@@ -1100,7 +1449,7 @@
         </div>
     </div>
 
-    <!-- Screen 7: Level 4 - Choice -->
+    <!-- Screen 8: Level 4 - Choice -->
     <div class="screen" id="level4Screen">
         <div class="choice-screen">
             <div class="choice-prompt">🚃 電車仲有排先到站⋯⋯</div>
@@ -1117,7 +1466,7 @@
         </div>
     </div>
 
-    <!-- Screen 8: Random Questions -->
+    <!-- Screen 9: Random Questions -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="question-card">
@@ -1130,19 +1479,19 @@
         </div>
     </div>
 
-    <!-- Screen 9: Envelope 5 Instruction -->
+    <!-- Screen 10: Envelope 5 Instruction -->
     <div class="screen" id="envelope5Screen">
         <div class="envelope-screen">
             <div class="envelope-icon">✉️</div>
             <div class="envelope-message">現在請打開5號信封</div>
             <div class="auto-skip-indicator">
-                自動跳���中...
+                自動跳轉中...
                 <div class="progress-bar"><div class="progress-fill" id="progress5"></div></div>
             </div>
         </div>
     </div>
 
-    <!-- Screen 10: Direction Choice -->
+    <!-- Screen 11: Direction Choice -->
     <div class="screen" id="directionScreen">
         <div class="direction-screen">
             <div class="level-prompt">🗺️ 唔知究竟邊個方向先可以行到電車總站⋯<br><br>睇嚟要善用地圖搵出太平山嘅位置</div>
@@ -1156,7 +1505,7 @@
         </div>
     </div>
 
-    <!-- Screen 11: Victory Video -->
+    <!-- Screen 12: Victory Video -->
     <div class="screen" id="victoryVideoScreen">
         <div class="victory-screen">
             <video class="victory-video" id="victoryVideo" playsinline>
@@ -1165,7 +1514,7 @@
         </div>
     </div>
 
-    <!-- Screen 12: Final Victory -->
+    <!-- Screen 13: Final Victory -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
@@ -1227,6 +1576,55 @@
             setTimeout(() => playTone(1200, 0.1), 100);
             setTimeout(() => { playTone(523, 0.15); playTone(659, 0.15); }, 200);
             setTimeout(() => playTone(784, 0.2), 350);
+        }
+
+        function playTerminalKeySound() {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            const oscillator = ctx.createOscillator();
+            const gainNode = ctx.createGain();
+            const filter = ctx.createBiquadFilter();
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(ctx.destination);
+            filter.type = 'bandpass';
+            filter.frequency.value = 1200;
+            filter.Q.value = 5;
+            oscillator.type = 'square';
+            oscillator.frequency.value = 800;
+            gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+            oscillator.start(ctx.currentTime);
+            oscillator.stop(ctx.currentTime + 0.05);
+        }
+
+        function playTerminalAccessSound() {
+            const ctx = getAudioContext();
+            if (!ctx) return;
+            
+            // Sequence of ascending tones
+            const tones = [
+                { freq: 300, time: 0 },
+                { freq: 600, time: 0.1 },
+                { freq: 900, time: 0.2 },
+                { freq: 1200, time: 0.3 },
+                { freq: 1500, time: 0.4 }
+            ];
+            
+            tones.forEach(tone => {
+                setTimeout(() => {
+                    const oscillator = ctx.createOscillator();
+                    const gainNode = ctx.createGain();
+                    oscillator.connect(gainNode);
+                    gainNode.connect(ctx.destination);
+                    oscillator.frequency.value = tone.freq;
+                    oscillator.type = 'sine';
+                    gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                    oscillator.start(ctx.currentTime);
+                    oscillator.stop(ctx.currentTime + 0.15);
+                }, tone.time * 1000);
+            });
         }
 
         function playRotaryClickSound() {
@@ -1325,6 +1723,61 @@
                 progressEl.style.width = `${(elapsed / duration) * 100}%`;
                 if (elapsed >= duration) { clearInterval(interval); callback(); }
             }, 100);
+        }
+
+        // ========== TERMINAL COMPUTER PASSWORD (NEW GAME) ==========
+        let terminalPassword = '';
+        const correctTerminalPassword = 'VRDU';
+
+        function updateTerminalPasswordDisplay() {
+            const slots = document.getElementById('terminalPasswordDisplay').querySelectorAll('.terminal-slot');
+            slots.forEach((slot, i) => {
+                slot.classList.remove('active', 'filled');
+                if (i < terminalPassword.length) {
+                    slot.textContent = terminalPassword[i];
+                    slot.classList.add('filled');
+                } else if (i === terminalPassword.length) {
+                    slot.textContent = '_';
+                    slot.classList.add('active');
+                } else {
+                    slot.textContent = '_';
+                }
+            });
+        }
+
+        function showTerminalStatus(message, type) {
+            const status = document.getElementById('terminalStatus');
+            status.textContent = message;
+            status.className = `terminal-status-message show ${type}`;
+            setTimeout(() => status.classList.remove('show'), 3000);
+        }
+
+        function checkTerminalPassword() {
+            if (terminalPassword.length < 4) {
+                showTerminalStatus('ERROR: Password must be exactly 4 characters', 'error');
+                playErrorSound();
+                return;
+            }
+
+            if (terminalPassword === correctTerminalPassword) {
+                playTerminalAccessSound();
+                showSuccess('💾', 'SYSTEM ACCESS GRANTED', 'Terminal unlocked successfully!', () => {
+                    showScreen('envelope1Screen');
+                    autoSkip('progress1', 15000, () => {
+                        showScreen('phoneScreen');
+                        initRotaryDial();
+                        document.getElementById('bgVideo').play().catch(() => {});
+                    });
+                }, 3000);
+            } else {
+                showTerminalStatus('ERROR: Access denied. Invalid password', 'error');
+                playErrorSound();
+                // Clear password after wrong attempt
+                setTimeout(() => {
+                    terminalPassword = '';
+                    updateTerminalPasswordDisplay();
+                }, 1000);
+            }
         }
 
         // ========== ROTARY DIAL PHONE ==========
@@ -1514,7 +1967,6 @@
 
         // ========== EVENT LISTENERS ==========
         document.addEventListener('DOMContentLoaded', () => {
-            initRotaryDial();
             window.addEventListener('resize', initRotaryDial);
 
             document.getElementById('startGameBtn').addEventListener('click', () => {
@@ -1524,12 +1976,50 @@
 
             document.getElementById('startTimerBtn').addEventListener('click', () => {
                 startTimer();
-                showScreen('envelope1Screen');
-                autoSkip('progress1', 15000, () => {
-                    showScreen('phoneScreen');
-                    initRotaryDial();
-                    document.getElementById('bgVideo').play().catch(() => {});
+                showScreen('terminalScreen');
+                updateTerminalPasswordDisplay();
+            });
+
+            // Terminal keyboard event listeners
+            document.querySelectorAll('#terminalKeyboard .terminal-key').forEach(key => {
+                key.addEventListener('click', () => {
+                    const keyValue = key.dataset.key;
+                    
+                    if (keyValue === 'backspace') {
+                        terminalPassword = terminalPassword.slice(0, -1);
+                        updateTerminalPasswordDisplay();
+                        playTerminalKeySound();
+                    } else if (keyValue === 'enter') {
+                        checkTerminalPassword();
+                    } else if (terminalPassword.length < 4) {
+                        terminalPassword += keyValue;
+                        updateTerminalPasswordDisplay();
+                        playTerminalKeySound();
+                    }
                 });
+            });
+
+            // Keyboard support for terminal
+            document.addEventListener('keydown', (e) => {
+                const activeScreen = document.querySelector('.screen.active');
+                if (!activeScreen || activeScreen.id !== 'terminalScreen') return;
+                
+                const key = e.key.toUpperCase();
+                
+                if (key === 'BACKSPACE') {
+                    terminalPassword = terminalPassword.slice(0, -1);
+                    updateTerminalPasswordDisplay();
+                    playTerminalKeySound();
+                    e.preventDefault();
+                } else if (key === 'ENTER') {
+                    checkTerminalPassword();
+                    e.preventDefault();
+                } else if (/^[A-Z]$/.test(key) && terminalPassword.length < 4) {
+                    terminalPassword += key;
+                    updateTerminalPasswordDisplay();
+                    playTerminalKeySound();
+                    e.preventDefault();
+                }
             });
 
             document.getElementById('dialPlate').addEventListener('click', (e) => {
@@ -1585,26 +2075,6 @@
             });
 
             document.querySelectorAll('.direction-btn').forEach(btn => btn.addEventListener('click', () => checkDirection(btn.dataset.dir)));
-
-            document.addEventListener('keydown', (e) => {
-                const activeScreen = document.querySelector('.screen.active');
-                if (!activeScreen) return;
-                const screenId = activeScreen.id;
-
-                if (screenId === 'phoneScreen' && !isDialing) {
-                    if (e.key >= '0' && e.key <= '9' && phoneNumber.length < 8) dialNumber(e.key);
-                    else if (e.key === 'Backspace') { phoneNumber = phoneNumber.slice(0, -1); updatePhoneDisplay(); }
-                    else if (e.key === 'Enter') checkPhoneNumber();
-                } else if (screenId === 'level2Screen') {
-                    if (e.key >= '0' && e.key <= '9' && password2.length < 4) { password2 += e.key; updatePassword2Display(); playTone(500, 0.08); }
-                    else if (e.key === 'Backspace') { password2 = password2.slice(0, -1); updatePassword2Display(); }
-                    else if (e.key === 'Enter') checkPassword2();
-                } else if (screenId === 'level3Screen') {
-                    if (e.key >= '0' && e.key <= '9' && password3.length < 2) { password3 += e.key; updatePassword3Display(); playTone(500, 0.08); }
-                    else if (e.key === 'Backspace') { password3 = password3.slice(0, -1); updatePassword3Display(); }
-                    else if (e.key === 'Enter') checkPassword3();
-                }
-            });
         });
     </script>
 </body>
