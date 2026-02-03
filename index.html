@@ -235,53 +235,7 @@
             margin-bottom: 20px;
         }
 
-        /* Envelope Screen */
-        .envelope-screen {
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .envelope-icon {
-            font-size: 8rem;
-            margin-bottom: 30px;
-            animation: bounce 1.5s infinite;
-        }
-
-        .envelope-message {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.8;
-            padding: 30px;
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 3px solid var(--accent-1);
-            box-shadow: 0 0 30px var(--shadow-glow);
-        }
-
-        .auto-skip-indicator {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .progress-bar {
-            width: 200px;
-            height: 6px;
-            background: var(--bg-button);
-            border-radius: 3px;
-            margin: 15px auto 0;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent-1), var(--accent-2));
-            border-radius: 3px;
-            transition: width 0.1s linear;
-        }
-
-        /* Computer Terminal Screen - NEW */
+        /* Computer Terminal Screen */
         .terminal-screen {
             width: 100%;
             max-width: 650px;
@@ -990,58 +944,6 @@
             animation: shake 0.5s ease;
         }
 
-        /* Choice Screen */
-        .choice-screen {
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .choice-prompt {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 40px;
-            line-height: 1.8;
-        }
-
-        .choice-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        .choice-btn {
-            padding: 25px 30px;
-            background: var(--bg-card);
-            border: 3px solid var(--accent-2);
-            border-radius: 20px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-align: left;
-            line-height: 1.6;
-        }
-
-        .choice-btn:hover {
-            border-color: var(--accent-1);
-            background: rgba(0, 255, 136, 0.1);
-            transform: translateX(10px);
-        }
-
-        .choice-btn .time-effect {
-            display: block;
-            margin-top: 10px;
-            font-size: 0.9rem;
-            color: var(--accent-3);
-        }
-
-        .choice-btn.positive .time-effect {
-            color: var(--accent-1);
-        }
-
         /* Random Questions Screen */
         .questions-screen {
             text-align: center;
@@ -1095,58 +997,10 @@
             transform: translateY(-3px);
         }
 
-        /* Direction Choice Screen */
-        .direction-screen {
-            text-align: center;
-            max-width: 500px;
-        }
-
-        .direction-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .direction-btn {
-            padding: 30px 20px;
-            background: var(--bg-card);
-            border: 3px solid var(--accent-2);
-            border-radius: 20px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 900;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .direction-btn:hover {
-            border-color: var(--accent-1);
-            background: rgba(0, 255, 136, 0.1);
-            transform: scale(1.05);
-        }
-
-        .direction-btn .english {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-            margin-top: 8px;
-            font-weight: 500;
-        }
-
         /* Victory Screen */
         .victory-screen {
             text-align: center;
             max-width: 550px;
-        }
-
-        .victory-video {
-            width: 100%;
-            max-width: 500px;
-            border-radius: 20px;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
         }
 
         .victory-title {
@@ -1221,7 +1075,10 @@
             .game-title { font-size: 1.8rem; }
             .box-cover { width: 220px; height: 220px; font-size: 4rem; }
             .timer-big { font-size: 3.5rem; }
-            .envelope-message { font-size: 1.4rem; padding: 20px; }
+            .terminal-container { padding: 15px; }
+            .terminal-slot { width: 50px; height: 70px; font-size: 1.8rem; }
+            .terminal-keyboard { grid-template-columns: repeat(6, 1fr); }
+            .terminal-key { padding: 10px 3px; font-size: 0.8rem; }
             .rotary-phone-container { padding: 20px; max-width: 340px; }
             .rotary-dial { width: 240px; height: 240px; }
             .dial-plate { width: 210px; height: 210px; }
@@ -1232,12 +1089,7 @@
             .display-number { font-size: 1.4rem; }
             .password-slot { width: 55px; height: 70px; font-size: 1.8rem; }
             .level-prompt { font-size: 1.2rem; }
-            .choice-btn { font-size: 1rem; padding: 20px; }
             .victory-title { font-size: 1.5rem; }
-            .terminal-container { padding: 15px; }
-            .terminal-slot { width: 50px; height: 70px; font-size: 1.8rem; }
-            .terminal-keyboard { grid-template-columns: repeat(6, 1fr); }
-            .terminal-key { padding: 10px 3px; font-size: 0.8rem; }
         }
 
         @media (max-width: 768px) {
@@ -1274,12 +1126,12 @@
         </div>
     </div>
 
-    <!-- Screen 3: Terminal Computer Password (NEW FIRST GAME) -->
+    <!-- Screen 3: Terminal Computer Password -->
     <div class="screen" id="terminalScreen">
         <div class="terminal-screen">
             <div class="terminal-container">
                 <div class="terminal-header">
-                    <h2 class="terminal-title">SYSTEM ACCESS TERMINAL v1.0</h2>
+                    <h2 class="terminal-title">系統登入終端機 v1.0</h2>
                     <div class="terminal-status">
                         <div class="status-led led-red"></div>
                         <div class="status-led led-yellow"></div>
@@ -1290,16 +1142,14 @@
                     <div class="terminal-text">
 ╔══════════════════════════════════════════════════════════════════╗
 ║                                                                  ║
-║                                                                  ║
-║                                                                  ║
-║  電腦登入                                            ║
+║  電腦登入系統                                                  ║
 ║  ===================                                            ║
 ║                                                                  ║
-║  [STATUS] Initializing system...                                ║
-║  [STATUS] System ready.                                         ║
-║  [STATUS] Waiting for password input...                         ║
+║  [狀態] 系統初始化中...                                        ║
+║  [狀態] 系統準備就緒                                          ║
+║  [狀態] 等待密碼輸入...                                        ║
 ║                                                                  ║
-║  請輸入四位驗證碼:                         ║
+║  請輸入四位驗證碼:                                             ║
 ║                                                                  ║
 ╚══════════════════════════════════════════════════════════════════╝
                     </div>
@@ -1342,28 +1192,16 @@
                     <button class="terminal-key" data-key="Z">Z</button>
                     
                     <!-- Control keys -->
-                    <button class="terminal-key backspace" data-key="backspace">⌫ BACKSPACE</button>
-                    <button class="terminal-key enter" data-key="enter">↵ ENTER</button>
+                    <button class="terminal-key backspace" data-key="backspace">⌫ 刪除</button>
+                    <button class="terminal-key enter" data-key="enter">↵ 確認</button>
                 </div>
                 <div class="terminal-status-message" id="terminalStatus"></div>
-                <div class="terminal-hint">提示：輸入4個大寫英文字母作為密碼</div>
+                <div class="terminal-hint">提示：輸入4個大寫英文字母作為密碼 (VRDU)</div>
             </div>
         </div>
     </div>
 
-    <!-- Screen 4: Envelope 1 Instruction -->
-    <div class="screen" id="envelope1Screen">
-        <div class="envelope-screen">
-            <div class="envelope-icon">✉️</div>
-            <div class="envelope-message">請打開1號信封<br>並先閱讀引文</div>
-            <div class="auto-skip-indicator">
-                自動跳轉中...
-                <div class="progress-bar"><div class="progress-fill" id="progress1"></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 5: Rotary Phone Level -->
+    <!-- Screen 4: Rotary Phone Level -->
     <div class="screen" id="phoneScreen">
         <video class="video-background" id="bgVideo" autoplay muted loop playsinline>
             <source src="background.mp4" type="video/mp4">
@@ -1390,7 +1228,7 @@
         </div>
     </div>
 
-    <!-- Screen 6: Level 2 - 4-digit Password -->
+    <!-- Screen 5: 4-digit Password (鐵閘解鎖) -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
             <div class="level-prompt">🔒 你現在需要找到四位數字密碼<br>破解鐵閘密碼鎖</div>
@@ -1418,7 +1256,20 @@
         </div>
     </div>
 
-    <!-- Screen 7: Level 3 - 2-digit Number -->
+    <!-- Screen 6: Random Questions -->
+    <div class="screen" id="questionsScreen">
+        <div class="questions-screen">
+            <div class="question-card">
+                <p class="question-text" id="questionText">問題載入中...</p>
+            </div>
+            <div class="question-actions">
+                <button class="question-btn new" id="newQuestionBtn">🎲 下一條問題</button>
+                <button class="question-btn proceed" id="proceedBtn">🚃 繼續遊戲</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 7: 2-digit Number (電車站編號) -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
             <div class="level-prompt">🚃 電車站號碼咁多…<br>睇嚟要搵一個兩位數字號碼<br>先可以去到中環</div>
@@ -1444,72 +1295,7 @@
         </div>
     </div>
 
-    <!-- Screen 8: Level 4 - Choice -->
-    <div class="screen" id="level4Screen">
-        <div class="choice-screen">
-            <div class="choice-prompt">🚃 電車仲有排先到站⋯⋯</div>
-            <div class="choice-buttons">
-                <button class="choice-btn positive" id="choice1Btn">
-                    反正冇嘢做！趁依段時間好好了解吓身邊嘅街坊！
-                    <span class="time-effect">⏰ +7 分鐘</span>
-                </button>
-                <button class="choice-btn" id="choice2Btn">
-                    時間過得咁快⋯電車好似就嚟到
-                    <span class="time-effect">⏰ -7 分鐘</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 9: Random Questions -->
-    <div class="screen" id="questionsScreen">
-        <div class="questions-screen">
-            <div class="question-card">
-                <p class="question-text" id="questionText">問題載入中...</p>
-            </div>
-            <div class="question-actions">
-                <button class="question-btn new" id="newQuestionBtn">🎲 下一條問題</button>
-                <button class="question-btn proceed" id="proceedBtn">🚃 電車終於到站！</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 10: Envelope 5 Instruction -->
-    <div class="screen" id="envelope5Screen">
-        <div class="envelope-screen">
-            <div class="envelope-icon">✉️</div>
-            <div class="envelope-message">現在請打開5號信封</div>
-            <div class="auto-skip-indicator">
-                自動跳轉中...
-                <div class="progress-bar"><div class="progress-fill" id="progress5"></div></div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Screen 11: Direction Choice -->
-    <div class="screen" id="directionScreen">
-        <div class="direction-screen">
-            <div class="level-prompt">🗺️ 唔知究竟邊個方向先可以行到電車總站⋯<br><br>睇嚟要善用地圖搵出太平山嘅位置</div>
-            <div class="direction-grid">
-                <button class="direction-btn" data-dir="east">東<span class="english">East</span></button>
-                <button class="direction-btn" data-dir="south">南<span class="english">South</span></button>
-                <button class="direction-btn" data-dir="west">西<span class="english">West</span></button>
-                <button class="direction-btn" data-dir="north">北<span class="english">North</span></button>
-            </div>
-            <div class="input-status" id="directionStatus"></div>
-        </div>
-    </div>
-
-    <!-- Screen 12: Victory Video -->
-    <div class="screen" id="victoryVideoScreen">
-        <div class="victory-screen">
-            <video class="victory-video" id="victoryVideo" playsinline>
-                <source src="victory.mp4" type="video/mp4">
-            </video>
-        </div>
-    </div>
-
-    <!-- Screen 13: Final Victory -->
+    <!-- Screen 8: Final Victory -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
@@ -1710,17 +1496,7 @@
             setTimeout(() => { overlay.classList.remove('show'); if (callback) callback(); }, delay);
         }
 
-        function autoSkip(progressId, duration, callback) {
-            const progressEl = document.getElementById(progressId);
-            let elapsed = 0;
-            const interval = setInterval(() => {
-                elapsed += 100;
-                progressEl.style.width = `${(elapsed / duration) * 100}%`;
-                if (elapsed >= duration) { clearInterval(interval); callback(); }
-            }, 100);
-        }
-
-        // ========== TERMINAL COMPUTER PASSWORD (NEW GAME) ==========
+        // ========== TERMINAL COMPUTER PASSWORD ==========
         let terminalPassword = '';
         const correctTerminalPassword = 'VRDU';
 
@@ -1749,23 +1525,20 @@
 
         function checkTerminalPassword() {
             if (terminalPassword.length < 4) {
-                showTerminalStatus('ERROR: Password must be exactly 4 characters', 'error');
+                showTerminalStatus('錯誤：密碼必須為4個字符', 'error');
                 playErrorSound();
                 return;
             }
 
             if (terminalPassword === correctTerminalPassword) {
                 playTerminalAccessSound();
-                showSuccess('💾', 'SYSTEM ACCESS GRANTED', 'Terminal unlocked successfully!', () => {
-                    showScreen('envelope1Screen');
-                    autoSkip('progress1', 15000, () => {
-                        showScreen('phoneScreen');
-                        initRotaryDial();
-                        document.getElementById('bgVideo').play().catch(() => {});
-                    });
+                showSuccess('💾', '系統登入成功', '終端機已解鎖！', () => {
+                    showScreen('phoneScreen');
+                    initRotaryDial();
+                    document.getElementById('bgVideo').play().catch(() => {});
                 }, 3000);
             } else {
-                showTerminalStatus('ERROR: Access denied. Invalid password', 'error');
+                showTerminalStatus('錯誤：登入失敗，密碼不正確', 'error');
                 playErrorSound();
                 // Clear password after wrong attempt
                 setTimeout(() => {
@@ -1873,7 +1646,7 @@
             if (phoneNumber === '') { showPhoneStatus('請先輸入號碼', 'error'); playErrorSound(); return; }
             if (phoneConfig.correct[phoneNumber]) {
                 new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(() => {});
-                showSuccess('🎉', '恭喜你成功通過第一關', '現在請打開2號信封', () => showScreen('level2Screen'), 15000);
+                showSuccess('🎉', '恭喜你成功通過第一關', '現在請破解鐵閘密碼', () => showScreen('level2Screen'), 15000);
             } else if (phoneConfig.wrong[phoneNumber]) {
                 new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(() => {});
                 showPhoneStatus(phoneConfig.wrong[phoneNumber].message, 'error');
@@ -1916,7 +1689,10 @@
             if (password2.length < 4) { showInputStatus('level2Status', '請輸入完整密碼', 'error'); playErrorSound(); return; }
             if (password2 === correctPassword2) {
                 playUnlockSound();
-                showSuccess('🔓', '恭喜你成功破解第二關', '現在請打開3號信封', () => { password3 = ''; updatePassword3Display(); showScreen('level3Screen'); }, 15000);
+                showSuccess('🔓', '恭喜你成功破解鐵閘密碼', '現在進入隨機問題環節', () => {
+                    showScreen('questionsScreen');
+                    showRandomQuestion();
+                }, 15000);
             } else { showInputStatus('level2Status', '密碼錯誤，請重試！', 'error'); playErrorSound(); }
         }
 
@@ -1924,7 +1700,7 @@
             if (password3.length < 2) { showInputStatus('level3Status', '請輸入完整號碼', 'error'); playErrorSound(); return; }
             if (password3 === correctPassword3) {
                 playSuccessSound();
-                showSuccess('🚃', '恭喜你成功破解第三關', '現在請打開4號信封', () => showScreen('level4Screen'), 15000);
+                showSuccess('🚃', '恭喜你成功找到電車站編號', '恭喜通關！', () => showScreen('finalScreen'), 15000);
             } else { showInputStatus('level3Status', '號碼錯誤，請重試！', 'error'); playErrorSound(); }
         }
 
@@ -1940,24 +1716,6 @@
         function showRandomQuestion() {
             document.getElementById('questionText').textContent = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
             playTone(600, 0.1);
-        }
-
-        function checkDirection(direction) {
-            if (direction === 'east') {
-                playSuccessSound();
-                showScreen('victoryVideoScreen');
-                const video = document.getElementById('victoryVideo');
-                video.play().catch(() => setTimeout(() => showScreen('finalScreen'), 1000));
-                video.addEventListener('ended', () => showScreen('finalScreen'));
-                setTimeout(() => {
-                    if (document.getElementById('victoryVideoScreen').classList.contains('active')) {
-                        showScreen('finalScreen');
-                    }
-                }, 8000);
-            } else {
-                showInputStatus('directionStatus', '方向錯誤，請重試！', 'error');
-                playErrorSound();
-            }
         }
 
         // ========== EVENT LISTENERS ==========
@@ -2053,23 +1811,10 @@
                 });
             });
 
-            document.getElementById('choice1Btn').addEventListener('click', () => {
-                modifyTime(7 * 60, true);
-                showScreen('questionsScreen');
-                showRandomQuestion();
-            });
-            document.getElementById('choice2Btn').addEventListener('click', () => {
-                modifyTime(-7 * 60, false);
-                showScreen('envelope5Screen');
-                autoSkip('progress5', 15000, () => showScreen('directionScreen'));
-            });
             document.getElementById('newQuestionBtn').addEventListener('click', showRandomQuestion);
             document.getElementById('proceedBtn').addEventListener('click', () => {
-                showScreen('envelope5Screen');
-                autoSkip('progress5', 15000, () => showScreen('directionScreen'));
+                showScreen('level3Screen');
             });
-
-            document.querySelectorAll('.direction-btn').forEach(btn => btn.addEventListener('click', () => checkDirection(btn.dataset.dir)));
         });
     </script>
 </body>
