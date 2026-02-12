@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <style>
+        /* 🌑 深淵色調 — 完整保留所有原始變數與樣式 */
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
@@ -39,7 +40,6 @@
             --old-hongkong: #d4af37;
             --tip-bg: rgba(0, 0, 0, 0.7);
             --tip-border: #ffd700;
-            /* Windows 95 colors */
             --win95-teal: #008080;
             --win95-gray: #c0c0c0;
             --win95-dark: #808080;
@@ -49,11 +49,7 @@
             --win95-black: #000000;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Noto Sans HK', sans-serif;
@@ -64,7 +60,7 @@
             position: relative;
         }
 
-        /* Fullscreen background image for every page - Justanimage.JPG */
+        /* 永恆的背景 — Justanimage.JPG 覆蓋每一頁 */
         body::before {
             content: "";
             position: fixed;
@@ -110,552 +106,77 @@
             justify-content: center;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes glow { 0%,100% { box-shadow: 0 0 20px var(--shadow-glow); } 50% { box-shadow: 0 0 40px var(--shadow-glow), 0 0 60px var(--shadow-blue); } }
+        @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+        @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-8px); } 40%,80% { transform: translateX(8px); } }
+        @keyframes flicker { 0%,100% { opacity: 1; } 50% { opacity: 0.8; } }
+        @keyframes trainMove { 0% { transform: translateX(-20px); opacity: 0.6; } 50% { transform: translateX(20px); opacity: 1; } 100% { transform: translateX(-20px); opacity: 0.6; } }
+        @keyframes windowAppear { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+        @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px var(--shadow-glow); }
-            50% { box-shadow: 0 0 40px var(--shadow-glow), 0 0 60px var(--shadow-blue); }
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-8px); }
-            40%, 80% { transform: translateX(8px); }
-        }
-
-        @keyframes flicker {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.8; }
-        }
-
-        @keyframes trainMove {
-            0% { transform: translateX(-20px); opacity: 0.6; }
-            50% { transform: translateX(20px); opacity: 1; }
-            100% { transform: translateX(-20px); opacity: 0.6; }
-        }
-
-        @keyframes bootFlicker {
-            0% { opacity: 0; }
-            5% { opacity: 1; }
-            10% { opacity: 0.3; }
-            15% { opacity: 1; }
-            100% { opacity: 1; }
-        }
-
-        @keyframes crtOn {
-            0% { transform: scaleY(0.005) scaleX(0); opacity: 0.5; }
-            30% { transform: scaleY(0.005) scaleX(1); opacity: 0.7; }
-            50% { transform: scaleY(1) scaleX(1); opacity: 1; }
-            100% { transform: scaleY(1) scaleX(1); opacity: 1; }
-        }
-
-        @keyframes scanline {
-            0% { top: -100%; }
-            100% { top: 100%; }
-        }
-
-        @keyframes cursorBlink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        @keyframes windowAppear {
-            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
-            60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
-            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
-        }
-
-        @keyframes githubSpin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-
-        /* ========== WINDOWS 95 START SCREEN ========== */
-        .win95-desktop {
-            position: relative;
-            width: 100%;
-            min-height: 100vh;
-            background: var(--win95-teal);
-            overflow: hidden;
-            font-family: 'Segoe UI', 'MS Sans Serif', Tahoma, sans-serif;
-        }
-
-        /* CRT boot effect overlay */
-        .win95-desktop .crt-overlay {
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            z-index: 50;
-            overflow: hidden;
-        }
-
-        .win95-desktop .crt-overlay::after {
-            content: '';
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            animation: scanline 4s linear infinite;
-            z-index: 51;
-        }
-
-        /* Desktop icons */
-        .win95-icons {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            z-index: 5;
-        }
-
-        .win95-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            cursor: default;
-            width: 80px;
-            user-select: none;
-        }
-
-        .win95-icon-img {
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.5));
-        }
-
-        .win95-icon-label {
-            font-size: 11px;
-            color: #fff;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
+        /* ========== 標題畫面 — 華麗登場 ========== */
+        .title-screen {
             text-align: center;
-            line-height: 1.3;
-            word-break: break-word;
+            max-width: 800px;
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(12px);
+            padding: 60px 40px;
+            border-radius: 60px;
+            border: 3px solid rgba(0, 255, 136, 0.5);
+            box-shadow: 0 0 80px rgba(0, 255, 136, 0.3);
+            animation: glow 3s infinite;
         }
 
-        /* The login image displayed on desktop */
-        .win95-login-image {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1);
-            animation: windowAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            z-index: 20;
-            width: 90%;
-            max-width: 580px;
-            border-radius: 0;
-        }
-
-        .win95-login-image img {
-            width: 100%;
-            display: block;
-            image-rendering: auto;
-            border: 3px outset var(--win95-gray);
-        }
-
-        /* GitHub Login Window on top */
-        .win95-github-window {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 30;
-            width: 92%;
-            max-width: 420px;
-            animation: windowAppear 0.6s 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-        }
-
-        .win95-window {
-            background: var(--win95-gray);
-            border: 3px outset var(--win95-light);
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
-        }
-
-        .win95-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-            padding: 3px 4px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            cursor: default;
-            user-select: none;
-        }
-
-        .win95-titlebar-text {
-            color: #fff;
-            font-size: 12px;
-            font-weight: bold;
-            padding-left: 4px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
-        }
-
-        .win95-titlebar-icon {
-            width: 16px;
-            height: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 12px;
-        }
-
-        .win95-titlebar-buttons {
-            display: flex;
-            gap: 2px;
-        }
-
-        .win95-titlebar-btn {
-            width: 18px;
-            height: 18px;
-            background: var(--win95-gray);
-            border: 2px outset var(--win95-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #000;
-            line-height: 1;
-            padding: 0;
-            font-family: 'Segoe UI', sans-serif;
-        }
-
-        .win95-titlebar-btn:active {
-            border-style: inset;
-        }
-
-        .win95-window-body {
-            padding: 16px 20px 20px;
-        }
-
-        .win95-github-header {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        .github-logo-container {
-            width: 52px;
-            height: 52px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        /* SVG-based GitHub logo */
-        .github-logo-svg {
-            width: 46px;
-            height: 46px;
-        }
-
-        .win95-github-desc {
-            font-size: 12px;
-            color: #000;
-            line-height: 1.5;
-        }
-
-        .win95-github-desc strong {
-            font-size: 13px;
-        }
-
-        .win95-divider {
-            border: none;
-            height: 2px;
-            background: linear-gradient(to right, var(--win95-dark), var(--win95-gray));
-            margin: 12px 0;
-        }
-
-        .win95-form-group {
-            margin-bottom: 12px;
-        }
-
-        .win95-label {
-            display: block;
-            font-size: 12px;
-            color: #000;
-            margin-bottom: 4px;
-            font-weight: normal;
-        }
-
-        .win95-label u {
-            text-decoration: underline;
-        }
-
-        .win95-input {
-            width: 100%;
-            padding: 4px 6px;
-            font-size: 14px;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            border: 2px inset var(--win95-light);
-            background: #fff;
-            color: #000;
-            outline: none;
-        }
-
-        .win95-input:focus {
-            background: #fff;
-        }
-
-        .win95-input[type="password"] {
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            letter-spacing: 2px;
-        }
-
-        .win95-btn-row {
-            display: flex;
-            justify-content: flex-end;
-            gap: 8px;
-            margin-top: 18px;
-        }
-
-        .win95-btn {
-            min-width: 80px;
-            padding: 5px 16px;
-            font-size: 12px;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-            background: var(--win95-gray);
-            border: 2px outset var(--win95-light);
-            cursor: pointer;
-            color: #000;
-            text-align: center;
-            outline: none;
-        }
-
-        .win95-btn:active {
-            border-style: inset;
-            padding: 6px 15px 4px 17px;
-        }
-
-        .win95-btn.primary {
-            outline: 2px solid #000;
-            outline-offset: -4px;
-        }
-
-        .win95-btn:focus {
-            outline: 1px dotted #000;
-            outline-offset: -5px;
-        }
-
-        /* Game title overlay on the Windows desktop */
-        .win95-game-badge {
-            position: absolute;
-            bottom: 55px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 15;
-            text-align: center;
-            padding: 10px 28px;
-            background: rgba(0, 0, 0, 0.65);
-            border: 1px solid rgba(0, 255, 136, 0.4);
-            border-radius: 8px;
-            backdrop-filter: blur(4px);
-        }
-
-        .win95-game-badge .badge-title {
+        .main-title {
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
+            font-size: 4rem;
             font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-gold));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: 3px;
+            margin-bottom: 20px;
+            letter-spacing: 8px;
+            text-shadow: 0 0 30px rgba(0,255,136,0.3);
+            animation: pulse 2s infinite;
         }
 
-        .win95-game-badge .badge-sub {
-            font-size: 0.75rem;
-            color: rgba(255,255,255,0.6);
-            margin-top: 2px;
+        .sub-title {
+            font-size: 1.6rem;
+            color: var(--text-secondary);
+            margin-bottom: 60px;
+            letter-spacing: 4px;
+            border-bottom: 2px solid var(--accent-1);
+            padding-bottom: 20px;
+            display: inline-block;
         }
 
-        /* Windows 95 Taskbar */
-        .win95-taskbar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 36px;
-            background: var(--win95-gray);
-            border-top: 2px outset var(--win95-light);
-            display: flex;
-            align-items: center;
-            padding: 0 4px;
-            z-index: 40;
-        }
-
-        .win95-start-btn {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            padding: 2px 8px;
-            height: 26px;
-            background: var(--win95-gray);
-            border: 2px outset var(--win95-light);
-            cursor: pointer;
-            font-size: 12px;
-            font-weight: bold;
-            color: #000;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-        }
-
-        .win95-start-btn:active {
-            border-style: inset;
-        }
-
-        .win95-start-btn .start-flag {
-            width: 18px;
-            height: 18px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-
-        .win95-taskbar-spacer {
-            flex: 1;
-        }
-
-        .win95-taskbar-tray {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            border: 2px inset var(--win95-light);
-            padding: 2px 10px;
-            height: 24px;
-            font-size: 11px;
-            color: #000;
-        }
-
-        /* Warning text styled as Windows dialog */
-        .win95-warning-bar {
-            position: absolute;
-            bottom: 55px;
-            right: 16px;
-            z-index: 15;
-            background: var(--win95-gray);
-            border: 2px outset var(--win95-light);
-            padding: 6px 12px;
-            font-size: 11px;
-            color: #000;
-            max-width: 260px;
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-        }
-
-        .win95-warning-bar .warn-icon {
-            font-size: 16px;
-            flex-shrink: 0;
-        }
-
-        /* Custom modal to replace alert() */
-        .win95-modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.4);
-            z-index: 9999;
-            align-items: center;
-            justify-content: center;
-        }
-        .win95-modal-overlay.show {
-            display: flex;
-        }
-        .win95-modal {
-            width: 90%;
-            max-width: 380px;
-            background: var(--win95-gray);
-            border: 3px outset var(--win95-light);
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
-        }
-        .win95-modal .win95-titlebar {
-            background: linear-gradient(90deg, #000080, #1084d0);
-        }
-        .win95-modal-body {
-            padding: 20px;
-            display: flex;
-            gap: 14px;
-            align-items: flex-start;
-        }
-        .win95-modal-icon {
-            font-size: 32px;
-            flex-shrink: 0;
-        }
-        .win95-modal-text {
-            font-size: 13px;
-            color: #000;
-            line-height: 1.6;
-        }
-        .win95-modal-footer {
-            display: flex;
-            justify-content: center;
-            padding: 0 20px 16px;
-            gap: 10px;
-        }
-
-        /* Timer Display */
-        .timer-fixed {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--bg-card);
-            padding: 12px 24px;
-            border-radius: 16px;
-            border: 2px solid var(--accent-2);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            display: none;
-        }
-
-        .timer-fixed.active {
-            display: block;
-        }
-
-        .timer-display {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
+        .begin-btn {
+            padding: 24px 80px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border: none;
+            border-radius: 80px;
+            font-family: 'Noto Sans HK', sans-serif;
+            font-size: 2rem;
             font-weight: 900;
-            color: var(--accent-2);
-            letter-spacing: 3px;
+            color: var(--bg-primary);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 40px var(--shadow-glow);
+            border: 2px solid rgba(255,255,255,0.5);
+            letter-spacing: 8px;
         }
 
-        .timer-fixed.warning .timer-display {
-            color: var(--accent-3);
-            animation: pulse 1s infinite;
+        .begin-btn:hover {
+            transform: translateY(-6px) scale(1.05);
+            box-shadow: 0 0 70px var(--shadow-glow), 0 0 120px var(--shadow-blue);
         }
 
-        .timer-fixed.danger .timer-display {
-            color: var(--danger);
-            animation: pulse 0.5s infinite;
-        }
+        .begin-btn:active { transform: translateY(2px) scale(0.98); }
 
-        /* Timer Setup Screen */
+        /* ========== 計時器設定 ========== */
         .timer-setup {
             text-align: center;
             max-width: 450px;
@@ -688,11 +209,7 @@
             letter-spacing: 8px;
         }
 
-        .timer-label {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
+        .timer-label { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 20px; }
 
         .start-btn {
             padding: 20px 60px;
@@ -709,861 +226,139 @@
             margin-bottom: 40px;
         }
 
-        .start-btn:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 12px 40px var(--shadow-glow);
-        }
-
-        .start-btn:active {
-            transform: translateY(0) scale(0.98);
-        }
-
-        /* Tip container */
-        .tip-container {
-            width: 100%;
-            max-width: 650px;
-            margin-top: 20px;
-            margin-bottom: 10px;
-            padding: 16px 24px;
-            background: var(--tip-bg);
-            border-left: 6px solid var(--tip-border);
-            border-radius: 12px;
-            backdrop-filter: blur(4px);
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 0.95rem;
-            color: #fff3cd;
-            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
-            transition: opacity 0.3s ease;
-            position: relative;
-            z-index: 10;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-        }
-
-        .tip-icon {
-            font-size: 1.2rem;
-            margin-right: 10px;
-            display: inline-block;
-        }
-
-        /* Computer Terminal Screen */
-        .terminal-screen {
-            width: 100%;
-            max-width: 650px;
-            margin: 0 auto;
-        }
-
-        .terminal-container {
-            background: rgba(0, 17, 0, 0.85);
-            backdrop-filter: blur(4px);
-            border-radius: 20px;
-            padding: 25px;
-            border: 4px solid var(--terminal-green);
-            box-shadow:
-                0 0 40px rgba(0, 255, 0, 0.4),
-                inset 0 0 20px rgba(0, 255, 0, 0.1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .terminal-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                linear-gradient(transparent 50%, rgba(0, 255, 0, 0.05) 50%),
-                linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
-            background-size: 100% 2px, 10px 100%;
-            pointer-events: none;
-            opacity: 0.3;
-        }
-
-        .terminal-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--terminal-green);
-        }
-
-        .terminal-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.4rem;
-            color: var(--terminal-green);
-            letter-spacing: 2px;
-            flex-grow: 1;
-        }
-
-        .terminal-status {
-            display: flex;
-            gap: 8px;
-        }
-
-        .status-led {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .led-red {
-            background: #ff4757;
-            box-shadow: 0 0 8px #ff4757;
-            animation: flicker 2s infinite;
-        }
-
-        .led-yellow {
-            background: #ffd700;
-            box-shadow: 0 0 8px #ffd700;
-        }
-
-        .led-green {
-            background: var(--terminal-green);
-            box-shadow: 0 0 8px var(--terminal-green);
-        }
-
-        .terminal-content {
-            margin-bottom: 25px;
-            min-height: 200px;
-        }
-
-        .terminal-text {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            color: var(--terminal-green);
-            line-height: 1.6;
-            margin-bottom: 10px;
-            white-space: pre-wrap;
-        }
-
-        .terminal-password-display {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin: 30px 0;
-        }
-
-        .terminal-slot {
-            width: 70px;
-            height: 90px;
-            background: rgba(0, 0, 0, 0.8);
-            border: 3px solid var(--terminal-green);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--terminal-green);
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-        }
-
-        .terminal-slot.active {
-            border-color: var(--accent-2);
-            box-shadow: 0 0 20px var(--shadow-blue);
-            animation: pulse 1s infinite;
-        }
-
-        .terminal-slot.filled {
-            background: rgba(0, 255, 0, 0.1);
-            text-shadow: 0 0 10px var(--terminal-green);
-        }
-
-        .terminal-keyboard {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr);
-            gap: 8px;
-            margin-top: 25px;
-        }
-
-        .terminal-key {
-            padding: 14px 5px;
-            background: rgba(0, 20, 0, 0.8);
-            border: 2px solid var(--terminal-green);
-            border-radius: 8px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--terminal-green);
-            cursor: pointer;
-            transition: all 0.15s ease;
-            text-align: center;
-            text-transform: uppercase;
-        }
-
-        .terminal-key:hover {
-            background: rgba(0, 255, 0, 0.2);
-            transform: translateY(-2px);
-        }
-
-        .terminal-key:active {
-            transform: translateY(1px);
-        }
-
-        .terminal-key.backspace {
-            grid-column: span 2;
-            background: rgba(139, 0, 0, 0.8);
-            border-color: #ff4757;
-        }
-
-        .terminal-key.enter {
-            grid-column: span 2;
-            background: rgba(0, 100, 0, 0.8);
-        }
-
-        .terminal-status-message {
-            text-align: center;
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 10px;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 700;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .terminal-status-message.show {
-            opacity: 1;
-        }
-
-        .terminal-status-message.error {
-            background: rgba(255, 0, 0, 0.2);
-            color: #ff4757;
-            border: 2px solid #ff4757;
-            animation: shake 0.5s ease;
-        }
-
-        .terminal-status-message.success {
-            background: rgba(0, 255, 0, 0.2);
-            color: var(--terminal-green);
-            border: 2px solid var(--terminal-green);
-        }
-
-        /* Phone Screen */
-        .rotary-phone-container {
-            background: linear-gradient(145deg, rgba(26, 74, 66, 0.9), rgba(15, 47, 40, 0.95));
-            backdrop-filter: blur(8px);
-            border-radius: 40px 40px 30px 30px;
-            padding: 30px;
-            max-width: 380px;
-            width: 100%;
-            box-shadow:
-                0 20px 60px rgba(0, 0, 0, 0.8),
-                inset 0 2px 10px rgba(255, 255, 255, 0.1),
-                0 0 0 8px var(--phone-green-dark);
-            position: relative;
-        }
-
-        .phone-handset {
-            position: absolute;
-            top: -15px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 280px;
-            height: 50px;
-            background: linear-gradient(180deg, var(--phone-green-light), var(--phone-green-dark));
-            border-radius: 30px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
-        }
-
-        .phone-handset::before,
-        .phone-handset::after {
-            content: '';
-            position: absolute;
-            width: 50px;
-            height: 30px;
-            background: var(--phone-green-dark);
-            border-radius: 10px;
-            top: 10px;
-        }
-
-        .phone-handset::before { left: 15px; }
-        .phone-handset::after { right: 15px; }
-
-        .phone-header {
-            text-align: center;
-            margin: 30px 0 20px;
-        }
-
-        .phone-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 900;
-            color: var(--phone-gold);
-            letter-spacing: 2px;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
-        .phone-display {
-            background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
-            border-radius: 12px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            min-height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow:
-                inset 0 2px 10px rgba(0, 0, 0, 0.8),
-                0 1px 0 rgba(255, 255, 255, 0.1);
-            border: 2px solid var(--phone-green-dark);
-        }
-
-        .display-number {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.8rem;
-            font-weight: 700;
-            letter-spacing: 4px;
-            color: var(--accent-1);
-            text-shadow: 0 0 10px var(--accent-1);
-        }
-
-        .display-number.empty {
-            color: var(--text-secondary);
-            font-size: 1rem;
-            opacity: 0.6;
-            text-shadow: none;
-        }
-
-        .rotary-dial-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .rotary-dial {
-            width: 280px;
-            height: 280px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #3a3a3a, #1a1a1a);
-            position: relative;
-            box-shadow:
-                0 10px 30px rgba(0, 0, 0, 0.6),
-                inset 0 2px 5px rgba(255, 255, 255, 0.1),
-                inset 0 -5px 15px rgba(0, 0, 0, 0.5);
-            cursor: grab;
-            user-select: none;
-            touch-action: none;
-        }
-
-        .rotary-dial.dialing { cursor: grabbing; }
-
-        .dial-plate {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 250px;
-            height: 250px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #2a2a2a, #0a0a0a);
-            transition: transform 0.1s linear;
-        }
-
-        .dial-plate.returning {
-            transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .finger-stop {
-            position: absolute;
-            bottom: 30px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 8px;
-            height: 30px;
-            background: linear-gradient(180deg, #888, #444);
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            z-index: 10;
-        }
-
-        .dial-center {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.2);
-            z-index: 5;
-        }
-
-        .dial-center-inner {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #888, #555);
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.3);
-        }
-
-        .dial-hole {
-            position: absolute;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
-            box-shadow:
-                inset 0 3px 8px rgba(0, 0, 0, 0.8),
-                0 1px 2px rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: transform 0.1s ease, box-shadow 0.1s ease;
-        }
-
-        .dial-hole:hover {
-            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.8), 0 0 15px var(--accent-1);
-        }
-
-        .dial-hole:active { transform: scale(0.95); }
-
-        .dial-number {
-            position: absolute;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--phone-gold);
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-            pointer-events: none;
-        }
-
-        .phone-actions {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
-
-        .action-btn {
-            padding: 14px;
-            border: none;
-            border-radius: 10px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1rem;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .action-btn.clear {
-            background: linear-gradient(135deg, #8B0000, #5a0000);
-            color: white;
-            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
-        }
-
-        .action-btn.call {
-            background: linear-gradient(135deg, var(--accent-1), #00aa66);
-            color: var(--bg-primary);
-            box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
-        }
-
-        .action-btn:hover { transform: translateY(-2px); }
-        .action-btn:active { transform: translateY(1px); }
-
-        .phone-status {
-            text-align: center;
-            margin-top: 15px;
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 700;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .phone-status.show { opacity: 1; }
-
-        .phone-status.error {
-            background: rgba(255, 71, 87, 0.2);
-            color: var(--danger);
-            border: 2px solid var(--danger);
-        }
-
-        .phone-status.success {
-            background: rgba(0, 255, 136, 0.2);
-            color: var(--accent-1);
-            border: 2px solid var(--accent-1);
-        }
-
-        .dial-instruction {
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.85rem;
-            color: var(--phone-gold);
-            opacity: 0.8;
-        }
-
-        /* Success Overlay */
-        .success-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .success-overlay.show { display: flex; }
-
-        .success-content {
-            text-align: center;
-            padding: 50px;
-            background: var(--bg-card);
-            border-radius: 30px;
-            border: 4px solid var(--accent-1);
-            box-shadow: 0 0 60px var(--shadow-glow);
-            max-width: 450px;
-        }
-
-        .success-icon {
-            font-size: 5rem;
-            margin-bottom: 20px;
-            animation: bounce 1s infinite;
-        }
-
-        .success-title {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--accent-1);
-            margin-bottom: 15px;
-            line-height: 1.6;
-        }
-
-        .success-subtitle {
-            font-size: 1rem;
-            color: var(--text-secondary);
-        }
-
-        /* Password Input Screen (4-digit – 鐵閘密碼) */
-        .password-screen {
-            text-align: center;
-            max-width: 450px;
-            background: rgba(26, 26, 36, 0.8);
-            backdrop-filter: blur(8px);
-            padding: 40px 30px;
-            border-radius: 40px;
-            border: 2px solid rgba(0, 212, 255, 0.3);
-        }
-
-        .level-prompt {
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            line-height: 1.8;
-            padding: 25px;
-            background: var(--bg-card);
-            border-radius: 20px;
-            border: 2px solid var(--accent-2);
-            margin-bottom: 35px;
-        }
-
-        .password-display {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .password-slot {
-            width: 65px;
-            height: 85px;
-            background: var(--bg-primary);
-            border: 3px solid var(--accent-2);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2.2rem;
-            font-weight: 900;
-            color: var(--text-primary);
-            transition: all 0.2s ease;
-        }
-
-        .password-slot.active {
-            border-color: var(--accent-1);
-            box-shadow: 0 0 20px var(--shadow-glow);
-        }
-
-        .password-slot.filled { color: var(--accent-1); }
-
-        .password-keypad {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            max-width: 280px;
-            margin: 0 auto 25px;
-        }
-
-        .password-key {
-            padding: 18px;
-            background: var(--bg-button);
-            border: none;
-            border-radius: 14px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.15s ease;
-        }
-
-        .password-key:hover {
-            background: var(--accent-2);
-            color: var(--bg-primary);
-            transform: scale(1.05);
-        }
-
-        .password-key:active { transform: scale(0.95); }
-
-        .password-key.backspace {
-            background: linear-gradient(135deg, #ff4757, #ff6b81);
-            color: white;
-        }
-
-        .password-key.submit {
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            color: var(--bg-primary);
-        }
-
-        .input-status {
-            padding: 12px;
-            border-radius: 10px;
-            font-weight: 700;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .input-status.show { opacity: 1; }
-
-        .input-status.error {
-            background: rgba(255, 71, 87, 0.2);
-            color: var(--danger);
-            border: 2px solid var(--danger);
-            animation: shake 0.5s ease;
-        }
-
-        /* Random Questions Screen */
-        .questions-screen {
+        .start-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 40px var(--shadow-glow); }
+        .start-btn:active { transform: translateY(0) scale(0.98); }
+
+        /* ========== 信封指示專用畫面 — 完整保留 ========== */
+        .envelope-screen {
             text-align: center;
             max-width: 600px;
-            background: rgba(26, 26, 36, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 40px 30px;
-            border-radius: 40px;
-            border: 2px solid rgba(0, 212, 255, 0.3);
-            width: 100%;
+            background: rgba(26, 26, 36, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 50px 40px;
+            border-radius: 50px;
+            border: 4px solid var(--accent-gold);
+            box-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
         }
 
-        .tram-wait-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .tram-header {
-            font-size: 1.8rem;
-            font-weight: 900;
-            color: var(--accent-gold);
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
-            margin-bottom: 10px;
-            animation: pulse 2s infinite;
-        }
-
-        .tram-timer {
+        .envelope-icon { font-size: 6rem; margin-bottom: 20px; animation: bounce 1.5s infinite; }
+        .envelope-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.2rem;
             font-weight: 900;
-            color: var(--accent-2);
-            text-shadow: 0 0 20px var(--shadow-blue);
-            background: rgba(0, 0, 0, 0.5);
-            padding: 15px 30px;
-            border-radius: 50px;
-            border: 2px solid var(--accent-2);
-            letter-spacing: 5px;
-            margin-bottom: 15px;
+            color: var(--accent-gold);
+            text-shadow: 0 0 20px rgba(255,215,0,0.5);
+            margin-bottom: 30px;
+            letter-spacing: 3px;
         }
-
-        .tram-message {
-            font-size: 1.2rem;
-            color: var(--text-primary);
-            background: rgba(0, 153, 255, 0.15);
-            border: 2px solid var(--tram-blue);
-            border-radius: 30px;
-            padding: 15px 25px;
-            margin-bottom: 20px;
-        }
-
-        .tram-question-area {
-            width: 100%;
-            background: var(--bg-card);
-            border: 2px solid var(--accent-2);
-            border-radius: 24px;
-            padding: 30px 20px;
-            margin-bottom: 20px;
-        }
-
-        .tram-question-text {
+        .envelope-message {
             font-size: 1.4rem;
-            font-weight: 700;
             color: var(--text-primary);
             line-height: 1.8;
-            margin-bottom: 25px;
+            background: rgba(0,0,0,0.4);
+            padding: 30px;
+            border-radius: 30px;
+            border: 2px solid var(--accent-gold);
+            margin-bottom: 40px;
         }
-
-        .chat-btn {
-            padding: 16px 30px;
-            background: linear-gradient(135deg, var(--bg-button), #2a2a3a);
-            border: 2px solid var(--accent-2);
-            border-radius: 40px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
-            width: 100%;
-            max-width: 350px;
-            margin: 0 auto;
-        }
-
-        .chat-btn:hover {
-            background: var(--accent-2);
-            color: var(--bg-primary);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--shadow-blue);
-        }
-
-        .board-tram-btn {
-            padding: 20px 40px;
-            background: linear-gradient(135deg, var(--tram-blue), #0066cc);
+        .envelope-btn {
+            padding: 18px 50px;
+            background: linear-gradient(135deg, var(--accent-gold), #ffb347);
             border: none;
             border-radius: 60px;
             font-family: 'Noto Sans HK', sans-serif;
             font-size: 1.5rem;
             font-weight: 900;
-            color: white;
+            color: var(--bg-primary);
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 0 30px rgba(0, 153, 255, 0.7);
-            animation: trainMove 1.5s infinite ease-in-out;
-            border: 3px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 0 40px rgba(255,215,0,0.5);
+            border: 2px solid rgba(255,255,255,0.5);
             letter-spacing: 4px;
-            margin-top: 20px;
+        }
+        .envelope-btn:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 0 70px rgba(255,215,0,0.8); }
+        .envelope-note { margin-top: 30px; font-size: 1rem; color: var(--text-secondary); border-top: 1px solid rgba(255,215,0,0.3); padding-top: 20px; }
+
+        /* ========== Windows 95 登入殿堂 ========== */
+        .win95-desktop {
+            position: relative;
             width: 100%;
-            max-width: 450px;
+            min-height: 100vh;
+            background: var(--win95-teal);
+            overflow: hidden;
+            font-family: 'Segoe UI', 'MS Sans Serif', Tahoma, sans-serif;
         }
-
-        .board-tram-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 50px rgba(0, 153, 255, 0.9);
-            background: linear-gradient(135deg, #0088ff, #0055cc);
+        .win95-desktop .crt-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 50; overflow: hidden; }
+        .win95-desktop .crt-overlay::after {
+            content: ''; position: absolute; left: 0; width: 100%; height: 8px;
+            background: rgba(255,255,255,0.06); animation: scanline 4s linear infinite; z-index: 51;
         }
-
-        .hidden { display: none !important; }
-
-        /* Victory Screen */
-        .victory-screen {
-            text-align: center;
-            max-width: 700px;
-            background: rgba(26, 26, 36, 0.85);
-            backdrop-filter: blur(8px);
-            padding: 50px 40px;
-            border-radius: 50px;
-            border: 2px solid rgba(255, 215, 0, 0.4);
+        .win95-icons { position: absolute; top: 20px; left: 20px; display: flex; flex-direction: column; gap: 30px; z-index: 5; }
+        .win95-icon { display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: default; width: 80px; user-select: none; }
+        .win95-icon-img { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; font-size: 28px; filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.5)); }
+        .win95-icon-label { font-size: 11px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.9); text-align: center; line-height: 1.3; word-break: break-word; }
+        .win95-login-image {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(1);
+            animation: windowAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            z-index: 20; width: 90%; max-width: 580px; border-radius: 0;
         }
-
-        .victory-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-gold), var(--accent-3));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
+        .win95-login-image img { width: 100%; display: block; image-rendering: auto; border: 3px outset var(--win95-gray); }
+        .win95-github-window {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            z-index: 30; width: 92%; max-width: 420px; animation: windowAppear 0.6s 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
         }
+        .win95-window { background: var(--win95-gray); border: 3px outset var(--win95-light); box-shadow: 4px 4px 0 rgba(0,0,0,0.4); }
+        .win95-titlebar { background: linear-gradient(90deg, #000080, #1084d0); padding: 3px 4px; display: flex; align-items: center; justify-content: space-between; cursor: default; user-select: none; }
+        .win95-titlebar-text { color: #fff; font-size: 12px; font-weight: bold; padding-left: 4px; display: flex; align-items: center; gap: 6px; text-shadow: 1px 1px 0 rgba(0,0,0,0.3); }
+        .win95-titlebar-icon { width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; font-size: 12px; }
+        .win95-titlebar-buttons { display: flex; gap: 2px; }
+        .win95-titlebar-btn { width: 18px; height: 18px; background: var(--win95-gray); border: 2px outset var(--win95-light); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; cursor: pointer; color: #000; line-height: 1; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        .win95-titlebar-btn:active { border-style: inset; }
+        .win95-window-body { padding: 16px 20px 20px; }
+        .win95-github-header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+        .github-logo-container { width: 52px; height: 52px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .github-logo-svg { width: 46px; height: 46px; }
+        .win95-github-desc { font-size: 12px; color: #000; line-height: 1.5; }
+        .win95-github-desc strong { font-size: 13px; }
+        .win95-divider { border: none; height: 2px; background: linear-gradient(to right, var(--win95-dark), var(--win95-gray)); margin: 12px 0; }
+        .win95-form-group { margin-bottom: 12px; }
+        .win95-label { display: block; font-size: 12px; color: #000; margin-bottom: 4px; font-weight: normal; }
+        .win95-label u { text-decoration: underline; }
+        .win95-input { width: 100%; padding: 4px 6px; font-size: 14px; font-family: 'Segoe UI', Tahoma, sans-serif; border: 2px inset var(--win95-light); background: #fff; color: #000; outline: none; }
+        .win95-input:focus { background: #fff; }
+        .win95-input[type="password"] { font-family: 'Segoe UI', Tahoma, sans-serif; letter-spacing: 2px; }
+        .win95-btn-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+        .win95-btn { min-width: 80px; padding: 5px 16px; font-size: 12px; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--win95-gray); border: 2px outset var(--win95-light); cursor: pointer; color: #000; text-align: center; outline: none; }
+        .win95-btn:active { border-style: inset; padding: 6px 15px 4px 17px; }
+        .win95-btn.primary { outline: 2px solid #000; outline-offset: -4px; }
+        .win95-game-badge { position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); z-index: 15; text-align: center; padding: 10px 28px; background: rgba(0,0,0,0.65); border: 1px solid rgba(0,255,136,0.4); border-radius: 8px; backdrop-filter: blur(4px); }
+        .win95-game-badge .badge-title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 3px; }
+        .win95-taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 36px; background: var(--win95-gray); border-top: 2px outset var(--win95-light); display: flex; align-items: center; padding: 0 4px; z-index: 40; }
+        .win95-start-btn { display: flex; align-items: center; gap: 4px; padding: 2px 8px; height: 26px; background: var(--win95-gray); border: 2px outset var(--win95-light); cursor: pointer; font-size: 12px; font-weight: bold; color: #000; font-family: 'Segoe UI', Tahoma, sans-serif; }
+        .win95-start-btn:active { border-style: inset; }
+        .win95-start-btn .start-flag { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+        .win95-taskbar-spacer { flex: 1; }
+        .win95-taskbar-tray { display: flex; align-items: center; gap: 8px; border: 2px inset var(--win95-light); padding: 2px 10px; height: 24px; font-size: 11px; color: #000; }
 
-        .victory-instruction {
-            font-size: 1.1rem;
-            color: var(--accent-1);
-            padding: 20px;
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--accent-1);
-            border-radius: 16px;
-            margin-bottom: 30px;
-        }
-
-        .feedback-text {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            padding: 25px;
+        /* ========== 固定計時器 ========== */
+        .timer-fixed {
+            position: fixed;
+            top: 20px;
+            right: 20px;
             background: var(--bg-card);
+            padding: 12px 24px;
             border-radius: 16px;
-            border: 1px solid var(--accent-gold);
+            border: 2px solid var(--accent-2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            z-index: 1000;
+            display: none;
         }
+        .timer-fixed.active { display: block; }
+        .timer-display { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: var(--accent-2); letter-spacing: 3px; }
+        .timer-fixed.warning .timer-display { color: var(--accent-3); animation: pulse 1s infinite; }
+        .timer-fixed.danger .timer-display { color: var(--danger); animation: pulse 0.5s infinite; }
 
-        .old-hk-message {
-            background: rgba(212, 175, 55, 0.15);
-            border: 2px solid var(--old-hongkong);
-            border-radius: 20px;
-            padding: 20px;
-            margin-bottom: 25px;
-            color: #ffd966;
-            font-size: 1.1rem;
-            font-weight: 600;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-        }
-
-        .form-link {
-            display: inline-block;
-            margin-top: 15px;
-            padding: 14px 28px;
-            background: linear-gradient(135deg, var(--accent-gold), #ffb347);
-            color: var(--bg-primary);
-            font-weight: 900;
-            text-decoration: none;
-            border-radius: 40px;
-            font-size: 1.1rem;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
-            transition: all 0.25s ease;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-
-        .form-link:hover {
-            transform: translateY(-4px) scale(1.02);
-            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.8);
-            background: linear-gradient(135deg, #ffd700, #ffa500);
-            color: black;
-        }
-
-        .trophy-icon {
-            font-size: 6rem;
-            margin-bottom: 20px;
-            animation: bounce 1.5s infinite;
-        }
-
-        /* Time Modifier Display */
+        /* ========== 時間增減提示 ========== */
         .time-modifier {
             position: fixed;
             top: 80px;
@@ -1578,121 +373,247 @@
             transform: translateY(-20px);
             transition: all 0.3s ease;
         }
+        .time-modifier.show { opacity: 1; transform: translateY(0); }
+        .time-modifier.add { background: linear-gradient(135deg, var(--accent-1), #00cc6a); color: var(--bg-primary); }
+        .time-modifier.subtract { background: linear-gradient(135deg, var(--danger), #ff6b81); color: white; }
 
-        .time-modifier.show {
-            opacity: 1;
-            transform: translateY(0);
+        /* ========== 旋轉撥號電話 — 完整保留 ========== */
+        .rotary-phone-container {
+            background: linear-gradient(145deg, rgba(26,74,66,0.9), rgba(15,47,40,0.95));
+            backdrop-filter: blur(8px);
+            border-radius: 40px 40px 30px 30px;
+            padding: 30px;
+            max-width: 380px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 2px 10px rgba(255,255,255,0.1), 0 0 0 8px var(--phone-green-dark);
+            position: relative;
         }
-
-        .time-modifier.add {
-            background: linear-gradient(135deg, var(--accent-1), #00cc6a);
-            color: var(--bg-primary);
+        .phone-handset {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            width: 280px; height: 50px; background: linear-gradient(180deg, var(--phone-green-light), var(--phone-green-dark));
+            border-radius: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-
-        .time-modifier.subtract {
-            background: linear-gradient(135deg, var(--danger), #ff6b81);
-            color: white;
+        .phone-handset::before, .phone-handset::after {
+            content: ''; position: absolute; width: 50px; height: 30px;
+            background: var(--phone-green-dark); border-radius: 10px; top: 10px;
         }
+        .phone-handset::before { left: 15px; } .phone-handset::after { right: 15px; }
+        .phone-header { text-align: center; margin: 30px 0 20px; }
+        .phone-title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900; color: var(--phone-gold); letter-spacing: 2px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+        .phone-display {
+            background: linear-gradient(145deg, #0a0a0a, #1a1a1a); border-radius: 12px;
+            padding: 15px 20px; margin-bottom: 20px; min-height: 50px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: inset 0 2px 10px rgba(0,0,0,0.8), 0 1px 0 rgba(255,255,255,0.1);
+            border: 2px solid var(--phone-green-dark);
+        }
+        .display-number { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; letter-spacing: 4px; color: var(--accent-1); text-shadow: 0 0 10px var(--accent-1); }
+        .display-number.empty { color: var(--text-secondary); font-size: 1rem; opacity: 0.6; text-shadow: none; }
+        .rotary-dial-wrapper { display: flex; justify-content: center; margin-bottom: 20px; }
+        .rotary-dial {
+            width: 280px; height: 280px; border-radius: 50%;
+            background: linear-gradient(145deg, #3a3a3a, #1a1a1a);
+            position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.6), inset 0 2px 5px rgba(255,255,255,0.1), inset 0 -5px 15px rgba(0,0,0,0.5);
+            cursor: grab; user-select: none; touch-action: none;
+        }
+        .rotary-dial.dialing { cursor: grabbing; }
+        .dial-plate {
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 250px; height: 250px; border-radius: 50%;
+            background: linear-gradient(145deg, #2a2a2a, #0a0a0a);
+            transition: transform 0.1s linear;
+        }
+        .dial-plate.returning { transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); }
+        .finger-stop { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); width: 8px; height: 30px; background: linear-gradient(180deg, #888, #444); border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 10; }
+        .dial-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(145deg, #4a4a4a, #2a2a2a); box-shadow: 0 5px 15px rgba(0,0,0,0.5), inset 0 2px 5px rgba(255,255,255,0.2); z-index: 5; }
+        .dial-center-inner { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(145deg, #888, #555); box-shadow: inset 0 2px 5px rgba(0,0,0,0.3); }
+        .dial-hole {
+            position: absolute; width: 36px; height: 36px; border-radius: 50%;
+            background: linear-gradient(145deg, #0a0a0a, #1a1a1a);
+            box-shadow: inset 0 3px 8px rgba(0,0,0,0.8), 0 1px 2px rgba(255,255,255,0.1);
+            display: flex; align-items: center; justify-content: center; cursor: pointer;
+            transition: transform 0.1s ease, box-shadow 0.1s ease;
+        }
+        .dial-hole:hover { box-shadow: inset 0 3px 8px rgba(0,0,0,0.8), 0 0 15px var(--accent-1); }
+        .dial-hole:active { transform: scale(0.95); }
+        .dial-number { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--phone-gold); text-shadow: 0 1px 2px rgba(0,0,0,0.5); pointer-events: none; }
+        .phone-actions { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .action-btn { padding: 14px; border: none; border-radius: 10px; font-family: 'Noto Sans HK', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 1px; }
+        .action-btn.clear { background: linear-gradient(135deg, #8B0000, #5a0000); color: white; box-shadow: 0 4px 15px rgba(139,0,0,0.4); }
+        .action-btn.call { background: linear-gradient(135deg, var(--accent-1), #00aa66); color: var(--bg-primary); box-shadow: 0 4px 15px rgba(0,255,136,0.4); }
+        .action-btn:hover { transform: translateY(-2px); } .action-btn:active { transform: translateY(1px); }
+        .phone-status { text-align: center; margin-top: 15px; padding: 12px; border-radius: 10px; font-weight: 700; opacity: 0; transition: all 0.3s ease; }
+        .phone-status.show { opacity: 1; }
+        .phone-status.error { background: rgba(255,71,87,0.2); color: var(--danger); border: 2px solid var(--danger); }
+        .phone-status.success { background: rgba(0,255,136,0.2); color: var(--accent-1); border: 2px solid var(--accent-1); }
+        .dial-instruction { text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--phone-gold); opacity: 0.8; }
 
-        /* Responsive */
+        /* ========== 密碼鎖畫面 (4位 / 2位) ========== */
+        .password-screen {
+            text-align: center;
+            max-width: 450px;
+            background: rgba(26,26,36,0.8);
+            backdrop-filter: blur(8px);
+            padding: 40px 30px;
+            border-radius: 40px;
+            border: 2px solid rgba(0,212,255,0.3);
+        }
+        .level-prompt { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); line-height: 1.8; padding: 25px; background: var(--bg-card); border-radius: 20px; border: 2px solid var(--accent-2); margin-bottom: 35px; }
+        .password-display { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
+        .password-slot { width: 65px; height: 85px; background: var(--bg-primary); border: 3px solid var(--accent-2); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--text-primary); transition: all 0.2s ease; }
+        .password-slot.active { border-color: var(--accent-1); box-shadow: 0 0 20px var(--shadow-glow); }
+        .password-slot.filled { color: var(--accent-1); }
+        .password-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto 25px; }
+        .password-key { padding: 18px; background: var(--bg-button); border: none; border-radius: 14px; font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 700; color: var(--text-primary); cursor: pointer; transition: all 0.15s ease; }
+        .password-key:hover { background: var(--accent-2); color: var(--bg-primary); transform: scale(1.05); }
+        .password-key:active { transform: scale(0.95); }
+        .password-key.backspace { background: linear-gradient(135deg, #ff4757, #ff6b81); color: white; }
+        .password-key.submit { background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); color: var(--bg-primary); }
+        .input-status { padding: 12px; border-radius: 10px; font-weight: 700; opacity: 0; transition: all 0.3s ease; }
+        .input-status.show { opacity: 1; }
+        .input-status.error { background: rgba(255,71,87,0.2); color: var(--danger); border: 2px solid var(--danger); animation: shake 0.5s ease; }
+
+        /* ========== 電車站 · 等候聊天 ========== */
+        .questions-screen {
+            text-align: center;
+            max-width: 600px;
+            background: rgba(26,26,36,0.85);
+            backdrop-filter: blur(8px);
+            padding: 40px 30px;
+            border-radius: 40px;
+            border: 2px solid rgba(0,212,255,0.3);
+            width: 100%;
+        }
+        .tram-wait-container { display: flex; flex-direction: column; align-items: center; gap: 20px; }
+        .tram-header { font-size: 1.8rem; font-weight: 900; color: var(--accent-gold); text-shadow: 0 0 15px rgba(255,215,0,0.5); margin-bottom: 10px; animation: pulse 2s infinite; }
+        .tram-timer { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--accent-2); text-shadow: 0 0 20px var(--shadow-blue); background: rgba(0,0,0,0.5); padding: 15px 30px; border-radius: 50px; border: 2px solid var(--accent-2); letter-spacing: 5px; margin-bottom: 15px; }
+        .tram-message { font-size: 1.2rem; color: var(--text-primary); background: rgba(0,153,255,0.15); border: 2px solid var(--tram-blue); border-radius: 30px; padding: 15px 25px; margin-bottom: 20px; }
+        .tram-question-area { width: 100%; background: var(--bg-card); border: 2px solid var(--accent-2); border-radius: 24px; padding: 30px 20px; margin-bottom: 20px; }
+        .tram-question-text { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); line-height: 1.8; margin-bottom: 25px; }
+        .chat-btn { padding: 16px 30px; background: linear-gradient(135deg, var(--bg-button), #2a2a3a); border: 2px solid var(--accent-2); border-radius: 40px; font-family: 'Noto Sans HK', sans-serif; font-size: 1.2rem; font-weight: 700; color: var(--text-primary); cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 15px rgba(0,212,255,0.2); width: 100%; max-width: 350px; margin: 0 auto; }
+        .chat-btn:hover { background: var(--accent-2); color: var(--bg-primary); transform: translateY(-3px); box-shadow: 0 8px 25px var(--shadow-blue); }
+        .board-tram-btn { padding: 20px 40px; background: linear-gradient(135deg, var(--tram-blue), #0066cc); border: none; border-radius: 60px; font-family: 'Noto Sans HK', sans-serif; font-size: 1.5rem; font-weight: 900; color: white; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 30px rgba(0,153,255,0.7); animation: trainMove 1.5s infinite ease-in-out; border: 3px solid rgba(255,255,255,0.5); letter-spacing: 4px; margin-top: 20px; width: 100%; max-width: 450px; }
+        .board-tram-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(0,153,255,0.9); background: linear-gradient(135deg, #0088ff, #0055cc); }
+        .hidden { display: none !important; }
+
+        /* ========== 終點 · 勝利殿堂 ========== */
+        .victory-screen {
+            text-align: center; max-width: 700px;
+            background: rgba(26,26,36,0.85); backdrop-filter: blur(8px);
+            padding: 50px 40px; border-radius: 50px;
+            border: 2px solid rgba(255,215,0,0.4);
+        }
+        .victory-title { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; background: linear-gradient(135deg, var(--accent-gold), var(--accent-3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; }
+        .victory-instruction { font-size: 1.1rem; color: var(--accent-1); padding: 20px; background: rgba(0,255,136,0.1); border: 2px solid var(--accent-1); border-radius: 16px; margin-bottom: 30px; }
+        .feedback-text { font-size: 1rem; color: var(--text-secondary); line-height: 1.8; padding: 25px; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--accent-gold); }
+        .old-hk-message { background: rgba(212,175,55,0.15); border: 2px solid var(--old-hongkong); border-radius: 20px; padding: 20px; margin-bottom: 25px; color: #ffd966; font-size: 1.1rem; font-weight: 600; text-shadow: 0 0 10px rgba(255,215,0,0.3); }
+        .form-link { display: inline-block; margin-top: 15px; padding: 14px 28px; background: linear-gradient(135deg, var(--accent-gold), #ffb347); color: var(--bg-primary); font-weight: 900; text-decoration: none; border-radius: 40px; font-size: 1.1rem; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(255,215,0,0.5); transition: all 0.25s ease; border: 2px solid rgba(255,255,255,0.3); }
+        .form-link:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 30px rgba(255,215,0,0.8); background: linear-gradient(135deg, #ffd700, #ffa500); color: black; }
+        .trophy-icon { font-size: 6rem; margin-bottom: 20px; animation: bounce 1.5s infinite; }
+
+        /* ========== 自訂 Modal ========== */
+        .win95-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 9999; align-items: center; justify-content: center; }
+        .win95-modal-overlay.show { display: flex; }
+        .win95-modal { width: 90%; max-width: 380px; background: var(--win95-gray); border: 3px outset var(--win95-light); box-shadow: 4px 4px 0 rgba(0,0,0,0.4); }
+        .win95-modal .win95-titlebar { background: linear-gradient(90deg, #000080, #1084d0); }
+        .win95-modal-body { padding: 20px; display: flex; gap: 14px; align-items: flex-start; }
+        .win95-modal-icon { font-size: 32px; flex-shrink: 0; }
+        .win95-modal-text { font-size: 13px; color: #000; line-height: 1.6; }
+        .win95-modal-footer { display: flex; justify-content: center; padding: 0 20px 16px; gap: 10px; }
+
+        /* ========== 小提示框 ========== */
+        .tip-container { width: 100%; max-width: 650px; margin-top: 20px; margin-bottom: 10px; padding: 16px 24px; background: var(--tip-bg); border-left: 6px solid var(--tip-border); border-radius: 12px; backdrop-filter: blur(4px); font-family: 'Noto Sans HK', sans-serif; font-size: 0.95rem; color: #fff3cd; text-shadow: 0 1px 2px rgba(0,0,0,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: opacity 0.3s ease; position: relative; z-index: 10; border: 1px solid rgba(255,215,0,0.3); }
+        .tip-icon { font-size: 1.2rem; margin-right: 10px; display: inline-block; }
+
+        /* ========== 成功覆層 ========== */
+        .success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; animation: fadeIn 0.3s ease; }
+        .success-overlay.show { display: flex; }
+        .success-content { text-align: center; padding: 50px; background: var(--bg-card); border-radius: 30px; border: 4px solid var(--accent-1); box-shadow: 0 0 60px var(--shadow-glow); max-width: 450px; }
+        .success-icon { font-size: 5rem; margin-bottom: 20px; animation: bounce 1s infinite; }
+        .success-title { font-size: 1.8rem; font-weight: 900; color: var(--accent-1); margin-bottom: 15px; line-height: 1.6; }
+        .success-subtitle { font-size: 1rem; color: var(--text-secondary); }
+
+        /* ========== 響應式 ========== */
         @media (max-width: 480px) {
-            .game-title { font-size: 1.8rem; }
-            .timer-big { font-size: 3.5rem; }
-            .terminal-container { padding: 15px; }
-            .terminal-slot { width: 50px; height: 70px; font-size: 1.8rem; }
-            .terminal-keyboard { grid-template-columns: repeat(6, 1fr); }
-            .terminal-key { padding: 10px 3px; font-size: 0.8rem; }
-            .rotary-phone-container { padding: 20px; max-width: 340px; }
-            .rotary-dial { width: 240px; height: 240px; }
-            .dial-plate { width: 210px; height: 210px; }
-            .dial-hole { width: 30px; height: 30px; }
-            .dial-number { font-size: 0.95rem; }
-            .dial-center { width: 65px; height: 65px; }
-            .dial-center-inner { width: 40px; height: 40px; }
-            .display-number { font-size: 1.4rem; }
-            .password-slot { width: 55px; height: 70px; font-size: 1.8rem; }
-            .level-prompt { font-size: 1.2rem; }
-            .victory-title { font-size: 1.5rem; }
-            .feedback-text { font-size: 0.95rem; padding: 20px; }
-            .form-link { font-size: 1rem; padding: 12px 20px; }
-            .timer-setup, .password-screen, .questions-screen, .victory-screen {
-                padding: 30px 20px;
-            }
-            .tram-timer { font-size: 1.8rem; }
-            .tram-header { font-size: 1.5rem; }
-            .board-tram-btn { font-size: 1.2rem; padding: 16px 30px; }
-            .old-hk-message { font-size: 0.95rem; }
-            .tip-container { font-size: 0.85rem; padding: 12px 16px; }
-            .win95-icons { top: 10px; left: 10px; gap: 20px; }
-            .win95-icon-img { font-size: 24px; width: 32px; height: 32px; }
-            .win95-icon-label { font-size: 10px; }
-            .win95-github-window { max-width: 340px; }
-            .win95-game-badge { bottom: 50px; }
-            .win95-game-badge .badge-title { font-size: 1rem; }
-        }
-
-        @media (max-width: 768px) {
-            .terminal-keyboard { grid-template-columns: repeat(8, 1fr); }
+            .main-title { font-size: 2.5rem; } .sub-title { font-size: 1.2rem; } .begin-btn { padding: 18px 50px; font-size: 1.5rem; }
+            .timer-big { font-size: 3.5rem; } .envelope-title { font-size: 1.8rem; } .envelope-message { font-size: 1.1rem; }
+            .rotary-phone-container { padding: 20px; max-width: 340px; } .rotary-dial { width: 240px; height: 240px; } .dial-plate { width: 210px; height: 210px; } .dial-hole { width: 30px; height: 30px; } .dial-number { font-size: 0.95rem; }
+            .password-slot { width: 55px; height: 70px; font-size: 1.8rem; } .level-prompt { font-size: 1.2rem; }
+            .victory-title { font-size: 1.5rem; } .win95-icons { top: 10px; left: 10px; gap: 20px; }
         }
     </style>
 </head>
 <body>
-    <!-- Fixed Timer -->
+    <!-- 固定計時器 -->
     <div class="timer-fixed" id="timerFixed">
         <div class="timer-display" id="timerDisplay">45:00</div>
     </div>
-
-    <!-- Time Modifier Popup -->
     <div class="time-modifier" id="timeModifier"></div>
 
-    <!-- ========== Screen 1: Windows 95 Desktop Login ========== -->
-    <div class="screen active" id="startScreen">
-        <div class="win95-desktop">
-            <!-- CRT scanline overlay -->
-            <div class="crt-overlay"></div>
-
-            <!-- Desktop Icons -->
-            <div class="win95-icons">
-                <div class="win95-icon">
-                    <div class="win95-icon-img">🖥️</div>
-                    <div class="win95-icon-label">我的電腦</div>
-                </div>
-                <div class="win95-icon">
-                    <div class="win95-icon-img">📁</div>
-                    <div class="win95-icon-label">遊戲檔案</div>
-                </div>
-                <div class="win95-icon">
-                    <div class="win95-icon-img">🗑️</div>
-                    <div class="win95-icon-label">資源回收筒</div>
-                </div>
-                <div class="win95-icon">
-                    <div class="win95-icon-img">🌐</div>
-                    <div class="win95-icon-label">GitHub</div>
-                </div>
+    <!-- ========== 畫面 1：遊戲標題（開場）========= -->
+    <div class="screen active" id="titleScreen">
+        <div class="title-screen">
+            <div class="main-title">迷途顯影</div>
+            <div class="sub-title">Lost in Shadows</div>
+            <button class="begin-btn" id="beginGameBtn">開始旅程</button>
+            <div style="margin-top: 40px; color: var(--text-secondary); font-size: 1.1rem; letter-spacing: 2px;">
+                ⚠️ 請先仔細閱讀說明書才打開任何信封
             </div>
+        </div>
+    </div>
 
-            <!-- Windows Login Image (from the provided screenshot) -->
+    <!-- ========== 畫面 2：計時器設定 ========== -->
+    <div class="screen" id="timerSetupScreen">
+        <div class="timer-setup">
+            <h2 class="game-title">準備開始</h2>
+            <p class="timer-label">倒計時</p>
+            <div class="timer-big">45:00</div>
+            <button class="start-btn" id="startTimerBtn">開始計時</button>
+        </div>
+    </div>
+
+    <!-- ========== 畫面 3：信封 #1 指示（登入前）========= -->
+    <div class="screen" id="envelope1Screen">
+        <div class="envelope-screen">
+            <div class="envelope-icon">📩</div>
+            <div class="envelope-title">信封 #1</div>
+            <div class="envelope-message">
+                請打開第一個信封<br>
+                🔐 裡面有 Windows 95 登入密碼<br>
+                <span style="display:block; margin-top:20px; font-size:1.2rem; color:var(--accent-1);">準備好後按「繼續」</span>
+            </div>
+            <button class="envelope-btn" id="envelope1ContinueBtn">繼續</button>
+            <div class="envelope-note">
+                💡 提示：密碼隱藏在說明書中
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 畫面 4：Windows 95 登入 ========== -->
+    <div class="screen" id="win95LoginScreen">
+        <div class="win95-desktop">
+            <div class="crt-overlay"></div>
+            <div class="win95-icons">
+                <div class="win95-icon"><div class="win95-icon-img">🖥️</div><div class="win95-icon-label">我的電腦</div></div>
+                <div class="win95-icon"><div class="win95-icon-img">📁</div><div class="win95-icon-label">遊戲檔案</div></div>
+                <div class="win95-icon"><div class="win95-icon-img">🗑️</div><div class="win95-icon-label">資源回收筒</div></div>
+                <div class="win95-icon"><div class="win95-icon-img">🌐</div><div class="win95-icon-label">GitHub</div></div>
+            </div>
             <div class="win95-login-image">
                 <img src="windows-login.jpg" alt="Windows Login">
             </div>
-
-            <!-- GitHub-styled login window overlaying the image -->
             <div class="win95-github-window">
                 <div class="win95-window">
                     <div class="win95-titlebar">
-                        <div class="win95-titlebar-text">
-                            <span class="win95-titlebar-icon">🔐</span>
-                            Welcome to 迷途顯影
-                        </div>
+                        <div class="win95-titlebar-text"><span class="win95-titlebar-icon">🔐</span>Welcome to 迷途顯影</div>
                         <div class="win95-titlebar-buttons">
-                            <button class="win95-titlebar-btn" aria-label="Help">?</button>
-                            <button class="win95-titlebar-btn" aria-label="Close">×</button>
+                            <button class="win95-titlebar-btn">?</button>
+                            <button class="win95-titlebar-btn">×</button>
                         </div>
                     </div>
                     <div class="win95-window-body">
                         <div class="win95-github-header">
                             <div class="github-logo-container">
-                                <!-- GitHub Octocat SVG -->
                                 <svg class="github-logo-svg" viewBox="0 0 98 96" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6C29.304 70.188 17.9 65.89 17.9 46.938c0-5.867 2.022-10.675 5.258-14.42-.568-1.303-2.346-6.843.486-14.256 0 0 4.286-1.384 14.073 5.458a48.278 48.278 0 0 1 12.854-1.71c4.367 0 8.736.568 12.854 1.71 9.706-6.842 14.073-5.458 14.073-5.458 2.832 7.413 1.053 12.953.486 14.256 3.317 3.745 5.258 8.553 5.258 14.42 0 18.952-11.404 23.168-22.326 24.39 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.303.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="#24292f"/>
                                 </svg>
@@ -1705,7 +626,7 @@
                         <hr class="win95-divider">
                         <div class="win95-form-group">
                             <label class="win95-label" for="win95user"><u>U</u>ser name:</label>
-                            <input class="win95-input" type="text" id="win95user" value="Player" autocomplete="off" spellcheck="false">
+                            <input class="win95-input" type="text" id="win95user" value="Player" autocomplete="off">
                         </div>
                         <div class="win95-form-group">
                             <label class="win95-label" for="win95pass"><u>P</u>assword:</label>
@@ -1718,141 +639,39 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Game Title Badge -->
             <div class="win95-game-badge">
                 <div class="badge-title">迷途顯影</div>
-                <div class="badge-sub">⚠️ 請先仔細閱讀說明書才打開任何信封</div>
+                <div class="badge-sub">🔑 密碼在第一個信封</div>
             </div>
-
-            <!-- Windows 95 Taskbar -->
             <div class="win95-taskbar">
-                <button class="win95-start-btn">
-                    <span class="start-flag">🪟</span>
-                    <span>Start</span>
-                </button>
+                <button class="win95-start-btn"><span class="start-flag">🪟</span><span>Start</span></button>
                 <div class="win95-taskbar-spacer"></div>
-                <div class="win95-taskbar-tray">
-                    <span>🔊</span>
-                    <span id="win95Clock">--:--</span>
-                </div>
+                <div class="win95-taskbar-tray"><span>🔊</span><span id="win95Clock">--:--</span></div>
             </div>
         </div>
     </div>
 
-    <!-- Custom Modal (replaces alert) -->
+    <!-- 自訂 Modal -->
     <div class="win95-modal-overlay" id="customModal">
         <div class="win95-modal">
             <div class="win95-titlebar">
-                <div class="win95-titlebar-text">
-                    <span class="win95-titlebar-icon">📩</span>
-                    <span id="modalTitle">提示</span>
-                </div>
-                <div class="win95-titlebar-buttons">
-                    <button class="win95-titlebar-btn" id="modalCloseX" aria-label="Close">×</button>
-                </div>
+                <div class="win95-titlebar-text"><span class="win95-titlebar-icon">📩</span><span id="modalTitle">提示</span></div>
+                <div class="win95-titlebar-buttons"><button class="win95-titlebar-btn" id="modalCloseX">×</button></div>
             </div>
             <div class="win95-modal-body">
                 <div class="win95-modal-icon" id="modalIcon">📩</div>
                 <div class="win95-modal-text" id="modalText"></div>
             </div>
-            <div class="win95-modal-footer">
-                <button class="win95-btn primary" id="modalOkBtn">確定</button>
-            </div>
+            <div class="win95-modal-footer"><button class="win95-btn primary" id="modalOkBtn">確定</button></div>
         </div>
     </div>
 
-    <!-- ========== Screen 2: Timer Setup ========== -->
-    <div class="screen" id="timerSetupScreen">
-        <div class="timer-setup">
-            <h2 class="game-title" style="font-size: 1.8rem;">準備開始</h2>
-            <p class="timer-label">倒計時</p>
-            <div class="timer-big">45:00</div>
-            <button class="start-btn" id="startTimerBtn">開始計時</button>
-        </div>
-    </div>
-
-    <!-- ========== Screen 3: Terminal Computer Password (第1關) ========== -->
-    <div class="screen" id="terminalScreen">
-        <div class="terminal-screen">
-            <div class="terminal-container">
-                <div class="terminal-header">
-                    <h2 class="terminal-title">系統登入終端機 v1.0</h2>
-                    <div class="terminal-status">
-                        <div class="status-led led-red"></div>
-                        <div class="status-led led-yellow"></div>
-                        <div class="status-led led-green"></div>
-                    </div>
-                </div>
-                <div class="terminal-content">
-                    <div class="terminal-text">
-╔══════════════════════════════════════════════════════════════════╗
-║                                                                  ║
-║  電腦登入系統                                                  ║
-║  ===================                                            ║
-║                                                                  ║
-║  [狀態] 系統初始化中...                                        ║
-║  [狀態] 系統準備就緒                                          ║
-║  [狀態] 等待密碼輸入...                                        ║
-║                                                                  ║
-║  請輸入四位驗證碼:                                             ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝
-                    </div>
-                </div>
-                <div class="terminal-password-display" id="terminalPasswordDisplay">
-                    <div class="terminal-slot active">_</div>
-                    <div class="terminal-slot">_</div>
-                    <div class="terminal-slot">_</div>
-                    <div class="terminal-slot">_</div>
-                </div>
-                <div class="terminal-keyboard" id="terminalKeyboard">
-                    <button class="terminal-key" data-key="A">A</button>
-                    <button class="terminal-key" data-key="B">B</button>
-                    <button class="terminal-key" data-key="C">C</button>
-                    <button class="terminal-key" data-key="D">D</button>
-                    <button class="terminal-key" data-key="E">E</button>
-                    <button class="terminal-key" data-key="F">F</button>
-                    <button class="terminal-key" data-key="G">G</button>
-                    <button class="terminal-key" data-key="H">H</button>
-                    <button class="terminal-key" data-key="I">I</button>
-                    <button class="terminal-key" data-key="J">J</button>
-                    <button class="terminal-key" data-key="K">K</button>
-                    <button class="terminal-key" data-key="L">L</button>
-                    <button class="terminal-key" data-key="M">M</button>
-                    <button class="terminal-key" data-key="N">N</button>
-                    <button class="terminal-key" data-key="O">O</button>
-                    <button class="terminal-key" data-key="P">P</button>
-                    <button class="terminal-key" data-key="Q">Q</button>
-                    <button class="terminal-key" data-key="R">R</button>
-                    <button class="terminal-key" data-key="S">S</button>
-                    <button class="terminal-key" data-key="T">T</button>
-                    <button class="terminal-key" data-key="U">U</button>
-                    <button class="terminal-key" data-key="V">V</button>
-                    <button class="terminal-key" data-key="W">W</button>
-                    <button class="terminal-key" data-key="X">X</button>
-                    <button class="terminal-key" data-key="Y">Y</button>
-                    <button class="terminal-key" data-key="Z">Z</button>
-                    <button class="terminal-key backspace" data-key="backspace">⌫ 刪除</button>
-                    <button class="terminal-key enter" data-key="enter">↵ 確認</button>
-                </div>
-                <div class="terminal-status-message" id="terminalStatus"></div>
-            </div>
-            <div class="tip-container" id="tip1">
-                <span class="tip-icon">💡</span>
-                <span id="tip1Text">過山車列車設計為綠紫色飛龍</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- ========== Screen 4: Rotary Phone (第2關) ========== -->
+    <!-- ========== 畫面 5：旋轉撥號電話 · 信封 #2 ========== -->
     <div class="screen" id="phoneScreen">
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
-            <div class="phone-header"><h2 class="phone-title">📞 撥號電話</h2></div>
-            <div class="phone-display">
-                <div class="display-number empty" id="phoneDisplay">輸入號碼</div>
-            </div>
+            <div class="phone-header"><h2 class="phone-title">📞 信封 #2 · 撥號電話</h2></div>
+            <div class="phone-display"><div class="display-number empty" id="phoneDisplay">輸入號碼</div></div>
             <div class="rotary-dial-wrapper">
                 <div class="rotary-dial" id="rotaryDial">
                     <div class="dial-plate" id="dialPlate"></div>
@@ -1867,90 +686,63 @@
             <div class="dial-instruction">將手指放入數字孔，順時針旋轉至擋片後放開</div>
             <div class="phone-status" id="phoneStatus"></div>
         </div>
-        <div class="tip-container" id="tip2" style="margin-top: 20px; max-width: 380px;">
-            <span class="tip-icon">💡</span>
-            <span id="tip2Text">花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價</span>
+        <div class="tip-container" id="tip2" style="margin-top:20px; max-width:380px;">
+            <span class="tip-icon">💡</span><span id="tip2Text">花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價</span>
         </div>
     </div>
 
-    <!-- ========== Screen 5: 4-digit Password (鐵閘密碼) 原為第3關，移除重複終端機後順位前移 ========== -->
+    <!-- ========== 畫面 6：四位數字密碼 · 鐵閘 · 信封 #3 ========== -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
-            <div class="level-prompt">🔒 你現在需要找到四位數字密碼<br>破解鐵閘密碼鎖</div>
+            <div class="level-prompt">🔒 信封 #3 · 破解鐵閘密碼鎖<br>四位數字密碼</div>
             <div class="password-display" id="password2Display">
-                <div class="password-slot active">_</div>
-                <div class="password-slot">_</div>
-                <div class="password-slot">_</div>
-                <div class="password-slot">_</div>
+                <div class="password-slot active">_</div><div class="password-slot">_</div><div class="password-slot">_</div><div class="password-slot">_</div>
             </div>
             <div class="password-keypad">
-                <button class="password-key" data-num="1">1</button>
-                <button class="password-key" data-num="2">2</button>
-                <button class="password-key" data-num="3">3</button>
-                <button class="password-key" data-num="4">4</button>
-                <button class="password-key" data-num="5">5</button>
-                <button class="password-key" data-num="6">6</button>
-                <button class="password-key" data-num="7">7</button>
-                <button class="password-key" data-num="8">8</button>
-                <button class="password-key" data-num="9">9</button>
+                <button class="password-key" data-num="1">1</button><button class="password-key" data-num="2">2</button><button class="password-key" data-num="3">3</button>
+                <button class="password-key" data-num="4">4</button><button class="password-key" data-num="5">5</button><button class="password-key" data-num="6">6</button>
+                <button class="password-key" data-num="7">7</button><button class="password-key" data-num="8">8</button><button class="password-key" data-num="9">9</button>
                 <button class="password-key backspace" data-num="back">⌫</button>
                 <button class="password-key" data-num="0">0</button>
                 <button class="password-key submit" data-num="submit">✓</button>
             </div>
             <div class="input-status" id="level2Status"></div>
         </div>
-        <div class="tip-container" id="tip3" style="margin-top: 20px; max-width: 450px;">
-            <span class="tip-icon">💡</span>
-            <span id="tip3Text">通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。若有緊急的事，請拍門吧！</span>
+        <div class="tip-container" id="tip3" style="margin-top:20px; max-width:450px;">
+            <span class="tip-icon">💡</span><span id="tip3Text">通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。</span>
         </div>
     </div>
 
-    <!-- ========== Screen 6: 等電車 (第4關，原第4關) ========== -->
+    <!-- ========== 畫面 7：電車等候 · 信封 #4 ========== -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
-                <div class="tram-header">🚋 電車站 · 等候中</div>
+                <div class="tram-header">🚋 信封 #4 · 電車站等候</div>
                 <div class="tram-timer" id="tramWaitTimer">07:00</div>
-                <div class="tram-message" id="tramMessage">
-                    仲有少少時間，同朋友傾吓計啦～
-                </div>
+                <div class="tram-message" id="tramMessage">仲有少少時間，同朋友傾吓計啦～</div>
                 <div class="tram-question-area">
-                    <div class="tram-question-text" id="tramQuestionText">
-                        你最喜歡香港嘅邊個地方？
-                    </div>
-                    <button class="chat-btn" id="tramChatBtn">
-                        💬 我想再傾多啲
-                    </button>
+                    <div class="tram-question-text" id="tramQuestionText">你最喜歡香港嘅邊個地方？</div>
+                    <button class="chat-btn" id="tramChatBtn">💬 我想再傾多啲</button>
                 </div>
-                <button class="board-tram-btn hidden" id="boardTramBtn">
-                    🚃 電車終於到站，按這裏上車！
-                </button>
+                <button class="board-tram-btn hidden" id="boardTramBtn">🚃 電車終於到站，按這裏上車！</button>
             </div>
         </div>
-        <div class="tip-container" id="tip5" style="margin-top: 20px; max-width: 600px;">
-            <span class="tip-icon">💡</span>
-            <span id="tip5Text">為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止</span>
+        <div class="tip-container" id="tip5" style="margin-top:20px; max-width:600px;">
+            <span class="tip-icon">💡</span><span id="tip5Text">為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止</span>
         </div>
     </div>
 
-    <!-- ========== Screen 7: 2-digit Number (電車站編號，第5關) ========== -->
+    <!-- ========== 畫面 8：兩位數字 · 電車站編號 · 信封 #5 ========== -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
-            <div class="level-prompt">🚃 電車站號碼咁多…<br>睇嚟要搵一個兩位數字號碼<br>先可以去到中環</div>
+            <div class="level-prompt">🚃 信封 #5 · 電車站號碼<br>兩位數字 前往中環</div>
             <div class="password-display" id="password3Display">
-                <div class="password-slot active">_</div>
-                <div class="password-slot">_</div>
+                <div class="password-slot active">_</div><div class="password-slot">_</div>
             </div>
             <div class="password-keypad">
-                <button class="password-key" data-num="1">1</button>
-                <button class="password-key" data-num="2">2</button>
-                <button class="password-key" data-num="3">3</button>
-                <button class="password-key" data-num="4">4</button>
-                <button class="password-key" data-num="5">5</button>
-                <button class="password-key" data-num="6">6</button>
-                <button class="password-key" data-num="7">7</button>
-                <button class="password-key" data-num="8">8</button>
-                <button class="password-key" data-num="9">9</button>
+                <button class="password-key" data-num="1">1</button><button class="password-key" data-num="2">2</button><button class="password-key" data-num="3">3</button>
+                <button class="password-key" data-num="4">4</button><button class="password-key" data-num="5">5</button><button class="password-key" data-num="6">6</button>
+                <button class="password-key" data-num="7">7</button><button class="password-key" data-num="8">8</button><button class="password-key" data-num="9">9</button>
                 <button class="password-key backspace" data-num="back">⌫</button>
                 <button class="password-key" data-num="0">0</button>
                 <button class="password-key submit" data-num="submit">✓</button>
@@ -1959,26 +751,23 @@
         </div>
     </div>
 
-    <!-- ========== Screen 8: Final Victory ========== -->
+    <!-- ========== 畫面 9：終點 · 勝利 ========== -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
             <h1 class="victory-title">恭喜你成功準時到達比賽現場並成功通關！</h1>
             <p class="victory-instruction">📖 請大家閱讀說明書第七頁</p>
             <div class="old-hk-message">
-                📸 通關後可以慢慢欣賞背面嘅相片，<br>
-                每一張都展現舊香港嘅珍貴景象。
+                📸 通關後可以慢慢欣賞背面嘅相片，<br>每一張都展現舊香港嘅珍貴景象。
             </div>
             <div class="feedback-text">
-                <p style="margin-bottom: 16px;">希望你有個好的遊戲體驗！<br>若你有任何想法或意見，歡迎填寫產品回饋表：</p>
-                <a class="form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfU3oFH5eu60wD_37TQ97h5D6swfk9sIAe7G0emI0QfjaMYkQ/viewform?pli=1&authuser=0" target="_blank" rel="noopener noreferrer">
-                    📝 填寫回饋表
-                </a>
+                <p style="margin-bottom:16px;">希望你有個好的遊戲體驗！<br>若你有任何想法或意見，歡迎填寫產品回饋表：</p>
+                <a class="form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfU3oFH5eu60wD_37TQ97h5D6swfk9sIAe7G0emI0QfjaMYkQ/viewform?pli=1&authuser=0" target="_blank" rel="noopener noreferrer">📝 填寫回饋表</a>
             </div>
         </div>
     </div>
 
-    <!-- Success Overlay -->
+    <!-- 成功覆層（過關動畫） -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-content">
             <div class="success-icon" id="successIcon">🎉</div>
@@ -1988,122 +777,58 @@
     </div>
 
     <script>
-        /* ========== CUSTOM MODAL (replaces alert) ========== */
+        // ========== 自訂 MODAL ==========
         function showModal(message, title, icon, onClose) {
-            var overlay = document.getElementById('customModal');
+            let overlay = document.getElementById('customModal');
             document.getElementById('modalText').textContent = message;
             document.getElementById('modalTitle').textContent = title || '提示';
             document.getElementById('modalIcon').textContent = icon || '📩';
             overlay.classList.add('show');
-
-            function close() {
-                overlay.classList.remove('show');
-                if (onClose) onClose();
-            }
+            function close() { overlay.classList.remove('show'); if (onClose) onClose(); }
             document.getElementById('modalOkBtn').onclick = close;
             document.getElementById('modalCloseX').onclick = close;
         }
 
-        /* ========== WINDOWS 95 CLOCK ========== */
+        // ========== Windows 95 時鐘 ==========
         function updateWin95Clock() {
-            var now = new Date();
-            var h = String(now.getHours()).padStart(2, '0');
-            var m = String(now.getMinutes()).padStart(2, '0');
-            var el = document.getElementById('win95Clock');
+            let now = new Date();
+            let h = String(now.getHours()).padStart(2,'0');
+            let m = String(now.getMinutes()).padStart(2,'0');
+            let el = document.getElementById('win95Clock');
             if (el) el.textContent = h + ':' + m;
         }
         setInterval(updateWin95Clock, 30000);
         updateWin95Clock();
 
-        /* ========== AUDIO CONTEXT ========== */
-        var audioContext = null;
-
+        // ========== 音訊系統 — 完整保留 ==========
+        let audioContext = null;
         function getAudioContext() {
-            if (!audioContext) {
-                audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            }
+            if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
             if (audioContext.state === 'suspended') audioContext.resume();
             return audioContext;
         }
-
-        function playTone(frequency, duration) {
-            var ctx = getAudioContext();
-            if (!ctx) return;
-            var oscillator = ctx.createOscillator();
-            var gainNode = ctx.createGain();
-            oscillator.connect(gainNode);
-            gainNode.connect(ctx.destination);
-            oscillator.frequency.value = frequency;
-            oscillator.type = 'sine';
-            gainNode.gain.setValueAtTime(0.3, ctx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
-            oscillator.start(ctx.currentTime);
-            oscillator.stop(ctx.currentTime + duration);
+        function playTone(freq, dur) { 
+            let ctx = getAudioContext(); if (!ctx) return;
+            let osc = ctx.createOscillator(), gn = ctx.createGain();
+            osc.connect(gn); gn.connect(ctx.destination);
+            osc.frequency.value = freq; osc.type = 'sine';
+            gn.gain.setValueAtTime(0.3, ctx.currentTime);
+            gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + dur);
+            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur);
         }
-
         function playSuccessSound() {
-            [{freq:523.25,time:0},{freq:659.25,time:0.12},{freq:783.99,time:0.24},{freq:1046.50,time:0.36}]
-                .forEach(function(note) { setTimeout(function() { playTone(note.freq, 0.2); }, note.time * 1000); });
+            [{f:523.25,t:0},{f:659.25,t:0.12},{f:783.99,t:0.24},{f:1046.50,t:0.36}]
+                .forEach(n => setTimeout(()=>playTone(n.f,0.2), n.t*1000));
         }
-
-        function playErrorSound() {
-            playTone(200, 0.15);
-            setTimeout(function() { playTone(150, 0.2); }, 100);
-        }
-
+        function playErrorSound() { playTone(200,0.15); setTimeout(()=>playTone(150,0.2),100); }
         function playUnlockSound() {
-            setTimeout(function() { playTone(800, 0.05); }, 0);
-            setTimeout(function() { playTone(600, 0.05); }, 50);
-            setTimeout(function() { playTone(1200, 0.1); }, 100);
-            setTimeout(function() { playTone(523, 0.15); playTone(659, 0.15); }, 200);
-            setTimeout(function() { playTone(784, 0.2); }, 350);
+            setTimeout(()=>playTone(800,0.05),0); setTimeout(()=>playTone(600,0.05),50);
+            setTimeout(()=>playTone(1200,0.1),100); setTimeout(()=>{playTone(523,0.15);playTone(659,0.15);},200);
+            setTimeout(()=>playTone(784,0.2),350);
         }
-
-        function playTerminalKeySound() {
-            var ctx = getAudioContext();
-            if (!ctx) return;
-            var oscillator = ctx.createOscillator();
-            var gainNode = ctx.createGain();
-            var filter = ctx.createBiquadFilter();
-            oscillator.connect(filter);
-            filter.connect(gainNode);
-            gainNode.connect(ctx.destination);
-            filter.type = 'bandpass';
-            filter.frequency.value = 1200;
-            filter.Q.value = 5;
-            oscillator.type = 'square';
-            oscillator.frequency.value = 800;
-            gainNode.gain.setValueAtTime(0.1, ctx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-            oscillator.start(ctx.currentTime);
-            oscillator.stop(ctx.currentTime + 0.05);
-        }
-
-        function playTerminalAccessSound() {
-            var ctx = getAudioContext();
-            if (!ctx) return;
-            var tones = [
-                {freq:300,time:0},{freq:600,time:0.1},{freq:900,time:0.2},{freq:1200,time:0.3},{freq:1500,time:0.4}
-            ];
-            tones.forEach(function(tone) {
-                setTimeout(function() {
-                    var osc = ctx.createOscillator();
-                    var gn = ctx.createGain();
-                    osc.connect(gn); gn.connect(ctx.destination);
-                    osc.frequency.value = tone.freq; osc.type = 'sine';
-                    gn.gain.setValueAtTime(0.2, ctx.currentTime);
-                    gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-                    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
-                }, tone.time * 1000);
-            });
-        }
-
         function playRotaryClickSound() {
-            var ctx = getAudioContext();
-            if (!ctx) return;
-            var osc = ctx.createOscillator();
-            var gn = ctx.createGain();
-            var flt = ctx.createBiquadFilter();
+            let ctx = getAudioContext(); if(!ctx) return;
+            let osc = ctx.createOscillator(), gn = ctx.createGain(), flt = ctx.createBiquadFilter();
             osc.connect(flt); flt.connect(gn); gn.connect(ctx.destination);
             flt.type = 'lowpass'; flt.frequency.value = 800;
             osc.type = 'square'; osc.frequency.value = 100;
@@ -2111,548 +836,308 @@
             gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
             osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.05);
         }
-
-        function playDialReturnSound(duration) {
-            var ctx = getAudioContext();
-            if (!ctx) return;
-            var clickCount = Math.floor(duration * 12);
-            for (var i = 0; i < clickCount; i++) {
-                (function(idx) {
-                    setTimeout(function() {
-                        var osc = ctx.createOscillator();
-                        var gn = ctx.createGain();
-                        osc.connect(gn); gn.connect(ctx.destination);
-                        osc.type = 'square'; osc.frequency.value = 150 + Math.random() * 50;
-                        gn.gain.setValueAtTime(0.15, ctx.currentTime);
-                        gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.03);
-                        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.03);
-                    }, idx * (duration * 1000 / clickCount));
-                })(i);
-            }
+        function playDialReturnSound(dur) {
+            let ctx = getAudioContext(); if(!ctx) return;
+            let cnt = Math.floor(dur*12);
+            for(let i=0;i<cnt;i++) (idx=>setTimeout(()=>{
+                let osc = ctx.createOscillator(), gn = ctx.createGain();
+                osc.connect(gn); gn.connect(ctx.destination);
+                osc.type = 'square'; osc.frequency.value = 150+Math.random()*50;
+                gn.gain.setValueAtTime(0.15, ctx.currentTime);
+                gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+0.03);
+                osc.start(ctx.currentTime); osc.stop(ctx.currentTime+0.03);
+            }, idx*(dur*1000/cnt)))(i);
         }
-
-        /* Windows 95 startup chime */
         function playWin95StartupSound() {
-            var ctx = getAudioContext();
-            if (!ctx) return;
-            var notes = [
-                {freq:523,time:0,dur:0.25},
-                {freq:659,time:0.15,dur:0.25},
-                {freq:784,time:0.30,dur:0.3},
-                {freq:1047,time:0.50,dur:0.4}
-            ];
-            notes.forEach(function(n) {
-                setTimeout(function() {
-                    var osc = ctx.createOscillator();
-                    var gn = ctx.createGain();
-                    osc.connect(gn); gn.connect(ctx.destination);
-                    osc.type = 'sine'; osc.frequency.value = n.freq;
-                    gn.gain.setValueAtTime(0.25, ctx.currentTime);
-                    gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + n.dur);
-                    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + n.dur);
-                }, n.time * 1000);
-            });
+            let ctx = getAudioContext(); if(!ctx) return;
+            let notes = [{f:523,t:0,d:0.25},{f:659,t:0.15,d:0.25},{f:784,t:0.30,d:0.3},{f:1047,t:0.50,d:0.4}];
+            notes.forEach(n => setTimeout(()=>{
+                let osc = ctx.createOscillator(), gn = ctx.createGain();
+                osc.connect(gn); gn.connect(ctx.destination);
+                osc.type = 'sine'; osc.frequency.value = n.f;
+                gn.gain.setValueAtTime(0.25, ctx.currentTime);
+                gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + n.d);
+                osc.start(ctx.currentTime); osc.stop(ctx.currentTime + n.d);
+            }, n.t*1000));
         }
 
-        /* ========== TIMER ========== */
-        var timerInterval = null, totalSeconds = 45 * 60, timerRunning = false;
-
+        // ========== 計時器 ==========
+        let timerInterval = null, totalSeconds = 45*60, timerRunning = false;
         function updateTimerDisplay() {
-            var minutes = Math.floor(totalSeconds / 60);
-            var seconds = totalSeconds % 60;
-            document.getElementById('timerDisplay').textContent =
-                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
-            var timerFixed = document.getElementById('timerFixed');
-            timerFixed.classList.remove('warning', 'danger');
-            if (totalSeconds <= 60) timerFixed.classList.add('danger');
-            else if (totalSeconds <= 300) timerFixed.classList.add('warning');
+            let m = Math.floor(totalSeconds/60), s = totalSeconds%60;
+            document.getElementById('timerDisplay').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+            let tf = document.getElementById('timerFixed');
+            tf.classList.remove('warning','danger');
+            if (totalSeconds <= 60) tf.classList.add('danger');
+            else if (totalSeconds <= 300) tf.classList.add('warning');
         }
-
         function startTimer() {
             if (timerRunning) return;
             timerRunning = true;
             document.getElementById('timerFixed').classList.add('active');
-            timerInterval = setInterval(function() {
-                if (totalSeconds > 0) { totalSeconds--; updateTimerDisplay(); }
-                else clearInterval(timerInterval);
-            }, 1000);
+            timerInterval = setInterval(()=>{ if(totalSeconds>0) totalSeconds--; updateTimerDisplay(); },1000);
         }
-
         function modifyTime(seconds, isAdd) {
-            totalSeconds += seconds;
-            if (totalSeconds < 0) totalSeconds = 0;
+            totalSeconds += seconds; if (totalSeconds<0) totalSeconds=0;
             updateTimerDisplay();
-            var modifier = document.getElementById('timeModifier');
-            modifier.textContent = isAdd ? ('+' + Math.abs(seconds / 60) + ' 分鐘') : ('-' + Math.abs(seconds / 60) + ' 分鐘');
-            modifier.className = 'time-modifier show ' + (isAdd ? 'add' : 'subtract');
-            setTimeout(function() { modifier.classList.remove('show'); }, 2500);
+            let mod = document.getElementById('timeModifier');
+            mod.textContent = isAdd ? ('+'+Math.abs(seconds/60)+' 分鐘') : ('-'+Math.abs(seconds/60)+' 分鐘');
+            mod.className = 'time-modifier show ' + (isAdd ? 'add' : 'subtract');
+            setTimeout(()=>mod.classList.remove('show'), 2500);
         }
 
-        /* ========== SCREEN NAVIGATION ========== */
+        // ========== 畫面切換 ==========
         function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
         }
-
-        function showSuccess(icon, title, subtitle, callback, delay) {
-            delay = delay || 3000;
-            var overlay = document.getElementById('successOverlay');
+        function showSuccess(icon, title, subtitle, callback, delay=3000) {
+            let ov = document.getElementById('successOverlay');
             document.getElementById('successIcon').textContent = icon;
             document.getElementById('successTitle').textContent = title;
             document.getElementById('successSubtitle').textContent = subtitle;
-            overlay.classList.add('show');
-            playSuccessSound();
-            setTimeout(function() { overlay.classList.remove('show'); if (callback) callback(); }, delay);
+            ov.classList.add('show'); playSuccessSound();
+            setTimeout(()=>{ ov.classList.remove('show'); if(callback) callback(); }, delay);
         }
 
-        /* ========== TIP SYSTEM ========== */
-        var tipsLevel1 = [
-            "過山車列車設計為綠紫色飛龍",
-            "中環街市是香港少數在二戰前建成的室內街市，具有重要的歷史價值",
-            "尖沙咀鐘樓內部的響鬧報時裝置在1950年被抽走，歷經71年無聲鐘",
-            "過山車最高時速達每小時25公里"
-        ];
-        var tipsLevel2 = [
-            "花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價",
-            "花碼以簡便的線條作速記，通常分兩行書寫以表示數字與量級",
-            "花碼在阿拉伯數字普及後，僅在極少數舊店或招牌可見",
-            "第一代小巴價錢牌是以花碼寫成"
-        ];
-        var tipsLevel3 = [
-            "通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。若有緊急的事，請拍門吧！",
-            "以「前舖後居」方式經營的店舖，沒有窗戶，通花鐵閘成為了唯一的通風口",
-            "許多店主會將店舖字號或花紋直接鑿在鐵閘上，視為另類廣告",
-            "隨時代發展，現代商鋪多用節省空間的捲閘"
-        ];
-        var tipsLevel5 = [
-            "為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止",
-            "當時政府也採取了關閉公共浴室、暫緩慢性病外科手術及重開舊水井等極端措施",
-            "據說水荒時，向人借水跟來討債的人一樣不受歡迎",
-            "北漏洞拉，越南與廣播用於宣傳「甄別政策」，告知船民將被扣留並遣返",
-            "「樓下閂水喉呀!」",
-            "香港曾被稱為「第一收容港」",
-            "難民營內常因不同政治背景發生衝突，警隊需將兩派船民分開居住，並常搜出自行製造的武器"
-        ];
-
-        function rotateTip(tipArray, elementId) {
-            var idx = Math.floor(Math.random() * tipArray.length);
-            var el = document.getElementById(elementId);
-            if (el) el.textContent = tipArray[idx];
-        }
-
-        var tipInterval1, tipInterval2, tipInterval3, tipInterval5;
-
+        // ========== 小提示輪播 ==========
+        let tipsLevel2 = ["花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價","花碼以簡便的線條作速記，通常分兩行書寫","第一代小巴價錢牌是以花碼寫成"];
+        let tipsLevel3 = ["通了花便會透光，晚上能從發亮的通花得悉燈還沒關","以「前舖後居」方式經營的店舖，沒有窗戶","許多店主會將店舖字號或花紋直接鑿在鐵閘上"];
+        let tipsLevel5 = ["為節省用水，酒樓派發「水籌」，硬性規定沖茶次數","香港曾被稱為「第一收容港」","難民營內常因不同政治背景發生衝突"];
+        function rotateTip(arr, elId) { let idx = Math.floor(Math.random()*arr.length); let el = document.getElementById(elId); if(el) el.textContent = arr[idx]; }
+        let tipInt2, tipInt3, tipInt5;
         function startAllTipTimers() {
-            if (tipInterval1) clearInterval(tipInterval1);
-            if (tipInterval2) clearInterval(tipInterval2);
-            if (tipInterval3) clearInterval(tipInterval3);
-            if (tipInterval5) clearInterval(tipInterval5);
-            rotateTip(tipsLevel1, 'tip1Text');
-            rotateTip(tipsLevel2, 'tip2Text');
-            rotateTip(tipsLevel3, 'tip3Text');
-            rotateTip(tipsLevel5, 'tip5Text');
-            tipInterval1 = setInterval(function() { rotateTip(tipsLevel1, 'tip1Text'); }, 120000);
-            tipInterval2 = setInterval(function() { rotateTip(tipsLevel2, 'tip2Text'); }, 120000);
-            tipInterval3 = setInterval(function() { rotateTip(tipsLevel3, 'tip3Text'); }, 120000);
-            tipInterval5 = setInterval(function() { rotateTip(tipsLevel5, 'tip5Text'); }, 120000);
+            if(tipInt2) clearInterval(tipInt2); if(tipInt3) clearInterval(tipInt3); if(tipInt5) clearInterval(tipInt5);
+            rotateTip(tipsLevel2,'tip2Text'); rotateTip(tipsLevel3,'tip3Text'); rotateTip(tipsLevel5,'tip5Text');
+            tipInt2 = setInterval(()=>rotateTip(tipsLevel2,'tip2Text'), 120000);
+            tipInt3 = setInterval(()=>rotateTip(tipsLevel3,'tip3Text'), 120000);
+            tipInt5 = setInterval(()=>rotateTip(tipsLevel5,'tip5Text'), 120000);
         }
 
-        /* ========== TERMINAL COMPUTER PASSWORD ========== */
-        var terminalPassword = '';
-        var correctTerminalPassword = 'VRDU';
-
-        function updateTerminalPasswordDisplay() {
-            var slots = document.getElementById('terminalPasswordDisplay').querySelectorAll('.terminal-slot');
-            slots.forEach(function(slot, i) {
-                slot.classList.remove('active', 'filled');
-                if (i < terminalPassword.length) {
-                    slot.textContent = terminalPassword[i];
-                    slot.classList.add('filled');
-                } else if (i === terminalPassword.length) {
-                    slot.textContent = '_';
-                    slot.classList.add('active');
-                } else {
-                    slot.textContent = '_';
-                }
-            });
-        }
-
-        function showTerminalStatus(message, type) {
-            var status = document.getElementById('terminalStatus');
-            status.textContent = message;
-            status.className = 'terminal-status-message show ' + type;
-            setTimeout(function() { status.classList.remove('show'); }, 3000);
-        }
-
-        function checkTerminalPassword() {
-            if (terminalPassword.length < 4) {
-                showTerminalStatus('錯誤：密碼必須為4個字符', 'error');
-                playErrorSound(); return;
-            }
-            if (terminalPassword === correctTerminalPassword) {
-                playTerminalAccessSound();
-                showSuccess('💾', '系統登入成功', '終端機已解鎖！', function() {
-                    showScreen('phoneScreen'); initRotaryDial();
-                }, 3000);
-            } else {
-                showTerminalStatus('錯誤：登入失敗，密碼不正確', 'error');
-                playErrorSound();
-                setTimeout(function() { terminalPassword = ''; updateTerminalPasswordDisplay(); }, 1000);
-            }
-        }
-
-        /* ========== ROTARY DIAL PHONE ========== */
-        var phoneConfig = {
-            correct: { '56123517': { audio: '豬肉榮.m4a', name: '豬肉榮' } },
-            wrong: {
-                '63589512': { audio: '李太.m4a', message: '打錯了！這是李太的電話。' },
-                '97621245': { audio: '吳哥.m4a', message: '打錯了！這是吳哥的電話。' }
-            }
+        // ========== 旋轉撥號 — 完整實作 ==========
+        let phoneConfig = {
+            correct: { '56123517': { audio: '豬肉榮.m4a', name:'豬肉榮' } },
+            wrong: { '63589512': { audio:'李太.m4a', message:'打錯了！這是李太的電話。' },
+                     '97621245': { audio:'吳哥.m4a', message:'打錯了！這是吳哥的電話。' } }
         };
-
-        var phoneNumber = '', isDialing = false;
-        var dialNumbers = ['1','2','3','4','5','6','7','8','9','0'];
-        var startAngle = -60, angleStep = 30;
-
+        let phoneNumber = '', isDialing = false;
+        let dialNumbers = ['1','2','3','4','5','6','7','8','9','0'];
+        let startAngle = -60, angleStep = 30;
         function initRotaryDial() {
-            var dialPlate = document.getElementById('dialPlate');
-            var isSmall = window.innerWidth <= 480;
-            var dialSize = isSmall ? 210 : 250;
-            var holeSize = isSmall ? 30 : 36;
-            var adjustedHoleRadius = isSmall ? 75 : 90;
-            var numberRadius = isSmall ? 95 : 115;
-            dialPlate.innerHTML = '';
-
-            dialNumbers.forEach(function(num, index) {
-                var angle = (startAngle + index * angleStep) * (Math.PI / 180);
-                var holeX = dialSize / 2 + adjustedHoleRadius * Math.sin(angle) - holeSize / 2;
-                var holeY = dialSize / 2 - adjustedHoleRadius * Math.cos(angle) - holeSize / 2;
-
-                var hole = document.createElement('div');
-                hole.className = 'dial-hole';
-                hole.dataset.num = num;
-                hole.style.cssText = 'left:' + holeX + 'px;top:' + holeY + 'px;width:' + holeSize + 'px;height:' + holeSize + 'px';
-                dialPlate.appendChild(hole);
-
-                var numX = dialSize / 2 + numberRadius * Math.sin(angle);
-                var numY = dialSize / 2 - numberRadius * Math.cos(angle);
-                var numLabel = document.createElement('div');
-                numLabel.className = 'dial-number';
-                numLabel.textContent = num;
-                numLabel.style.cssText = 'left:' + numX + 'px;top:' + numY + 'px;transform:translate(-50%,-50%)';
-                dialPlate.appendChild(numLabel);
+            let plate = document.getElementById('dialPlate');
+            let small = window.innerWidth <= 480;
+            let dSize = small ? 210 : 250, hSize = small ? 30 : 36, hRad = small ? 75 : 90, numRad = small ? 95 : 115;
+            plate.innerHTML = '';
+            dialNumbers.forEach((num, idx) => {
+                let ang = (startAngle + idx * angleStep) * Math.PI/180;
+                let hx = dSize/2 + hRad * Math.sin(ang) - hSize/2;
+                let hy = dSize/2 - hRad * Math.cos(ang) - hSize/2;
+                let hole = document.createElement('div');
+                hole.className = 'dial-hole'; hole.dataset.num = num;
+                hole.style.cssText = `left:${hx}px;top:${hy}px;width:${hSize}px;height:${hSize}px`;
+                plate.appendChild(hole);
+                let nx = dSize/2 + numRad * Math.sin(ang);
+                let ny = dSize/2 - numRad * Math.cos(ang);
+                let lbl = document.createElement('div');
+                lbl.className = 'dial-number'; lbl.textContent = num;
+                lbl.style.cssText = `left:${nx}px;top:${ny}px;transform:translate(-50%,-50%)`;
+                plate.appendChild(lbl);
             });
         }
-
-        function getDialAngleForNumber(num) {
-            var index = dialNumbers.indexOf(num);
-            return index === -1 ? 0 : (index + 1) * angleStep + 40;
-        }
-
+        function getDialAngleForNumber(num) { let idx = dialNumbers.indexOf(num); return idx===-1 ? 0 : (idx+1)*angleStep + 40; }
         function dialNumber(num) {
-            if (isDialing || phoneNumber.length >= 8) return;
+            if(isDialing || phoneNumber.length>=8) return;
             isDialing = true;
-            var dialPlate = document.getElementById('dialPlate');
-            var rotaryDial = document.getElementById('rotaryDial');
-            rotaryDial.classList.add('dialing');
-            var targetAngle = getDialAngleForNumber(num);
-
-            dialPlate.style.transition = 'transform 0.15s ease-out';
-            dialPlate.style.transform = 'translate(-50%, -50%) rotate(' + targetAngle + 'deg)';
+            let plate = document.getElementById('dialPlate'), dial = document.getElementById('rotaryDial');
+            dial.classList.add('dialing');
+            let target = getDialAngleForNumber(num);
+            plate.style.transition = 'transform 0.15s ease-out';
+            plate.style.transform = `translate(-50%, -50%) rotate(${target}deg)`;
             playRotaryClickSound();
-
-            setTimeout(function() {
-                dialPlate.classList.add('returning');
-                dialPlate.style.transition = '';
-                dialPlate.style.transform = 'translate(-50%, -50%) rotate(0deg)';
-                var returnDuration = 0.3 + (targetAngle / 360) * 0.5;
-                playDialReturnSound(returnDuration);
-
-                setTimeout(function() {
-                    dialPlate.classList.remove('returning');
-                    rotaryDial.classList.remove('dialing');
+            setTimeout(()=>{
+                plate.classList.add('returning');
+                plate.style.transition = '';
+                plate.style.transform = 'translate(-50%, -50%) rotate(0deg)';
+                let retDur = 0.3 + (target/360)*0.5;
+                playDialReturnSound(retDur);
+                setTimeout(()=>{
+                    plate.classList.remove('returning');
+                    dial.classList.remove('dialing');
                     isDialing = false;
                     phoneNumber += num;
                     updatePhoneDisplay();
-                }, returnDuration * 1000 + 100);
-            }, 200);
+                }, retDur*1000+100);
+            },200);
         }
-
         function updatePhoneDisplay() {
-            var display = document.getElementById('phoneDisplay');
-            if (phoneNumber === '') {
-                display.textContent = '輸入號碼';
-                display.classList.add('empty');
-            } else {
-                display.textContent = phoneNumber;
-                display.classList.remove('empty');
-            }
+            let d = document.getElementById('phoneDisplay');
+            if(phoneNumber==='') { d.textContent='輸入號碼'; d.classList.add('empty'); } 
+            else { d.textContent=phoneNumber; d.classList.remove('empty'); }
         }
-
-        function showPhoneStatus(message, type) {
-            var status = document.getElementById('phoneStatus');
-            status.textContent = message;
-            status.className = 'phone-status show ' + type;
-            setTimeout(function() { status.classList.remove('show'); }, 3000);
+        function showPhoneStatus(msg, type) {
+            let s = document.getElementById('phoneStatus');
+            s.textContent = msg; s.className = 'phone-status show '+type;
+            setTimeout(()=>s.classList.remove('show'),3000);
         }
-
         function checkPhoneNumber() {
-            if (phoneNumber === '') { showPhoneStatus('請先輸入號碼', 'error'); playErrorSound(); return; }
-            if (phoneConfig.correct[phoneNumber]) {
-                if (phoneConfig.correct[phoneNumber].audio) {
-                    new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(function() {});
-                }
-                showSuccess('🎉', '恭喜你成功通過第二關', '現在請破解鐵閘密碼', function() { showScreen('level2Screen'); }, 15000);
-            } else if (phoneConfig.wrong[phoneNumber]) {
-                if (phoneConfig.wrong[phoneNumber].audio) {
-                    new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(function() {});
-                }
-                showPhoneStatus(phoneConfig.wrong[phoneNumber].message, 'error');
-                playErrorSound();
-            } else { showPhoneStatus('號碼錯誤，請重試！', 'error'); playErrorSound(); }
+            if(phoneNumber==='') { showPhoneStatus('請先輸入號碼','error'); playErrorSound(); return; }
+            if(phoneConfig.correct[phoneNumber]) {
+                if(phoneConfig.correct[phoneNumber].audio) new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(()=>{});
+                showSuccess('🎉','恭喜你成功通過信封 #2','現在請打開信封 #3', ()=>showScreen('level2Screen'), 5000);
+            } else if(phoneConfig.wrong[phoneNumber]) {
+                if(phoneConfig.wrong[phoneNumber].audio) new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(()=>{});
+                showPhoneStatus(phoneConfig.wrong[phoneNumber].message,'error'); playErrorSound();
+            } else { showPhoneStatus('號碼錯誤，請重試！','error'); playErrorSound(); }
         }
 
-        /* ========== LEVEL 2 (4-digit 鐵閘密碼) ========== */
-        var password2 = '';
-        var correctPassword2 = '3122';
-
+        // ========== 鐵閘密碼 (4位) 信封 #3 ==========
+        let password2 = ''; const correctPassword2 = '3122';
         function updatePassword2Display() {
-            var slots = document.getElementById('password2Display').querySelectorAll('.password-slot');
-            slots.forEach(function(slot, i) {
-                slot.classList.remove('active', 'filled');
-                if (i < password2.length) { slot.textContent = password2[i]; slot.classList.add('filled'); }
-                else if (i === password2.length) { slot.textContent = '_'; slot.classList.add('active'); }
-                else slot.textContent = '_';
+            let slots = document.getElementById('password2Display').querySelectorAll('.password-slot');
+            slots.forEach((s,i)=>{
+                s.classList.remove('active','filled');
+                if(i<password2.length) { s.textContent=password2[i]; s.classList.add('filled'); }
+                else if(i===password2.length) { s.textContent='_'; s.classList.add('active'); }
+                else s.textContent='_';
             });
         }
-
-        function showInputStatus(elementId, message, type) {
-            var status = document.getElementById(elementId);
-            status.textContent = message;
-            status.className = 'input-status show ' + type;
-            setTimeout(function() { status.classList.remove('show'); }, 3000);
+        function showInputStatus(elId, msg, type) {
+            let s = document.getElementById(elId);
+            s.textContent = msg; s.className = 'input-status show '+type;
+            setTimeout(()=>s.classList.remove('show'),3000);
         }
-
         function checkPassword2() {
-            if (password2.length < 4) { showInputStatus('level2Status', '請輸入完整密碼', 'error'); playErrorSound(); return; }
-            if (password2 === correctPassword2) {
+            if(password2.length<4) { showInputStatus('level2Status','請輸入完整密碼','error'); playErrorSound(); return; }
+            if(password2===correctPassword2) {
                 playUnlockSound();
-                showSuccess('🔓', '恭喜你成功破解鐵閘密碼', '現在去電車站等車', function() {
-                    showScreen('questionsScreen'); startTramWaiting();
-                }, 15000);
-            } else { showInputStatus('level2Status', '密碼錯誤，請重試！', 'error'); playErrorSound(); }
+                showSuccess('🔓','恭喜你成功破解鐵閘密碼','現在打開信封 #4 · 電車站', ()=>{ showScreen('questionsScreen'); startTramWaiting(); }, 5000);
+            } else { showInputStatus('level2Status','密碼錯誤，請重試！','error'); playErrorSound(); }
         }
 
-        /* ========== TRAM WAIT (7 min) ========== */
-        var randomQuestions = [
-            "你最喜歡香港嘅邊個地方？",
-            "如果可以去世界任何地方，你會去邊度？",
-            "你覺得香港最好食嘅嘢係乜？",
-            "你細個最鍾意玩咩遊戲？",
-            "你最難忘嘅童年回憶？",
-            "如果你可以擁有一種超能力，你會揀乜？",
-            "你最欣賞身邊邊個人？點解？",
-            "你覺得最能代表香港嘅係乜嘢？",
-            "你最近學識咗啲乜新嘢？",
-            "如果你只可以食一種嘢一世，你會揀乜？",
-            "你覺得朋友最重要嘅特質係乜？",
-            "你最想實現嘅願望係乜？",
-            "你覺得人生最緊要嘅係乜嘢？",
-            "你最鍾意嘅節日係邊個？點解？",
-            "如果你可以同任何人食飯，你會揀邊個？"
-        ];
-
-        var tramTimerInterval = null;
-        var tramWaitSeconds = 7 * 60;
-        var tramArrived = false;
-
+        // ========== 電車等候 (信封 #4) ==========
+        let randomQuestions = ["你最喜歡香港嘅邊個地方？","如果可以去世界任何地方，你會去邊度？","你覺得香港最好食嘅嘢係乜？","你細個最鍾意玩咩遊戲？","你最難忘嘅童年回憶？","如果你可以擁有一種超能力，你會揀乜？"];
+        let tramTimerInterval = null, tramWaitSeconds = 7*60, tramArrived = false;
         function startTramWaiting() {
-            tramWaitSeconds = 7 * 60;
-            tramArrived = false;
+            tramWaitSeconds = 7*60; tramArrived = false;
             updateTramTimerDisplay();
-            var boardBtn = document.getElementById('boardTramBtn');
-            boardBtn.classList.add('hidden');
+            let btn = document.getElementById('boardTramBtn'); btn.classList.add('hidden');
             setRandomQuestion();
-            if (tramTimerInterval) clearInterval(tramTimerInterval);
-            tramTimerInterval = setInterval(function() {
-                if (tramWaitSeconds > 0) {
-                    tramWaitSeconds--;
-                    updateTramTimerDisplay();
-                    if (tramWaitSeconds <= 0 && !tramArrived) {
-                        tramArrived = true;
-                        clearInterval(tramTimerInterval);
+            if(tramTimerInterval) clearInterval(tramTimerInterval);
+            tramTimerInterval = setInterval(()=>{
+                if(tramWaitSeconds>0) {
+                    tramWaitSeconds--; updateTramTimerDisplay();
+                    if(tramWaitSeconds<=0 && !tramArrived) {
+                        tramArrived = true; clearInterval(tramTimerInterval);
                         document.getElementById('tramMessage').innerHTML = '🚃 電車終於到站！快啲上車啦～';
-                        boardBtn.classList.remove('hidden');
-                        playSuccessSound();
+                        btn.classList.remove('hidden'); playSuccessSound();
                     }
                 }
-            }, 1000);
+            },1000);
         }
-
         function updateTramTimerDisplay() {
-            var minutes = Math.floor(tramWaitSeconds / 60);
-            var seconds = tramWaitSeconds % 60;
-            document.getElementById('tramWaitTimer').textContent =
-                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+            let m = Math.floor(tramWaitSeconds/60), s = tramWaitSeconds%60;
+            document.getElementById('tramWaitTimer').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
         }
-
         function setRandomQuestion() {
-            var q = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
-            document.getElementById('tramQuestionText').textContent = q;
-            playTone(600, 0.1);
+            let q = randomQuestions[Math.floor(Math.random()*randomQuestions.length)];
+            document.getElementById('tramQuestionText').textContent = q; playTone(600,0.1);
         }
-
         function boardTram() {
-            if (tramTimerInterval) clearInterval(tramTimerInterval);
+            if(tramTimerInterval) clearInterval(tramTimerInterval);
             playSuccessSound();
-            showSuccess('🚋', '電車到站！', '前往中環', function() { showScreen('level3Screen'); }, 2000);
+            showSuccess('🚋','電車到站！','現在打開信封 #5 · 中環站', ()=>showScreen('level3Screen'), 2000);
         }
 
-        /* ========== LEVEL 3 (2-digit 電車站編號) ========== */
-        var password3 = '';
-        var correctPassword3 = '72';
-
+        // ========== 電車站編號 (2位) 信封 #5 ==========
+        let password3 = ''; const correctPassword3 = '72';
         function updatePassword3Display() {
-            var slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
-            slots.forEach(function(slot, i) {
-                slot.classList.remove('active', 'filled');
-                if (i < password3.length) { slot.textContent = password3[i]; slot.classList.add('filled'); }
-                else if (i === password3.length) { slot.textContent = '_'; slot.classList.add('active'); }
-                else slot.textContent = '_';
+            let slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
+            slots.forEach((s,i)=>{
+                s.classList.remove('active','filled');
+                if(i<password3.length) { s.textContent=password3[i]; s.classList.add('filled'); }
+                else if(i===password3.length) { s.textContent='_'; s.classList.add('active'); }
+                else s.textContent='_';
             });
         }
-
         function checkPassword3() {
-            if (password3.length < 2) { showInputStatus('level3Status', '請輸入完整號碼', 'error'); playErrorSound(); return; }
-            if (password3 === correctPassword3) {
+            if(password3.length<2) { showInputStatus('level3Status','請輸入完整號碼','error'); playErrorSound(); return; }
+            if(password3===correctPassword3) {
                 playSuccessSound();
-                showSuccess('🚃', '恭喜你成功找到電車站編號', '恭喜通關！', function() { showScreen('finalScreen'); }, 15000);
-            } else { showInputStatus('level3Status', '號碼錯誤，請重試！', 'error'); playErrorSound(); }
+                showSuccess('🚃','恭喜你成功找到電車站編號','恭喜通關！', ()=>showScreen('finalScreen'), 5000);
+            } else { showInputStatus('level3Status','號碼錯誤，請重試！','error'); playErrorSound(); }
         }
 
-        /* ========== EVENT LISTENERS ========== */
+        // ========== DOM 初始化 & 事件監聽 ==========
         document.addEventListener('DOMContentLoaded', function() {
-            initRotaryDial();
-            updateTimerDisplay();
-            window.addEventListener('resize', initRotaryDial);
+            initRotaryDial(); updateTimerDisplay(); window.addEventListener('resize', initRotaryDial);
             startAllTipTimers();
 
-            /* Windows 95 Login: OK button starts the game */
+            // 1. 標題 → 計時器
+            document.getElementById('beginGameBtn').addEventListener('click', function() {
+                showScreen('timerSetupScreen');
+            });
+
+            // 2. 開始計時 → 信封 #1 指示
+            document.getElementById('startTimerBtn').addEventListener('click', function() {
+                startTimer();
+                showScreen('envelope1Screen');
+            });
+
+            // 3. 信封 #1 繼續 → Windows 95 登入
+            document.getElementById('envelope1ContinueBtn').addEventListener('click', function() {
+                showScreen('win95LoginScreen');
+            });
+
+            // 4. Windows 95 登入成功 → 信封 #2 (電話)
             document.getElementById('win95OkBtn').addEventListener('click', function() {
                 getAudioContext();
                 playWin95StartupSound();
-                showModal(
-                    '請打開第一個信封，然後按「確定」開始計時',
-                    '迷途顯影 · 提示',
-                    '📩',
-                    function() {
-                        showScreen('timerSetupScreen');
-                    }
-                );
+                showSuccess('🔑','登入成功！','現在打開信封 #2 · 撥號電話', function() {
+                    showScreen('phoneScreen');
+                }, 3000);
             });
-
-            /* Windows 95 Login: Cancel button also works (shows a hint) */
             document.getElementById('win95CancelBtn').addEventListener('click', function() {
-                showModal(
-                    '你必須登入才能開始密室逃脫遊戲！請按 OK 開始。',
-                    '存取被拒',
-                    '⛔'
-                );
+                showModal('請輸入正確密碼登入遊戲','存取被拒','⛔');
             });
-
-            /* Enter key on password field triggers OK */
             document.getElementById('win95pass').addEventListener('keydown', function(e) {
-                if (e.key === 'Enter') {
-                    e.preventDefault();
-                    document.getElementById('win95OkBtn').click();
-                }
+                if(e.key === 'Enter') { e.preventDefault(); document.getElementById('win95OkBtn').click(); }
             });
 
-            document.getElementById('startTimerBtn').addEventListener('click', function() {
-                startTimer();
-                showScreen('terminalScreen');
-                updateTerminalPasswordDisplay();
-            });
-
-            /* Terminal keyboard */
-            document.querySelectorAll('#terminalKeyboard .terminal-key').forEach(function(key) {
-                key.addEventListener('click', function() {
-                    var keyValue = key.dataset.key;
-                    if (keyValue === 'backspace') {
-                        terminalPassword = terminalPassword.slice(0, -1);
-                        updateTerminalPasswordDisplay();
-                        playTerminalKeySound();
-                    } else if (keyValue === 'enter') {
-                        checkTerminalPassword();
-                    } else if (terminalPassword.length < 4) {
-                        terminalPassword += keyValue;
-                        updateTerminalPasswordDisplay();
-                        playTerminalKeySound();
-                    }
-                });
-            });
-
-            document.addEventListener('keydown', function(e) {
-                var activeScreen = document.querySelector('.screen.active');
-                if (!activeScreen) return;
-                if (activeScreen.id === 'terminalScreen') {
-                    var key = e.key.toUpperCase();
-                    if (key === 'BACKSPACE') {
-                        terminalPassword = terminalPassword.slice(0, -1);
-                        updateTerminalPasswordDisplay();
-                        playTerminalKeySound();
-                        e.preventDefault();
-                    } else if (key === 'ENTER') {
-                        checkTerminalPassword();
-                        e.preventDefault();
-                    } else if (/^[A-Z]$/.test(key) && terminalPassword.length < 4) {
-                        terminalPassword += key;
-                        updateTerminalPasswordDisplay();
-                        playTerminalKeySound();
-                        e.preventDefault();
-                    }
-                }
-            });
-
-            /* Rotary dial */
+            // 撥號盤事件
             document.getElementById('dialPlate').addEventListener('click', function(e) {
-                var hole = e.target.closest('.dial-hole');
-                if (hole && !isDialing) dialNumber(hole.dataset.num);
+                let hole = e.target.closest('.dial-hole');
+                if(hole && !isDialing) dialNumber(hole.dataset.num);
             });
-
             document.getElementById('dialPlate').addEventListener('touchend', function(e) {
-                var touch = e.changedTouches[0];
-                var el = document.elementFromPoint(touch.clientX, touch.clientY);
-                var hole = el ? el.closest('.dial-hole') : null;
-                if (hole && !isDialing) { e.preventDefault(); dialNumber(hole.dataset.num); }
+                let touch = e.changedTouches[0];
+                let el = document.elementFromPoint(touch.clientX, touch.clientY);
+                let hole = el ? el.closest('.dial-hole') : null;
+                if(hole && !isDialing) { e.preventDefault(); dialNumber(hole.dataset.num); }
             });
-
-            document.getElementById('phoneClearBtn').addEventListener('click', function() {
-                phoneNumber = ''; updatePhoneDisplay(); playTone(300, 0.1);
-            });
+            document.getElementById('phoneClearBtn').addEventListener('click', ()=>{ phoneNumber=''; updatePhoneDisplay(); playTone(300,0.1); });
             document.getElementById('phoneCallBtn').addEventListener('click', checkPhoneNumber);
 
-            /* Level 2 (鐵閘密碼) */
-            document.querySelectorAll('#level2Screen .password-key').forEach(function(key) {
-                key.addEventListener('click', function() {
-                    var num = key.dataset.num;
-                    if (num === 'back') { password2 = password2.slice(0, -1); updatePassword2Display(); playTone(300, 0.08); }
-                    else if (num === 'submit') checkPassword2();
-                    else if (password2.length < 4) { password2 += num; updatePassword2Display(); playTone(500, 0.08); }
+            // 鐵閘密碼 (4位)
+            document.querySelectorAll('#level2Screen .password-key').forEach(k => {
+                k.addEventListener('click', function() {
+                    let n = this.dataset.num;
+                    if(n === 'back') { password2 = password2.slice(0,-1); updatePassword2Display(); playTone(300,0.08); }
+                    else if(n === 'submit') checkPassword2();
+                    else if(password2.length < 4) { password2 += n; updatePassword2Display(); playTone(500,0.08); }
                 });
             });
 
-            /* Tram */
-            document.getElementById('tramChatBtn').addEventListener('click', function() { setRandomQuestion(); });
-            document.getElementById('boardTramBtn').addEventListener('click', function() { if (tramArrived) boardTram(); });
+            // 電車聊天
+            document.getElementById('tramChatBtn').addEventListener('click', setRandomQuestion);
+            document.getElementById('boardTramBtn').addEventListener('click', function() { if(tramArrived) boardTram(); });
 
-            /* Level 3 (2-digit 電車站編號) */
-            document.querySelectorAll('#level3Screen .password-key').forEach(function(key) {
-                key.addEventListener('click', function() {
-                    var num = key.dataset.num;
-                    if (num === 'back') { password3 = password3.slice(0, -1); updatePassword3Display(); playTone(300, 0.08); }
-                    else if (num === 'submit') checkPassword3();
-                    else if (password3.length < 2) { password3 += num; updatePassword3Display(); playTone(500, 0.08); }
+            // 電車站編號 (2位)
+            document.querySelectorAll('#level3Screen .password-key').forEach(k => {
+                k.addEventListener('click', function() {
+                    let n = this.dataset.num;
+                    if(n === 'back') { password3 = password3.slice(0,-1); updatePassword3Display(); playTone(300,0.08); }
+                    else if(n === 'submit') checkPassword3();
+                    else if(password3.length < 2) { password3 += n; updatePassword3Display(); playTone(500,0.08); }
                 });
             });
         });
