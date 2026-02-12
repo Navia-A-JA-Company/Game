@@ -1250,7 +1250,7 @@
             color: var(--text-secondary);
         }
 
-        /* Password Input Screen */
+        /* Password Input Screen (4-digit – 鐵閘密碼) */
         .password-screen {
             text-align: center;
             max-width: 450px;
@@ -1873,7 +1873,7 @@
         </div>
     </div>
 
-    <!-- ========== Screen 5: 4-digit Password (第3關) ========== -->
+    <!-- ========== Screen 5: 4-digit Password (鐵閘密碼) 原為第3關，移除重複終端機後順位前移 ========== -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
             <div class="level-prompt">🔒 你現在需要找到四位數字密碼<br>破解鐵閘密碼鎖</div>
@@ -1905,7 +1905,7 @@
         </div>
     </div>
 
-    <!-- ========== Screen 6: 等電車 (第4關) ========== -->
+    <!-- ========== Screen 6: 等電車 (第4關，原第4關) ========== -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
@@ -1933,7 +1933,7 @@
         </div>
     </div>
 
-    <!-- ========== Screen 7: 2-digit Number (第5關) ========== -->
+    <!-- ========== Screen 7: 2-digit Number (電車站編號，第5關) ========== -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
             <div class="level-prompt">🚃 電車站號碼咁多…<br>睇嚟要搵一個兩位數字號碼<br>先可以去到中環</div>
@@ -2412,7 +2412,7 @@
             } else { showPhoneStatus('號碼錯誤，請重試！', 'error'); playErrorSound(); }
         }
 
-        /* ========== LEVEL 2 ========== */
+        /* ========== LEVEL 2 (4-digit 鐵閘密碼) ========== */
         var password2 = '';
         var correctPassword2 = '3122';
 
@@ -2508,7 +2508,7 @@
             showSuccess('🚋', '電車到站！', '前往中環', function() { showScreen('level3Screen'); }, 2000);
         }
 
-        /* ========== LEVEL 3 ========== */
+        /* ========== LEVEL 3 (2-digit 電車站編號) ========== */
         var password3 = '';
         var correctPassword3 = '72';
 
@@ -2632,7 +2632,7 @@
             });
             document.getElementById('phoneCallBtn').addEventListener('click', checkPhoneNumber);
 
-            /* Level 2 */
+            /* Level 2 (鐵閘密碼) */
             document.querySelectorAll('#level2Screen .password-key').forEach(function(key) {
                 key.addEventListener('click', function() {
                     var num = key.dataset.num;
@@ -2646,7 +2646,7 @@
             document.getElementById('tramChatBtn').addEventListener('click', function() { setRandomQuestion(); });
             document.getElementById('boardTramBtn').addEventListener('click', function() { if (tramArrived) boardTram(); });
 
-            /* Level 3 */
+            /* Level 3 (2-digit 電車站編號) */
             document.querySelectorAll('#level3Screen .password-key').forEach(function(key) {
                 key.addEventListener('click', function() {
                     var num = key.dataset.num;
