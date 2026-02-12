@@ -49,6 +49,38 @@
             color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 🌟 Fullscreen background image for every page - justanimage.JPG */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('justanimage.JPG');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            opacity: 0.25; /* Dark overlay to keep text readable */
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* Add a second dark overlay to ensure text contrast */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
+            z-index: -1;
+            pointer-events: none;
         }
 
         .screen {
@@ -56,6 +88,8 @@
             min-height: 100vh;
             padding: 20px;
             animation: fadeIn 0.5s ease;
+            position: relative;
+            z-index: 1;
         }
 
         .screen.active {
@@ -137,7 +171,13 @@
             text-align: center;
             max-width: 500px;
             position: relative;
-            z-index: 1;
+            z-index: 2;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 40px 30px;
+            border-radius: 40px;
+            border: 2px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 50px rgba(0,0,0,0.8);
         }
 
         .game-title {
@@ -205,6 +245,11 @@
         .timer-setup {
             text-align: center;
             max-width: 450px;
+            background: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(8px);
+            padding: 40px 30px;
+            border-radius: 40px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
         }
 
         .timer-big {
@@ -231,7 +276,8 @@
         }
 
         .terminal-container {
-            background: var(--terminal-bg);
+            background: rgba(0, 17, 0, 0.85);
+            backdrop-filter: blur(4px);
             border-radius: 20px;
             padding: 25px;
             border: 4px solid var(--terminal-green);
@@ -467,27 +513,10 @@
             border: 2px solid var(--terminal-green);
         }
 
-        /* Phone Screen with Video Background */
-        .phone-screen {
-            position: relative;
-            width: 100%;
-            min-height: 100vh;
-        }
-
-        .video-background {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            opacity: 0.4;
-        }
-
-        /* Rotary Phone Container */
+        /* Phone Screen */
         .rotary-phone-container {
-            background: linear-gradient(145deg, var(--phone-green), var(--phone-green-dark));
+            background: linear-gradient(145deg, rgba(26, 74, 66, 0.9), rgba(15, 47, 40, 0.95));
+            backdrop-filter: blur(8px);
             border-radius: 40px 40px 30px 30px;
             padding: 30px;
             max-width: 380px;
@@ -818,6 +847,11 @@
         .password-screen {
             text-align: center;
             max-width: 450px;
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 40px 30px;
+            border-radius: 40px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
         }
 
         .level-prompt {
@@ -928,6 +962,11 @@
         .questions-screen {
             text-align: center;
             max-width: 500px;
+            background: rgba(26, 26, 36, 0.8);
+            backdrop-filter: blur(8px);
+            padding: 40px 30px;
+            border-radius: 40px;
+            border: 2px solid rgba(0, 212, 255, 0.3);
         }
 
         .question-card {
@@ -1001,6 +1040,11 @@
         .victory-screen {
             text-align: center;
             max-width: 650px;
+            background: rgba(26, 26, 36, 0.85);
+            backdrop-filter: blur(8px);
+            padding: 50px 40px;
+            border-radius: 50px;
+            border: 2px solid rgba(255, 215, 0, 0.4);
         }
 
         .victory-title {
@@ -1116,6 +1160,9 @@
             .victory-title { font-size: 1.5rem; }
             .feedback-text { font-size: 0.95rem; padding: 20px; }
             .form-link { font-size: 1rem; padding: 12px 20px; }
+            .start-screen, .timer-setup, .password-screen, .questions-screen, .victory-screen {
+                padding: 30px 20px;
+            }
         }
 
         @media (max-width: 768px) {
@@ -1329,7 +1376,7 @@
             <p class="victory-instruction">📖 請大家閱讀說明書第七頁</p>
             <div class="feedback-text">
                 <p style="margin-bottom: 16px;">希望你有個好的遊戲體驗！<br>若你有任何想法或意見，歡迎填寫產品回饋表：</p>
-                <!-- Google Form link added as requested -->
+                <!-- Google Form link -->
                 <a class="form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfU3oFH5eu60wD_37TQ97h5D6swfk9sIAe7G0emI0QfjaMYkQ/viewform?pli=1&authuser=0" target="_blank" rel="noopener noreferrer">
                     📝 填寫回饋表
                 </a>
@@ -1677,7 +1724,6 @@
                 if (phoneConfig.correct[phoneNumber].audio) {
                     new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(() => {});
                 }
-                // ✅ Corrected: "第一關" -> "第二關" (was incorrectly "第二季" before)
                 showSuccess('🎉', '恭喜你成功通過第二關', '現在請破解鐵閘密碼', () => showScreen('level2Screen'), 15000);
             } else if (phoneConfig.wrong[phoneNumber]) {
                 if (phoneConfig.wrong[phoneNumber].audio) {
