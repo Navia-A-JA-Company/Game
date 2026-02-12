@@ -34,6 +34,7 @@
             --windows-dark: #005a9e;
             --windows-gray: #f3f3f3;
             --windows-text: #000000;
+            --form-link: #ffd700;
         }
 
         * {
@@ -996,10 +997,10 @@
             font-weight: 700;
         }
 
-        /* Victory Screen */
+        /* Victory Screen with Form Link */
         .victory-screen {
             text-align: center;
-            max-width: 550px;
+            max-width: 650px;
         }
 
         .victory-title {
@@ -1027,9 +1028,33 @@
             font-size: 1rem;
             color: var(--text-secondary);
             line-height: 1.8;
-            padding: 20px;
+            padding: 25px;
             background: var(--bg-card);
             border-radius: 16px;
+            border: 1px solid var(--accent-gold);
+        }
+        
+        .form-link {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 14px 28px;
+            background: linear-gradient(135deg, var(--accent-gold), #ffb347);
+            color: var(--bg-primary);
+            font-weight: 900;
+            text-decoration: none;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.5);
+            transition: all 0.25s ease;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .form-link:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(255, 215, 0, 0.8);
+            background: linear-gradient(135deg, #ffd700, #ffa500);
+            color: black;
         }
 
         .trophy-icon {
@@ -1089,6 +1114,8 @@
             .password-slot { width: 55px; height: 70px; font-size: 1.8rem; }
             .level-prompt { font-size: 1.2rem; }
             .victory-title { font-size: 1.5rem; }
+            .feedback-text { font-size: 0.95rem; padding: 20px; }
+            .form-link { font-size: 1rem; padding: 12px 20px; }
         }
 
         @media (max-width: 768px) {
@@ -1109,7 +1136,7 @@
     <div class="screen active" id="startScreen">
         <div class="start-screen">
             <h1 class="game-title">迷途顯影</h1>
-            <div class="box-cover">🧩</div>  <!-- puzzle emoji instead of box -->
+            <div class="box-cover">🧩</div>
             <button class="start-btn" id="startGameBtn">開始遊戲</button>
             <p class="warning-text">⚠️ 請先仔細閱讀說明書才打開任何信封</p>
         </div>
@@ -1294,13 +1321,19 @@
         </div>
     </div>
 
-    <!-- Screen 8: Final Victory -->
+    <!-- Screen 8: Final Victory — with form link -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
             <h1 class="victory-title">恭喜你成功準時到達比賽現場並成功通關！</h1>
             <p class="victory-instruction">📖 請大家閱讀說明書第七頁</p>
-            <div class="feedback-text">希望你有個好的遊戲體驗！<br><br>若你有任何想法或意見提供<br>歡迎填寫說明書最後的產品回饋表</div>
+            <div class="feedback-text">
+                <p style="margin-bottom: 16px;">希望你有個好的遊戲體驗！<br>若你有任何想法或意見，歡迎填寫產品回饋表：</p>
+                <!-- Google Form link added as requested -->
+                <a class="form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfU3oFH5eu60wD_37TQ97h5D6swfk9sIAe7G0emI0QfjaMYkQ/viewform?pli=1&authuser=0" target="_blank" rel="noopener noreferrer">
+                    📝 填寫回饋表
+                </a>
+            </div>
         </div>
     </div>
 
@@ -1382,7 +1415,6 @@
             const ctx = getAudioContext();
             if (!ctx) return;
             
-            // Sequence of ascending tones
             const tones = [
                 { freq: 300, time: 0 },
                 { freq: 600, time: 0.1 },
@@ -1538,7 +1570,6 @@
             } else {
                 showTerminalStatus('錯誤：登入失敗，密碼不正確', 'error');
                 playErrorSound();
-                // Clear password after wrong attempt
                 setTimeout(() => {
                     terminalPassword = '';
                     updateTerminalPasswordDisplay();
@@ -1643,12 +1674,11 @@
         function checkPhoneNumber() {
             if (phoneNumber === '') { showPhoneStatus('請先輸入號碼', 'error'); playErrorSound(); return; }
             if (phoneConfig.correct[phoneNumber]) {
-                // Play audio if available
                 if (phoneConfig.correct[phoneNumber].audio) {
                     new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(() => {});
                 }
-                // ✅ Changed: "第一關" -> "第二季" as requested
-                showSuccess('🎉', '恭喜你成功通過第二季', '現在請破解鐵閘密碼', () => showScreen('level2Screen'), 15000);
+                // ✅ Corrected: "第一關" -> "第二關" (was incorrectly "第二季" before)
+                showSuccess('🎉', '恭喜你成功通過第二關', '現在請破解鐵閘密碼', () => showScreen('level2Screen'), 15000);
             } else if (phoneConfig.wrong[phoneNumber]) {
                 if (phoneConfig.wrong[phoneNumber].audio) {
                     new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(() => {});
@@ -1728,7 +1758,7 @@
         function answerQuestion() {
             if (questionAnswered) return;
             questionAnswered = true;
-            modifyTime(300, true); // Add 5 minutes (300 seconds)
+            modifyTime(300, true);
             showSuccess('⏱️', '回答問題成功', '獲得+5分鐘獎勵！', () => {
                 showScreen('level3Screen');
             }, 3000);
@@ -1741,17 +1771,12 @@
 
         // ========== EVENT LISTENERS ==========
         document.addEventListener('DOMContentLoaded', () => {
-            // Fix: Initialize rotary dial on page load
             initRotaryDial();
-
-            // Fix: Update timer display initially
             updateTimerDisplay();
-
             window.addEventListener('resize', initRotaryDial);
 
             document.getElementById('startGameBtn').addEventListener('click', () => {
                 getAudioContext();
-                // ✅ Added reminder to open first envelope
                 alert('📩 請打開第一個信封，然後按「開始計時」');
                 showScreen('timerSetupScreen');
             });
@@ -1762,7 +1787,6 @@
                 updateTerminalPasswordDisplay();
             });
 
-            // Terminal keyboard event listeners
             document.querySelectorAll('#terminalKeyboard .terminal-key').forEach(key => {
                 key.addEventListener('click', () => {
                     const keyValue = key.dataset.key;
@@ -1781,7 +1805,6 @@
                 });
             });
 
-            // Keyboard support for terminal
             document.addEventListener('keydown', (e) => {
                 const activeScreen = document.querySelector('.screen.active');
                 if (!activeScreen) return;
@@ -1842,7 +1865,6 @@
                 });
             });
 
-            // Questions screen event listeners
             document.getElementById('newQuestionBtn').addEventListener('click', showRandomQuestion);
             document.getElementById('proceedBtn').addEventListener('click', answerQuestion);
             document.getElementById('skipQuestionBtn').addEventListener('click', skipQuestion);
