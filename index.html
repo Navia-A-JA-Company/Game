@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>密室逃脫遊戲</title>
+    <title>迷途顯影 · 密室逃脫</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Orbitron:wght@600;900&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
@@ -1105,11 +1105,11 @@
     <!-- Time Modifier Popup -->
     <div class="time-modifier" id="timeModifier"></div>
 
-    <!-- Screen 1: Start Screen -->
+    <!-- Screen 1: Start Screen — 迷途顯影 · 拼圖標誌 -->
     <div class="screen active" id="startScreen">
         <div class="start-screen">
-            <h1 class="game-title">密室逃脫</h1>
-            <div class="box-cover">📦</div>
+            <h1 class="game-title">迷途顯影</h1>
+            <div class="box-cover">🧩</div>  <!-- puzzle emoji instead of box -->
             <button class="start-btn" id="startGameBtn">開始遊戲</button>
             <p class="warning-text">⚠️ 請先仔細閱讀說明書才打開任何信封</p>
         </div>
@@ -1261,7 +1261,6 @@
                 <p class="question-text" id="questionText">問題載入中...</p>
             </div>
             <div class="question-actions">
-                <!-- Changed button text and emoji as requested: 「下一條問題」 -> 「我想再傾多啲」, emoji changed to 💬 -->
                 <button class="question-btn new" id="newQuestionBtn">💬 我想再傾多啲</button>
                 <button class="question-btn proceed" id="proceedBtn">✅ 回答問題 (+5分鐘)</button>
                 <button class="question-btn skip" id="skipQuestionBtn">⏭️ 跳過此關</button>
@@ -1648,7 +1647,8 @@
                 if (phoneConfig.correct[phoneNumber].audio) {
                     new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(() => {});
                 }
-                showSuccess('🎉', '恭喜你成功通過第一關', '現在請破解鐵閘密碼', () => showScreen('level2Screen'), 15000);
+                // ✅ Changed: "第一關" -> "第二季" as requested
+                showSuccess('🎉', '恭喜你成功通過第二季', '現在請破解鐵閘密碼', () => showScreen('level2Screen'), 15000);
             } else if (phoneConfig.wrong[phoneNumber]) {
                 if (phoneConfig.wrong[phoneNumber].audio) {
                     new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(() => {});
@@ -1751,6 +1751,8 @@
 
             document.getElementById('startGameBtn').addEventListener('click', () => {
                 getAudioContext();
+                // ✅ Added reminder to open first envelope
+                alert('📩 請打開第一個信封，然後按「開始計時」');
                 showScreen('timerSetupScreen');
             });
 
