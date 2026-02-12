@@ -6,7 +6,7 @@
     <title>迷途顯影 · 密室逃脫</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Orbitron:wght@600;900&family=Segoe+UI:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0a0a0f;
@@ -39,6 +39,14 @@
             --old-hongkong: #d4af37;
             --tip-bg: rgba(0, 0, 0, 0.7);
             --tip-border: #ffd700;
+            /* Windows 95 colors */
+            --win95-teal: #008080;
+            --win95-gray: #c0c0c0;
+            --win95-dark: #808080;
+            --win95-light: #dfdfdf;
+            --win95-title: #000080;
+            --win95-white: #ffffff;
+            --win95-black: #000000;
         }
 
         * {
@@ -56,7 +64,7 @@
             position: relative;
         }
 
-        /* 🌟 Fullscreen background image for every page - Justanimage.JPG (capital J) */
+        /* Fullscreen background image for every page - Justanimage.JPG */
         body::before {
             content: "";
             position: fixed;
@@ -74,7 +82,6 @@
             pointer-events: none;
         }
 
-        /* Add a second dark overlay to ensure text contrast */
         body::after {
             content: "";
             position: fixed;
@@ -140,6 +147,478 @@
             100% { transform: translateX(-20px); opacity: 0.6; }
         }
 
+        @keyframes bootFlicker {
+            0% { opacity: 0; }
+            5% { opacity: 1; }
+            10% { opacity: 0.3; }
+            15% { opacity: 1; }
+            100% { opacity: 1; }
+        }
+
+        @keyframes crtOn {
+            0% { transform: scaleY(0.005) scaleX(0); opacity: 0.5; }
+            30% { transform: scaleY(0.005) scaleX(1); opacity: 0.7; }
+            50% { transform: scaleY(1) scaleX(1); opacity: 1; }
+            100% { transform: scaleY(1) scaleX(1); opacity: 1; }
+        }
+
+        @keyframes scanline {
+            0% { top: -100%; }
+            100% { top: 100%; }
+        }
+
+        @keyframes cursorBlink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        @keyframes windowAppear {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; }
+            60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 1; }
+        }
+
+        @keyframes githubSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* ========== WINDOWS 95 START SCREEN ========== */
+        .win95-desktop {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            background: var(--win95-teal);
+            overflow: hidden;
+            font-family: 'Segoe UI', 'MS Sans Serif', Tahoma, sans-serif;
+        }
+
+        /* CRT boot effect overlay */
+        .win95-desktop .crt-overlay {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            overflow: hidden;
+        }
+
+        .win95-desktop .crt-overlay::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.06);
+            animation: scanline 4s linear infinite;
+            z-index: 51;
+        }
+
+        /* Desktop icons */
+        .win95-icons {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            z-index: 5;
+        }
+
+        .win95-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: default;
+            width: 80px;
+            user-select: none;
+        }
+
+        .win95-icon-img {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            filter: drop-shadow(1px 1px 0 rgba(0,0,0,0.5));
+        }
+
+        .win95-icon-label {
+            font-size: 11px;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.9);
+            text-align: center;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        /* The login image displayed on desktop */
+        .win95-login-image {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            animation: windowAppear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            z-index: 20;
+            width: 90%;
+            max-width: 580px;
+            border-radius: 0;
+        }
+
+        .win95-login-image img {
+            width: 100%;
+            display: block;
+            image-rendering: auto;
+            border: 3px outset var(--win95-gray);
+        }
+
+        /* GitHub Login Window on top */
+        .win95-github-window {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 30;
+            width: 92%;
+            max-width: 420px;
+            animation: windowAppear 0.6s 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+
+        .win95-window {
+            background: var(--win95-gray);
+            border: 3px outset var(--win95-light);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+        }
+
+        .win95-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 3px 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: default;
+            user-select: none;
+        }
+
+        .win95-titlebar-text {
+            color: #fff;
+            font-size: 12px;
+            font-weight: bold;
+            padding-left: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.3);
+        }
+
+        .win95-titlebar-icon {
+            width: 16px;
+            height: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+
+        .win95-titlebar-buttons {
+            display: flex;
+            gap: 2px;
+        }
+
+        .win95-titlebar-btn {
+            width: 18px;
+            height: 18px;
+            background: var(--win95-gray);
+            border: 2px outset var(--win95-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #000;
+            line-height: 1;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .win95-titlebar-btn:active {
+            border-style: inset;
+        }
+
+        .win95-window-body {
+            padding: 16px 20px 20px;
+        }
+
+        .win95-github-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .github-logo-container {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        /* SVG-based GitHub logo */
+        .github-logo-svg {
+            width: 46px;
+            height: 46px;
+        }
+
+        .win95-github-desc {
+            font-size: 12px;
+            color: #000;
+            line-height: 1.5;
+        }
+
+        .win95-github-desc strong {
+            font-size: 13px;
+        }
+
+        .win95-divider {
+            border: none;
+            height: 2px;
+            background: linear-gradient(to right, var(--win95-dark), var(--win95-gray));
+            margin: 12px 0;
+        }
+
+        .win95-form-group {
+            margin-bottom: 12px;
+        }
+
+        .win95-label {
+            display: block;
+            font-size: 12px;
+            color: #000;
+            margin-bottom: 4px;
+            font-weight: normal;
+        }
+
+        .win95-label u {
+            text-decoration: underline;
+        }
+
+        .win95-input {
+            width: 100%;
+            padding: 4px 6px;
+            font-size: 14px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            border: 2px inset var(--win95-light);
+            background: #fff;
+            color: #000;
+            outline: none;
+        }
+
+        .win95-input:focus {
+            background: #fff;
+        }
+
+        .win95-input[type="password"] {
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            letter-spacing: 2px;
+        }
+
+        .win95-btn-row {
+            display: flex;
+            justify-content: flex-end;
+            gap: 8px;
+            margin-top: 18px;
+        }
+
+        .win95-btn {
+            min-width: 80px;
+            padding: 5px 16px;
+            font-size: 12px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            background: var(--win95-gray);
+            border: 2px outset var(--win95-light);
+            cursor: pointer;
+            color: #000;
+            text-align: center;
+            outline: none;
+        }
+
+        .win95-btn:active {
+            border-style: inset;
+            padding: 6px 15px 4px 17px;
+        }
+
+        .win95-btn.primary {
+            outline: 2px solid #000;
+            outline-offset: -4px;
+        }
+
+        .win95-btn:focus {
+            outline: 1px dotted #000;
+            outline-offset: -5px;
+        }
+
+        /* Game title overlay on the Windows desktop */
+        .win95-game-badge {
+            position: absolute;
+            bottom: 55px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 15;
+            text-align: center;
+            padding: 10px 28px;
+            background: rgba(0, 0, 0, 0.65);
+            border: 1px solid rgba(0, 255, 136, 0.4);
+            border-radius: 8px;
+            backdrop-filter: blur(4px);
+        }
+
+        .win95-game-badge .badge-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 3px;
+        }
+
+        .win95-game-badge .badge-sub {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 2px;
+        }
+
+        /* Windows 95 Taskbar */
+        .win95-taskbar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 36px;
+            background: var(--win95-gray);
+            border-top: 2px outset var(--win95-light);
+            display: flex;
+            align-items: center;
+            padding: 0 4px;
+            z-index: 40;
+        }
+
+        .win95-start-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            height: 26px;
+            background: var(--win95-gray);
+            border: 2px outset var(--win95-light);
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: bold;
+            color: #000;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        .win95-start-btn:active {
+            border-style: inset;
+        }
+
+        .win95-start-btn .start-flag {
+            width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .win95-taskbar-spacer {
+            flex: 1;
+        }
+
+        .win95-taskbar-tray {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px inset var(--win95-light);
+            padding: 2px 10px;
+            height: 24px;
+            font-size: 11px;
+            color: #000;
+        }
+
+        /* Warning text styled as Windows dialog */
+        .win95-warning-bar {
+            position: absolute;
+            bottom: 55px;
+            right: 16px;
+            z-index: 15;
+            background: var(--win95-gray);
+            border: 2px outset var(--win95-light);
+            padding: 6px 12px;
+            font-size: 11px;
+            color: #000;
+            max-width: 260px;
+            display: flex;
+            align-items: flex-start;
+            gap: 6px;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+        }
+
+        .win95-warning-bar .warn-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Custom modal to replace alert() */
+        .win95-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.4);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .win95-modal-overlay.show {
+            display: flex;
+        }
+        .win95-modal {
+            width: 90%;
+            max-width: 380px;
+            background: var(--win95-gray);
+            border: 3px outset var(--win95-light);
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.4);
+        }
+        .win95-modal .win95-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+        }
+        .win95-modal-body {
+            padding: 20px;
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+        }
+        .win95-modal-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+        .win95-modal-text {
+            font-size: 13px;
+            color: #000;
+            line-height: 1.6;
+        }
+        .win95-modal-footer {
+            display: flex;
+            justify-content: center;
+            padding: 0 20px 16px;
+            gap: 10px;
+        }
+
         /* Timer Display */
         .timer-fixed {
             position: fixed;
@@ -176,18 +655,15 @@
             animation: pulse 0.5s infinite;
         }
 
-        /* Start Screen */
-        .start-screen {
+        /* Timer Setup Screen */
+        .timer-setup {
             text-align: center;
-            max-width: 500px;
-            position: relative;
-            z-index: 2;
+            max-width: 450px;
             background: rgba(10, 10, 15, 0.7);
             backdrop-filter: blur(8px);
             padding: 40px 30px;
             border-radius: 40px;
-            border: 2px solid rgba(0, 255, 136, 0.3);
-            box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            border: 2px solid rgba(0, 212, 255, 0.3);
         }
 
         .game-title {
@@ -202,19 +678,20 @@
             letter-spacing: 4px;
         }
 
-        .box-cover {
-            width: 280px;
-            height: 280px;
-            background: linear-gradient(145deg, var(--bg-card), var(--bg-secondary));
-            border: 4px solid var(--accent-1);
-            border-radius: 24px;
-            margin: 0 auto 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 6rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 30px var(--shadow-glow);
-            animation: glow 3s infinite;
+        .timer-big {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 5rem;
+            font-weight: 900;
+            color: var(--accent-2);
+            text-shadow: 0 0 30px var(--shadow-blue);
+            margin: 40px 0;
+            letter-spacing: 8px;
+        }
+
+        .timer-label {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
         }
 
         .start-btn {
@@ -241,44 +718,7 @@
             transform: translateY(0) scale(0.98);
         }
 
-        .warning-text {
-            font-size: 1rem;
-            color: var(--accent-3);
-            padding: 16px 24px;
-            background: rgba(255, 107, 53, 0.15);
-            border: 2px solid var(--accent-3);
-            border-radius: 12px;
-            max-width: 400px;
-        }
-
-        /* Timer Setup Screen */
-        .timer-setup {
-            text-align: center;
-            max-width: 450px;
-            background: rgba(10, 10, 15, 0.7);
-            backdrop-filter: blur(8px);
-            padding: 40px 30px;
-            border-radius: 40px;
-            border: 2px solid rgba(0, 212, 255, 0.3);
-        }
-
-        .timer-big {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 5rem;
-            font-weight: 900;
-            color: var(--accent-2);
-            text-shadow: 0 0 30px var(--shadow-blue);
-            margin: 40px 0;
-            letter-spacing: 8px;
-        }
-
-        .timer-label {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        /* ========== 共通提示框樣式 ========== */
+        /* Tip container */
         .tip-container {
             width: 100%;
             max-width: 650px;
@@ -319,7 +759,7 @@
             border-radius: 20px;
             padding: 25px;
             border: 4px solid var(--terminal-green);
-            box-shadow: 
+            box-shadow:
                 0 0 40px rgba(0, 255, 0, 0.4),
                 inset 0 0 20px rgba(0, 255, 0, 0.1);
             position: relative;
@@ -333,7 +773,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
+            background:
                 linear-gradient(transparent 50%, rgba(0, 255, 0, 0.05) 50%),
                 linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
             background-size: 100% 2px, 10px 100%;
@@ -541,13 +981,8 @@
             top: 10px;
         }
 
-        .phone-handset::before {
-            left: 15px;
-        }
-
-        .phone-handset::after {
-            right: 15px;
-        }
+        .phone-handset::before { left: 15px; }
+        .phone-handset::after { right: 15px; }
 
         .phone-header {
             text-align: center;
@@ -594,7 +1029,6 @@
             text-shadow: none;
         }
 
-        /* Rotary Dial */
         .rotary-dial-wrapper {
             display: flex;
             justify-content: center;
@@ -616,9 +1050,7 @@
             touch-action: none;
         }
 
-        .rotary-dial.dialing {
-            cursor: grabbing;
-        }
+        .rotary-dial.dialing { cursor: grabbing; }
 
         .dial-plate {
             position: absolute;
@@ -658,9 +1090,7 @@
             height: 80px;
             border-radius: 50%;
             background: linear-gradient(145deg, #4a4a4a, #2a2a2a);
-            box-shadow:
-                0 5px 15px rgba(0, 0, 0, 0.5),
-                inset 0 2px 5px rgba(255, 255, 255, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.2);
             z-index: 5;
         }
 
@@ -693,14 +1123,10 @@
         }
 
         .dial-hole:hover {
-            box-shadow:
-                inset 0 3px 8px rgba(0, 0, 0, 0.8),
-                0 0 15px var(--accent-1);
+            box-shadow: inset 0 3px 8px rgba(0, 0, 0, 0.8), 0 0 15px var(--accent-1);
         }
 
-        .dial-hole:active {
-            transform: scale(0.95);
-        }
+        .dial-hole:active { transform: scale(0.95); }
 
         .dial-number {
             position: absolute;
@@ -743,13 +1169,8 @@
             box-shadow: 0 4px 15px rgba(0, 255, 136, 0.4);
         }
 
-        .action-btn:hover {
-            transform: translateY(-2px);
-        }
-
-        .action-btn:active {
-            transform: translateY(1px);
-        }
+        .action-btn:hover { transform: translateY(-2px); }
+        .action-btn:active { transform: translateY(1px); }
 
         .phone-status {
             text-align: center;
@@ -761,9 +1182,7 @@
             transition: all 0.3s ease;
         }
 
-        .phone-status.show {
-            opacity: 1;
-        }
+        .phone-status.show { opacity: 1; }
 
         .phone-status.error {
             background: rgba(255, 71, 87, 0.2);
@@ -800,9 +1219,7 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .success-overlay.show {
-            display: flex;
-        }
+        .success-overlay.show { display: flex; }
 
         .success-content {
             text-align: center;
@@ -833,7 +1250,7 @@
             color: var(--text-secondary);
         }
 
-        /* Password Input Screen (Level 2 & 3) */
+        /* Password Input Screen */
         .password-screen {
             text-align: center;
             max-width: 450px;
@@ -884,9 +1301,7 @@
             box-shadow: 0 0 20px var(--shadow-glow);
         }
 
-        .password-slot.filled {
-            color: var(--accent-1);
-        }
+        .password-slot.filled { color: var(--accent-1); }
 
         .password-keypad {
             display: grid;
@@ -915,9 +1330,7 @@
             transform: scale(1.05);
         }
 
-        .password-key:active {
-            transform: scale(0.95);
-        }
+        .password-key:active { transform: scale(0.95); }
 
         .password-key.backspace {
             background: linear-gradient(135deg, #ff4757, #ff6b81);
@@ -937,9 +1350,7 @@
             transition: all 0.3s ease;
         }
 
-        .input-status.show {
-            opacity: 1;
-        }
+        .input-status.show { opacity: 1; }
 
         .input-status.error {
             background: rgba(255, 71, 87, 0.2);
@@ -948,7 +1359,7 @@
             animation: shake 0.5s ease;
         }
 
-        /* Random Questions Screen - 強制等待7分鐘 */
+        /* Random Questions Screen */
         .questions-screen {
             text-align: center;
             max-width: 600px;
@@ -1067,11 +1478,9 @@
             background: linear-gradient(135deg, #0088ff, #0055cc);
         }
 
-        .hidden {
-            display: none !important;
-        }
+        .hidden { display: none !important; }
 
-        /* Victory Screen with Old Hong Kong message */
+        /* Victory Screen */
         .victory-screen {
             text-align: center;
             max-width: 700px;
@@ -1112,7 +1521,7 @@
             border-radius: 16px;
             border: 1px solid var(--accent-gold);
         }
-        
+
         .old-hk-message {
             background: rgba(212, 175, 55, 0.15);
             border: 2px solid var(--old-hongkong);
@@ -1124,7 +1533,7 @@
             font-weight: 600;
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
-        
+
         .form-link {
             display: inline-block;
             margin-top: 15px;
@@ -1188,7 +1597,6 @@
         /* Responsive */
         @media (max-width: 480px) {
             .game-title { font-size: 1.8rem; }
-            .box-cover { width: 220px; height: 220px; font-size: 4rem; }
             .timer-big { font-size: 3.5rem; }
             .terminal-container { padding: 15px; }
             .terminal-slot { width: 50px; height: 70px; font-size: 1.8rem; }
@@ -1207,7 +1615,7 @@
             .victory-title { font-size: 1.5rem; }
             .feedback-text { font-size: 0.95rem; padding: 20px; }
             .form-link { font-size: 1rem; padding: 12px 20px; }
-            .start-screen, .timer-setup, .password-screen, .questions-screen, .victory-screen {
+            .timer-setup, .password-screen, .questions-screen, .victory-screen {
                 padding: 30px 20px;
             }
             .tram-timer { font-size: 1.8rem; }
@@ -1215,6 +1623,12 @@
             .board-tram-btn { font-size: 1.2rem; padding: 16px 30px; }
             .old-hk-message { font-size: 0.95rem; }
             .tip-container { font-size: 0.85rem; padding: 12px 16px; }
+            .win95-icons { top: 10px; left: 10px; gap: 20px; }
+            .win95-icon-img { font-size: 24px; width: 32px; height: 32px; }
+            .win95-icon-label { font-size: 10px; }
+            .win95-github-window { max-width: 340px; }
+            .win95-game-badge { bottom: 50px; }
+            .win95-game-badge .badge-title { font-size: 1rem; }
         }
 
         @media (max-width: 768px) {
@@ -1231,17 +1645,124 @@
     <!-- Time Modifier Popup -->
     <div class="time-modifier" id="timeModifier"></div>
 
-    <!-- Screen 1: Start Screen -->
+    <!-- ========== Screen 1: Windows 95 Desktop Login ========== -->
     <div class="screen active" id="startScreen">
-        <div class="start-screen">
-            <h1 class="game-title">迷途顯影</h1>
-            <div class="box-cover">🧩</div>
-            <button class="start-btn" id="startGameBtn">開始遊戲</button>
-            <p class="warning-text">⚠️ 請先仔細閱讀說明書才打開任何信封</p>
+        <div class="win95-desktop">
+            <!-- CRT scanline overlay -->
+            <div class="crt-overlay"></div>
+
+            <!-- Desktop Icons -->
+            <div class="win95-icons">
+                <div class="win95-icon">
+                    <div class="win95-icon-img">🖥️</div>
+                    <div class="win95-icon-label">我的電腦</div>
+                </div>
+                <div class="win95-icon">
+                    <div class="win95-icon-img">📁</div>
+                    <div class="win95-icon-label">遊戲檔案</div>
+                </div>
+                <div class="win95-icon">
+                    <div class="win95-icon-img">🗑️</div>
+                    <div class="win95-icon-label">資源回收筒</div>
+                </div>
+                <div class="win95-icon">
+                    <div class="win95-icon-img">🌐</div>
+                    <div class="win95-icon-label">GitHub</div>
+                </div>
+            </div>
+
+            <!-- Windows Login Image (from the provided screenshot) -->
+            <div class="win95-login-image">
+                <img src="https://pfst.cf2.poecdn.net/base/image/78f47f5865e5599b661da5f6e229d301565eb6ba5525ef47937a60902ba6f8a2?w=1284&h=587" alt="Windows Login">
+            </div>
+
+            <!-- GitHub-styled login window overlaying the image -->
+            <div class="win95-github-window">
+                <div class="win95-window">
+                    <div class="win95-titlebar">
+                        <div class="win95-titlebar-text">
+                            <span class="win95-titlebar-icon">🔐</span>
+                            Welcome to 迷途顯影
+                        </div>
+                        <div class="win95-titlebar-buttons">
+                            <button class="win95-titlebar-btn" aria-label="Help">?</button>
+                            <button class="win95-titlebar-btn" aria-label="Close">×</button>
+                        </div>
+                    </div>
+                    <div class="win95-window-body">
+                        <div class="win95-github-header">
+                            <div class="github-logo-container">
+                                <!-- GitHub Octocat SVG -->
+                                <svg class="github-logo-svg" viewBox="0 0 98 96" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6C29.304 70.188 17.9 65.89 17.9 46.938c0-5.867 2.022-10.675 5.258-14.42-.568-1.303-2.346-6.843.486-14.256 0 0 4.286-1.384 14.073 5.458a48.278 48.278 0 0 1 12.854-1.71c4.367 0 8.736.568 12.854 1.71 9.706-6.842 14.073-5.458 14.073-5.458 2.832 7.413 1.053 12.953.486 14.256 3.317 3.745 5.258 8.553 5.258 14.42 0 18.952-11.404 23.168-22.326 24.39 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.303.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="#24292f"/>
+                                </svg>
+                            </div>
+                            <div class="win95-github-desc">
+                                <strong>迷途顯影 · 密室逃脫</strong><br>
+                                Type a user name and password to log on to the escape room.
+                            </div>
+                        </div>
+                        <hr class="win95-divider">
+                        <div class="win95-form-group">
+                            <label class="win95-label" for="win95user"><u>U</u>ser name:</label>
+                            <input class="win95-input" type="text" id="win95user" value="Player" autocomplete="off" spellcheck="false">
+                        </div>
+                        <div class="win95-form-group">
+                            <label class="win95-label" for="win95pass"><u>P</u>assword:</label>
+                            <input class="win95-input" type="password" id="win95pass" placeholder="" autocomplete="off">
+                        </div>
+                        <div class="win95-btn-row">
+                            <button class="win95-btn primary" id="win95OkBtn">OK</button>
+                            <button class="win95-btn" id="win95CancelBtn">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Game Title Badge -->
+            <div class="win95-game-badge">
+                <div class="badge-title">迷途顯影</div>
+                <div class="badge-sub">⚠️ 請先仔細閱讀說明書才打開任何信封</div>
+            </div>
+
+            <!-- Windows 95 Taskbar -->
+            <div class="win95-taskbar">
+                <button class="win95-start-btn">
+                    <span class="start-flag">🪟</span>
+                    <span>Start</span>
+                </button>
+                <div class="win95-taskbar-spacer"></div>
+                <div class="win95-taskbar-tray">
+                    <span>🔊</span>
+                    <span id="win95Clock">--:--</span>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- Screen 2: Timer Setup -->
+    <!-- Custom Modal (replaces alert) -->
+    <div class="win95-modal-overlay" id="customModal">
+        <div class="win95-modal">
+            <div class="win95-titlebar">
+                <div class="win95-titlebar-text">
+                    <span class="win95-titlebar-icon">📩</span>
+                    <span id="modalTitle">提示</span>
+                </div>
+                <div class="win95-titlebar-buttons">
+                    <button class="win95-titlebar-btn" id="modalCloseX" aria-label="Close">×</button>
+                </div>
+            </div>
+            <div class="win95-modal-body">
+                <div class="win95-modal-icon" id="modalIcon">📩</div>
+                <div class="win95-modal-text" id="modalText"></div>
+            </div>
+            <div class="win95-modal-footer">
+                <button class="win95-btn primary" id="modalOkBtn">確定</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== Screen 2: Timer Setup ========== -->
     <div class="screen" id="timerSetupScreen">
         <div class="timer-setup">
             <h2 class="game-title" style="font-size: 1.8rem;">準備開始</h2>
@@ -1251,7 +1772,7 @@
         </div>
     </div>
 
-    <!-- Screen 3: Terminal Computer Password (第1關) + 隨機2分鐘提示 -->
+    <!-- ========== Screen 3: Terminal Computer Password (第1關) ========== -->
     <div class="screen" id="terminalScreen">
         <div class="terminal-screen">
             <div class="terminal-container">
@@ -1317,15 +1838,14 @@
                 </div>
                 <div class="terminal-status-message" id="terminalStatus"></div>
             </div>
-            <!-- 第1關提示：隨機2分鐘更換 -->
             <div class="tip-container" id="tip1">
-                <span class="tip-icon">💡</span> 
+                <span class="tip-icon">💡</span>
                 <span id="tip1Text">過山車列車設計為綠紫色飛龍</span>
             </div>
         </div>
     </div>
 
-    <!-- Screen 4: Rotary Phone Level (第2關) + 隨機2分鐘提示 -->
+    <!-- ========== Screen 4: Rotary Phone (第2關) ========== -->
     <div class="screen" id="phoneScreen">
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
@@ -1347,14 +1867,13 @@
             <div class="dial-instruction">將手指放入數字孔，順時針旋轉至擋片後放開</div>
             <div class="phone-status" id="phoneStatus"></div>
         </div>
-        <!-- 第2關提示：隨機2分鐘更換（花碼）-->
         <div class="tip-container" id="tip2" style="margin-top: 20px; max-width: 380px;">
-            <span class="tip-icon">💡</span> 
+            <span class="tip-icon">💡</span>
             <span id="tip2Text">花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價</span>
         </div>
     </div>
 
-    <!-- Screen 5: 4-digit Password (鐵閘解鎖 - 第3關) + 隨機2分鐘提示 -->
+    <!-- ========== Screen 5: 4-digit Password (第3關) ========== -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
             <div class="level-prompt">🔒 你現在需要找到四位數字密碼<br>破解鐵閘密碼鎖</div>
@@ -1380,14 +1899,13 @@
             </div>
             <div class="input-status" id="level2Status"></div>
         </div>
-        <!-- 第3關提示：通花鐵閘 -->
         <div class="tip-container" id="tip3" style="margin-top: 20px; max-width: 450px;">
-            <span class="tip-icon">💡</span> 
+            <span class="tip-icon">💡</span>
             <span id="tip3Text">通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。若有緊急的事，請拍門吧！</span>
         </div>
     </div>
 
-    <!-- Screen 6: 第四關 — 等電車，強制7分鐘，無跳過（第5關提示放在這裡） -->
+    <!-- ========== Screen 6: 等電車 (第4關) ========== -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
@@ -1396,7 +1914,6 @@
                 <div class="tram-message" id="tramMessage">
                     仲有少少時間，同朋友傾吓計啦～
                 </div>
-                
                 <div class="tram-question-area">
                     <div class="tram-question-text" id="tramQuestionText">
                         你最喜歡香港嘅邊個地方？
@@ -1405,21 +1922,18 @@
                         💬 我想再傾多啲
                     </button>
                 </div>
-                
-                <!-- 7分鐘後出現的電車上車按鈕 -->
                 <button class="board-tram-btn hidden" id="boardTramBtn">
                     🚃 電車終於到站，按這裏上車！
                 </button>
             </div>
         </div>
-        <!-- 第5關提示：水籌／制水／越南難民等（隨機2分鐘更換）-->
         <div class="tip-container" id="tip5" style="margin-top: 20px; max-width: 600px;">
-            <span class="tip-icon">💡</span> 
+            <span class="tip-icon">💡</span>
             <span id="tip5Text">為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止</span>
         </div>
     </div>
 
-    <!-- Screen 7: 2-digit Number (電車站編號 - 無關卡提示，但保留原結構) -->
+    <!-- ========== Screen 7: 2-digit Number (第5關) ========== -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
             <div class="level-prompt">🚃 電車站號碼咁多…<br>睇嚟要搵一個兩位數字號碼<br>先可以去到中環</div>
@@ -1443,21 +1957,18 @@
             </div>
             <div class="input-status" id="level3Status"></div>
         </div>
-        <!-- 第5關的提示已經在上一屏，此處不需要重複 -->
     </div>
 
-    <!-- Screen 8: Final Victory — with old Hong Kong pictures message -->
+    <!-- ========== Screen 8: Final Victory ========== -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
             <h1 class="victory-title">恭喜你成功準時到達比賽現場並成功通關！</h1>
             <p class="victory-instruction">📖 請大家閱讀說明書第七頁</p>
-            
             <div class="old-hk-message">
                 📸 通關後可以慢慢欣賞背面嘅相片，<br>
                 每一張都展現舊香港嘅珍貴景象。
             </div>
-            
             <div class="feedback-text">
                 <p style="margin-bottom: 16px;">希望你有個好的遊戲體驗！<br>若你有任何想法或意見，歡迎填寫產品回饋表：</p>
                 <a class="form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfU3oFH5eu60wD_37TQ97h5D6swfk9sIAe7G0emI0QfjaMYkQ/viewform?pli=1&authuser=0" target="_blank" rel="noopener noreferrer">
@@ -1477,8 +1988,35 @@
     </div>
 
     <script>
-        // ========== AUDIO CONTEXT ==========
-        let audioContext = null;
+        /* ========== CUSTOM MODAL (replaces alert) ========== */
+        function showModal(message, title, icon, onClose) {
+            var overlay = document.getElementById('customModal');
+            document.getElementById('modalText').textContent = message;
+            document.getElementById('modalTitle').textContent = title || '提示';
+            document.getElementById('modalIcon').textContent = icon || '📩';
+            overlay.classList.add('show');
+
+            function close() {
+                overlay.classList.remove('show');
+                if (onClose) onClose();
+            }
+            document.getElementById('modalOkBtn').onclick = close;
+            document.getElementById('modalCloseX').onclick = close;
+        }
+
+        /* ========== WINDOWS 95 CLOCK ========== */
+        function updateWin95Clock() {
+            var now = new Date();
+            var h = String(now.getHours()).padStart(2, '0');
+            var m = String(now.getMinutes()).padStart(2, '0');
+            var el = document.getElementById('win95Clock');
+            if (el) el.textContent = h + ':' + m;
+        }
+        setInterval(updateWin95Clock, 30000);
+        updateWin95Clock();
+
+        /* ========== AUDIO CONTEXT ========== */
+        var audioContext = null;
 
         function getAudioContext() {
             if (!audioContext) {
@@ -1489,10 +2027,10 @@
         }
 
         function playTone(frequency, duration) {
-            const ctx = getAudioContext();
+            var ctx = getAudioContext();
             if (!ctx) return;
-            const oscillator = ctx.createOscillator();
-            const gainNode = ctx.createGain();
+            var oscillator = ctx.createOscillator();
+            var gainNode = ctx.createGain();
             oscillator.connect(gainNode);
             gainNode.connect(ctx.destination);
             oscillator.frequency.value = frequency;
@@ -1504,29 +2042,29 @@
         }
 
         function playSuccessSound() {
-            [{ freq: 523.25, time: 0 }, { freq: 659.25, time: 0.12 }, { freq: 783.99, time: 0.24 }, { freq: 1046.50, time: 0.36 }]
-                .forEach(note => setTimeout(() => playTone(note.freq, 0.2), note.time * 1000));
+            [{freq:523.25,time:0},{freq:659.25,time:0.12},{freq:783.99,time:0.24},{freq:1046.50,time:0.36}]
+                .forEach(function(note) { setTimeout(function() { playTone(note.freq, 0.2); }, note.time * 1000); });
         }
 
         function playErrorSound() {
             playTone(200, 0.15);
-            setTimeout(() => playTone(150, 0.2), 100);
+            setTimeout(function() { playTone(150, 0.2); }, 100);
         }
 
         function playUnlockSound() {
-            setTimeout(() => playTone(800, 0.05), 0);
-            setTimeout(() => playTone(600, 0.05), 50);
-            setTimeout(() => playTone(1200, 0.1), 100);
-            setTimeout(() => { playTone(523, 0.15); playTone(659, 0.15); }, 200);
-            setTimeout(() => playTone(784, 0.2), 350);
+            setTimeout(function() { playTone(800, 0.05); }, 0);
+            setTimeout(function() { playTone(600, 0.05); }, 50);
+            setTimeout(function() { playTone(1200, 0.1); }, 100);
+            setTimeout(function() { playTone(523, 0.15); playTone(659, 0.15); }, 200);
+            setTimeout(function() { playTone(784, 0.2); }, 350);
         }
 
         function playTerminalKeySound() {
-            const ctx = getAudioContext();
+            var ctx = getAudioContext();
             if (!ctx) return;
-            const oscillator = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-            const filter = ctx.createBiquadFilter();
+            var oscillator = ctx.createOscillator();
+            var gainNode = ctx.createGain();
+            var filter = ctx.createBiquadFilter();
             oscillator.connect(filter);
             filter.connect(gainNode);
             gainNode.connect(ctx.destination);
@@ -1542,78 +2080,89 @@
         }
 
         function playTerminalAccessSound() {
-            const ctx = getAudioContext();
+            var ctx = getAudioContext();
             if (!ctx) return;
-            const tones = [
-                { freq: 300, time: 0 },
-                { freq: 600, time: 0.1 },
-                { freq: 900, time: 0.2 },
-                { freq: 1200, time: 0.3 },
-                { freq: 1500, time: 0.4 }
+            var tones = [
+                {freq:300,time:0},{freq:600,time:0.1},{freq:900,time:0.2},{freq:1200,time:0.3},{freq:1500,time:0.4}
             ];
-            tones.forEach(tone => {
-                setTimeout(() => {
-                    const oscillator = ctx.createOscillator();
-                    const gainNode = ctx.createGain();
-                    oscillator.connect(gainNode);
-                    gainNode.connect(ctx.destination);
-                    oscillator.frequency.value = tone.freq;
-                    oscillator.type = 'sine';
-                    gainNode.gain.setValueAtTime(0.2, ctx.currentTime);
-                    gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
-                    oscillator.start(ctx.currentTime);
-                    oscillator.stop(ctx.currentTime + 0.15);
+            tones.forEach(function(tone) {
+                setTimeout(function() {
+                    var osc = ctx.createOscillator();
+                    var gn = ctx.createGain();
+                    osc.connect(gn); gn.connect(ctx.destination);
+                    osc.frequency.value = tone.freq; osc.type = 'sine';
+                    gn.gain.setValueAtTime(0.2, ctx.currentTime);
+                    gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.15);
+                    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.15);
                 }, tone.time * 1000);
             });
         }
 
         function playRotaryClickSound() {
-            const ctx = getAudioContext();
+            var ctx = getAudioContext();
             if (!ctx) return;
-            const oscillator = ctx.createOscillator();
-            const gainNode = ctx.createGain();
-            const filter = ctx.createBiquadFilter();
-            oscillator.connect(filter);
-            filter.connect(gainNode);
-            gainNode.connect(ctx.destination);
-            filter.type = 'lowpass';
-            filter.frequency.value = 800;
-            oscillator.type = 'square';
-            oscillator.frequency.value = 100;
-            gainNode.gain.setValueAtTime(0.4, ctx.currentTime);
-            gainNode.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-            oscillator.start(ctx.currentTime);
-            oscillator.stop(ctx.currentTime + 0.05);
+            var osc = ctx.createOscillator();
+            var gn = ctx.createGain();
+            var flt = ctx.createBiquadFilter();
+            osc.connect(flt); flt.connect(gn); gn.connect(ctx.destination);
+            flt.type = 'lowpass'; flt.frequency.value = 800;
+            osc.type = 'square'; osc.frequency.value = 100;
+            gn.gain.setValueAtTime(0.4, ctx.currentTime);
+            gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
+            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.05);
         }
 
         function playDialReturnSound(duration) {
-            const ctx = getAudioContext();
+            var ctx = getAudioContext();
             if (!ctx) return;
-            const clickCount = Math.floor(duration * 12);
-            for (let i = 0; i < clickCount; i++) {
-                setTimeout(() => {
-                    const osc = ctx.createOscillator();
-                    const gain = ctx.createGain();
-                    osc.connect(gain);
-                    gain.connect(ctx.destination);
-                    osc.type = 'square';
-                    osc.frequency.value = 150 + Math.random() * 50;
-                    gain.gain.setValueAtTime(0.15, ctx.currentTime);
-                    gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.03);
-                    osc.start(ctx.currentTime);
-                    osc.stop(ctx.currentTime + 0.03);
-                }, i * (duration * 1000 / clickCount));
+            var clickCount = Math.floor(duration * 12);
+            for (var i = 0; i < clickCount; i++) {
+                (function(idx) {
+                    setTimeout(function() {
+                        var osc = ctx.createOscillator();
+                        var gn = ctx.createGain();
+                        osc.connect(gn); gn.connect(ctx.destination);
+                        osc.type = 'square'; osc.frequency.value = 150 + Math.random() * 50;
+                        gn.gain.setValueAtTime(0.15, ctx.currentTime);
+                        gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.03);
+                        osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.03);
+                    }, idx * (duration * 1000 / clickCount));
+                })(i);
             }
         }
 
-        // ========== TIMER ==========
-        let timerInterval = null, totalSeconds = 45 * 60, timerRunning = false;
+        /* Windows 95 startup chime */
+        function playWin95StartupSound() {
+            var ctx = getAudioContext();
+            if (!ctx) return;
+            var notes = [
+                {freq:523,time:0,dur:0.25},
+                {freq:659,time:0.15,dur:0.25},
+                {freq:784,time:0.30,dur:0.3},
+                {freq:1047,time:0.50,dur:0.4}
+            ];
+            notes.forEach(function(n) {
+                setTimeout(function() {
+                    var osc = ctx.createOscillator();
+                    var gn = ctx.createGain();
+                    osc.connect(gn); gn.connect(ctx.destination);
+                    osc.type = 'sine'; osc.frequency.value = n.freq;
+                    gn.gain.setValueAtTime(0.25, ctx.currentTime);
+                    gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + n.dur);
+                    osc.start(ctx.currentTime); osc.stop(ctx.currentTime + n.dur);
+                }, n.time * 1000);
+            });
+        }
+
+        /* ========== TIMER ========== */
+        var timerInterval = null, totalSeconds = 45 * 60, timerRunning = false;
 
         function updateTimerDisplay() {
-            const minutes = Math.floor(totalSeconds / 60);
-            const seconds = totalSeconds % 60;
-            document.getElementById('timerDisplay').textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
-            const timerFixed = document.getElementById('timerFixed');
+            var minutes = Math.floor(totalSeconds / 60);
+            var seconds = totalSeconds % 60;
+            document.getElementById('timerDisplay').textContent =
+                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
+            var timerFixed = document.getElementById('timerFixed');
             timerFixed.classList.remove('warning', 'danger');
             if (totalSeconds <= 60) timerFixed.classList.add('danger');
             else if (totalSeconds <= 300) timerFixed.classList.add('warning');
@@ -1623,7 +2172,7 @@
             if (timerRunning) return;
             timerRunning = true;
             document.getElementById('timerFixed').classList.add('active');
-            timerInterval = setInterval(() => {
+            timerInterval = setInterval(function() {
                 if (totalSeconds > 0) { totalSeconds--; updateTimerDisplay(); }
                 else clearInterval(timerInterval);
             }, 1000);
@@ -1633,55 +2182,49 @@
             totalSeconds += seconds;
             if (totalSeconds < 0) totalSeconds = 0;
             updateTimerDisplay();
-            const modifier = document.getElementById('timeModifier');
-            modifier.textContent = isAdd ? `+${Math.abs(seconds / 60)} 分鐘` : `-${Math.abs(seconds / 60)} 分鐘`;
-            modifier.className = `time-modifier show ${isAdd ? 'add' : 'subtract'}`;
-            setTimeout(() => modifier.classList.remove('show'), 2500);
+            var modifier = document.getElementById('timeModifier');
+            modifier.textContent = isAdd ? ('+' + Math.abs(seconds / 60) + ' 分鐘') : ('-' + Math.abs(seconds / 60) + ' 分鐘');
+            modifier.className = 'time-modifier show ' + (isAdd ? 'add' : 'subtract');
+            setTimeout(function() { modifier.classList.remove('show'); }, 2500);
         }
 
-        // ========== SCREEN NAVIGATION ==========
+        /* ========== SCREEN NAVIGATION ========== */
         function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
             document.getElementById(screenId).classList.add('active');
         }
 
-        function showSuccess(icon, title, subtitle, callback, delay = 3000) {
-            const overlay = document.getElementById('successOverlay');
+        function showSuccess(icon, title, subtitle, callback, delay) {
+            delay = delay || 3000;
+            var overlay = document.getElementById('successOverlay');
             document.getElementById('successIcon').textContent = icon;
             document.getElementById('successTitle').textContent = title;
             document.getElementById('successSubtitle').textContent = subtitle;
             overlay.classList.add('show');
             playSuccessSound();
-            setTimeout(() => { overlay.classList.remove('show'); if (callback) callback(); }, delay);
+            setTimeout(function() { overlay.classList.remove('show'); if (callback) callback(); }, delay);
         }
 
-        // ========== 關卡提示系統 ==========
-        // 第1關提示 (電腦終端)
-        const tipsLevel1 = [
+        /* ========== TIP SYSTEM ========== */
+        var tipsLevel1 = [
             "過山車列車設計為綠紫色飛龍",
             "中環街市是香港少數在二戰前建成的室內街市，具有重要的歷史價值",
             "尖沙咀鐘樓內部的響鬧報時裝置在1950年被抽走，歷經71年無聲鐘",
             "過山車最高時速達每小時25公里"
         ];
-        
-        // 第2關提示 (旋轉電話／花碼)
-        const tipsLevel2 = [
+        var tipsLevel2 = [
             "花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價",
             "花碼以簡便的線條作速記，通常分兩行書寫以表示數字與量級",
             "花碼在阿拉伯數字普及後，僅在極少數舊店或招牌可見",
             "第一代小巴價錢牌是以花碼寫成"
         ];
-        
-        // 第3關提示 (鐵閘密碼)
-        const tipsLevel3 = [
+        var tipsLevel3 = [
             "通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。若有緊急的事，請拍門吧！",
             "以「前舖後居」方式經營的店舖，沒有窗戶，通花鐵閘成為了唯一的通風口",
             "許多店主會將店舖字號或花紋直接鑿在鐵閘上，視為另類廣告",
             "隨時代發展，現代商鋪多用節省空間的捲閘"
         ];
-        
-        // 第5關提示 (等電車關卡 - 水籌／制水／越南難民)
-        const tipsLevel5 = [
+        var tipsLevel5 = [
             "為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止",
             "當時政府也採取了關閉公共浴室、暫緩慢性病外科手術及重開舊水井等極端措施",
             "據說水荒時，向人借水跟來討債的人一樣不受歡迎",
@@ -1691,45 +2234,36 @@
             "難民營內常因不同政治背景發生衝突，警隊需將兩派船民分開居住，並常搜出自行製造的武器"
         ];
 
-        // 隨機更換提示的函數
         function rotateTip(tipArray, elementId) {
-            const randomIndex = Math.floor(Math.random() * tipArray.length);
-            const tipElement = document.getElementById(elementId);
-            if (tipElement) {
-                tipElement.textContent = tipArray[randomIndex];
-            }
+            var idx = Math.floor(Math.random() * tipArray.length);
+            var el = document.getElementById(elementId);
+            if (el) el.textContent = tipArray[idx];
         }
 
-        // 設定所有提示定時器 (每2分鐘 = 120000毫秒)
-        let tipInterval1, tipInterval2, tipInterval3, tipInterval5;
+        var tipInterval1, tipInterval2, tipInterval3, tipInterval5;
 
         function startAllTipTimers() {
-            // 清除舊的定時器
             if (tipInterval1) clearInterval(tipInterval1);
             if (tipInterval2) clearInterval(tipInterval2);
             if (tipInterval3) clearInterval(tipInterval3);
             if (tipInterval5) clearInterval(tipInterval5);
-            
-            // 立即顯示一次隨機提示
             rotateTip(tipsLevel1, 'tip1Text');
             rotateTip(tipsLevel2, 'tip2Text');
             rotateTip(tipsLevel3, 'tip3Text');
             rotateTip(tipsLevel5, 'tip5Text');
-            
-            // 每2分鐘更換一次
-            tipInterval1 = setInterval(() => rotateTip(tipsLevel1, 'tip1Text'), 120000);
-            tipInterval2 = setInterval(() => rotateTip(tipsLevel2, 'tip2Text'), 120000);
-            tipInterval3 = setInterval(() => rotateTip(tipsLevel3, 'tip3Text'), 120000);
-            tipInterval5 = setInterval(() => rotateTip(tipsLevel5, 'tip5Text'), 120000);
+            tipInterval1 = setInterval(function() { rotateTip(tipsLevel1, 'tip1Text'); }, 120000);
+            tipInterval2 = setInterval(function() { rotateTip(tipsLevel2, 'tip2Text'); }, 120000);
+            tipInterval3 = setInterval(function() { rotateTip(tipsLevel3, 'tip3Text'); }, 120000);
+            tipInterval5 = setInterval(function() { rotateTip(tipsLevel5, 'tip5Text'); }, 120000);
         }
 
-        // ========== TERMINAL COMPUTER PASSWORD ==========
-        let terminalPassword = '';
-        const correctTerminalPassword = 'VRDU';
+        /* ========== TERMINAL COMPUTER PASSWORD ========== */
+        var terminalPassword = '';
+        var correctTerminalPassword = 'VRDU';
 
         function updateTerminalPasswordDisplay() {
-            const slots = document.getElementById('terminalPasswordDisplay').querySelectorAll('.terminal-slot');
-            slots.forEach((slot, i) => {
+            var slots = document.getElementById('terminalPasswordDisplay').querySelectorAll('.terminal-slot');
+            slots.forEach(function(slot, i) {
                 slot.classList.remove('active', 'filled');
                 if (i < terminalPassword.length) {
                     slot.textContent = terminalPassword[i];
@@ -1744,36 +2278,31 @@
         }
 
         function showTerminalStatus(message, type) {
-            const status = document.getElementById('terminalStatus');
+            var status = document.getElementById('terminalStatus');
             status.textContent = message;
-            status.className = `terminal-status-message show ${type}`;
-            setTimeout(() => status.classList.remove('show'), 3000);
+            status.className = 'terminal-status-message show ' + type;
+            setTimeout(function() { status.classList.remove('show'); }, 3000);
         }
 
         function checkTerminalPassword() {
             if (terminalPassword.length < 4) {
                 showTerminalStatus('錯誤：密碼必須為4個字符', 'error');
-                playErrorSound();
-                return;
+                playErrorSound(); return;
             }
             if (terminalPassword === correctTerminalPassword) {
                 playTerminalAccessSound();
-                showSuccess('💾', '系統登入成功', '終端機已解鎖！', () => {
-                    showScreen('phoneScreen');
-                    initRotaryDial();
+                showSuccess('💾', '系統登入成功', '終端機已解鎖！', function() {
+                    showScreen('phoneScreen'); initRotaryDial();
                 }, 3000);
             } else {
                 showTerminalStatus('錯誤：登入失敗，密碼不正確', 'error');
                 playErrorSound();
-                setTimeout(() => {
-                    terminalPassword = '';
-                    updateTerminalPasswordDisplay();
-                }, 1000);
+                setTimeout(function() { terminalPassword = ''; updateTerminalPasswordDisplay(); }, 1000);
             }
         }
 
-        // ========== ROTARY DIAL PHONE ==========
-        const phoneConfig = {
+        /* ========== ROTARY DIAL PHONE ========== */
+        var phoneConfig = {
             correct: { '56123517': { audio: '豬肉榮.m4a', name: '豬肉榮' } },
             wrong: {
                 '63589512': { audio: '李太.m4a', message: '打錯了！這是李太的電話。' },
@@ -1781,64 +2310,65 @@
             }
         };
 
-        let phoneNumber = '', isDialing = false;
-        const dialNumbers = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-        const startAngle = -60, angleStep = 30;
+        var phoneNumber = '', isDialing = false;
+        var dialNumbers = ['1','2','3','4','5','6','7','8','9','0'];
+        var startAngle = -60, angleStep = 30;
 
         function initRotaryDial() {
-            const dialPlate = document.getElementById('dialPlate');
-            const dialSize = window.innerWidth <= 480 ? 210 : 250;
-            const holeSize = window.innerWidth <= 480 ? 30 : 36;
-            const adjustedHoleRadius = window.innerWidth <= 480 ? 75 : 90;
-            const numberRadius = window.innerWidth <= 480 ? 95 : 115;
+            var dialPlate = document.getElementById('dialPlate');
+            var isSmall = window.innerWidth <= 480;
+            var dialSize = isSmall ? 210 : 250;
+            var holeSize = isSmall ? 30 : 36;
+            var adjustedHoleRadius = isSmall ? 75 : 90;
+            var numberRadius = isSmall ? 95 : 115;
             dialPlate.innerHTML = '';
 
-            dialNumbers.forEach((num, index) => {
-                const angle = (startAngle + index * angleStep) * (Math.PI / 180);
-                const holeX = dialSize / 2 + adjustedHoleRadius * Math.sin(angle) - holeSize / 2;
-                const holeY = dialSize / 2 - adjustedHoleRadius * Math.cos(angle) - holeSize / 2;
+            dialNumbers.forEach(function(num, index) {
+                var angle = (startAngle + index * angleStep) * (Math.PI / 180);
+                var holeX = dialSize / 2 + adjustedHoleRadius * Math.sin(angle) - holeSize / 2;
+                var holeY = dialSize / 2 - adjustedHoleRadius * Math.cos(angle) - holeSize / 2;
 
-                const hole = document.createElement('div');
+                var hole = document.createElement('div');
                 hole.className = 'dial-hole';
                 hole.dataset.num = num;
-                hole.style.cssText = `left:${holeX}px;top:${holeY}px;width:${holeSize}px;height:${holeSize}px`;
+                hole.style.cssText = 'left:' + holeX + 'px;top:' + holeY + 'px;width:' + holeSize + 'px;height:' + holeSize + 'px';
                 dialPlate.appendChild(hole);
 
-                const numX = dialSize / 2 + numberRadius * Math.sin(angle);
-                const numY = dialSize / 2 - numberRadius * Math.cos(angle);
-                const numLabel = document.createElement('div');
+                var numX = dialSize / 2 + numberRadius * Math.sin(angle);
+                var numY = dialSize / 2 - numberRadius * Math.cos(angle);
+                var numLabel = document.createElement('div');
                 numLabel.className = 'dial-number';
                 numLabel.textContent = num;
-                numLabel.style.cssText = `left:${numX}px;top:${numY}px;transform:translate(-50%,-50%)`;
+                numLabel.style.cssText = 'left:' + numX + 'px;top:' + numY + 'px;transform:translate(-50%,-50%)';
                 dialPlate.appendChild(numLabel);
             });
         }
 
         function getDialAngleForNumber(num) {
-            const index = dialNumbers.indexOf(num);
+            var index = dialNumbers.indexOf(num);
             return index === -1 ? 0 : (index + 1) * angleStep + 40;
         }
 
         function dialNumber(num) {
             if (isDialing || phoneNumber.length >= 8) return;
             isDialing = true;
-            const dialPlate = document.getElementById('dialPlate');
-            const rotaryDial = document.getElementById('rotaryDial');
+            var dialPlate = document.getElementById('dialPlate');
+            var rotaryDial = document.getElementById('rotaryDial');
             rotaryDial.classList.add('dialing');
-            const targetAngle = getDialAngleForNumber(num);
+            var targetAngle = getDialAngleForNumber(num);
 
             dialPlate.style.transition = 'transform 0.15s ease-out';
-            dialPlate.style.transform = `translate(-50%, -50%) rotate(${targetAngle}deg)`;
+            dialPlate.style.transform = 'translate(-50%, -50%) rotate(' + targetAngle + 'deg)';
             playRotaryClickSound();
 
-            setTimeout(() => {
+            setTimeout(function() {
                 dialPlate.classList.add('returning');
                 dialPlate.style.transition = '';
                 dialPlate.style.transform = 'translate(-50%, -50%) rotate(0deg)';
-                const returnDuration = 0.3 + (targetAngle / 360) * 0.5;
+                var returnDuration = 0.3 + (targetAngle / 360) * 0.5;
                 playDialReturnSound(returnDuration);
 
-                setTimeout(() => {
+                setTimeout(function() {
                     dialPlate.classList.remove('returning');
                     rotaryDial.classList.remove('dialing');
                     isDialing = false;
@@ -1849,7 +2379,7 @@
         }
 
         function updatePhoneDisplay() {
-            const display = document.getElementById('phoneDisplay');
+            var display = document.getElementById('phoneDisplay');
             if (phoneNumber === '') {
                 display.textContent = '輸入號碼';
                 display.classList.add('empty');
@@ -1860,35 +2390,35 @@
         }
 
         function showPhoneStatus(message, type) {
-            const status = document.getElementById('phoneStatus');
+            var status = document.getElementById('phoneStatus');
             status.textContent = message;
-            status.className = `phone-status show ${type}`;
-            setTimeout(() => status.classList.remove('show'), 3000);
+            status.className = 'phone-status show ' + type;
+            setTimeout(function() { status.classList.remove('show'); }, 3000);
         }
 
         function checkPhoneNumber() {
             if (phoneNumber === '') { showPhoneStatus('請先輸入號碼', 'error'); playErrorSound(); return; }
             if (phoneConfig.correct[phoneNumber]) {
                 if (phoneConfig.correct[phoneNumber].audio) {
-                    new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(() => {});
+                    new Audio(phoneConfig.correct[phoneNumber].audio).play().catch(function() {});
                 }
-                showSuccess('🎉', '恭喜你成功通過第二關', '現在請破解鐵閘密碼', () => showScreen('level2Screen'), 15000);
+                showSuccess('🎉', '恭喜你成功通過第二關', '現在請破解鐵閘密碼', function() { showScreen('level2Screen'); }, 15000);
             } else if (phoneConfig.wrong[phoneNumber]) {
                 if (phoneConfig.wrong[phoneNumber].audio) {
-                    new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(() => {});
+                    new Audio(phoneConfig.wrong[phoneNumber].audio).play().catch(function() {});
                 }
                 showPhoneStatus(phoneConfig.wrong[phoneNumber].message, 'error');
                 playErrorSound();
             } else { showPhoneStatus('號碼錯誤，請重試！', 'error'); playErrorSound(); }
         }
 
-        // ========== LEVEL 2 ==========
-        let password2 = '';
-        const correctPassword2 = '3122';
+        /* ========== LEVEL 2 ========== */
+        var password2 = '';
+        var correctPassword2 = '3122';
 
         function updatePassword2Display() {
-            const slots = document.getElementById('password2Display').querySelectorAll('.password-slot');
-            slots.forEach((slot, i) => {
+            var slots = document.getElementById('password2Display').querySelectorAll('.password-slot');
+            slots.forEach(function(slot, i) {
                 slot.classList.remove('active', 'filled');
                 if (i < password2.length) { slot.textContent = password2[i]; slot.classList.add('filled'); }
                 else if (i === password2.length) { slot.textContent = '_'; slot.classList.add('active'); }
@@ -1897,55 +2427,54 @@
         }
 
         function showInputStatus(elementId, message, type) {
-            const status = document.getElementById(elementId);
+            var status = document.getElementById(elementId);
             status.textContent = message;
-            status.className = `input-status show ${type}`;
-            setTimeout(() => status.classList.remove('show'), 3000);
+            status.className = 'input-status show ' + type;
+            setTimeout(function() { status.classList.remove('show'); }, 3000);
         }
 
         function checkPassword2() {
             if (password2.length < 4) { showInputStatus('level2Status', '請輸入完整密碼', 'error'); playErrorSound(); return; }
             if (password2 === correctPassword2) {
                 playUnlockSound();
-                showSuccess('🔓', '恭喜你成功破解鐵閘密碼', '現在去電車站等車', () => {
-                    showScreen('questionsScreen');
-                    startTramWaiting();
+                showSuccess('🔓', '恭喜你成功破解鐵閘密碼', '現在去電車站等車', function() {
+                    showScreen('questionsScreen'); startTramWaiting();
                 }, 15000);
             } else { showInputStatus('level2Status', '密碼錯誤，請重試！', 'error'); playErrorSound(); }
         }
 
-        // ========== 第四關：強制等電車7分鐘 ==========
-        const randomQuestions = [
-            "你最喜歡香港嘅邊個地方？", 
-            "如果可以去世界任何地方，你會去邊度？", 
+        /* ========== TRAM WAIT (7 min) ========== */
+        var randomQuestions = [
+            "你最喜歡香港嘅邊個地方？",
+            "如果可以去世界任何地方，你會去邊度？",
             "你覺得香港最好食嘅嘢係乜？",
-            "你細個最鍾意玩咩遊戲？", 
-            "你最難忘嘅童年回憶？", 
+            "你細個最鍾意玩咩遊戲？",
+            "你最難忘嘅童年回憶？",
             "如果你可以擁有一種超能力，你會揀乜？",
-            "你最欣賞身邊邊個人？點解？", 
-            "你覺得最能代表香港嘅係乜嘢？", 
+            "你最欣賞身邊邊個人？點解？",
+            "你覺得最能代表香港嘅係乜嘢？",
             "你最近學識咗啲乜新嘢？",
-            "如果你只可以食一種嘢一世，你會揀乜？", 
-            "你覺得朋友最重要嘅特質係乜？", 
+            "如果你只可以食一種嘢一世，你會揀乜？",
+            "你覺得朋友最重要嘅特質係乜？",
             "你最想實現嘅願望係乜？",
-            "你覺得人生最緊要嘅係乜嘢？", 
-            "你最鍾意嘅節日係邊個？點解？", 
+            "你覺得人生最緊要嘅係乜嘢？",
+            "你最鍾意嘅節日係邊個？點解？",
             "如果你可以同任何人食飯，你會揀邊個？"
         ];
 
-        let tramTimerInterval = null;
-        let tramWaitSeconds = 7 * 60;
-        let tramArrived = false;
+        var tramTimerInterval = null;
+        var tramWaitSeconds = 7 * 60;
+        var tramArrived = false;
 
         function startTramWaiting() {
             tramWaitSeconds = 7 * 60;
             tramArrived = false;
             updateTramTimerDisplay();
-            const boardBtn = document.getElementById('boardTramBtn');
+            var boardBtn = document.getElementById('boardTramBtn');
             boardBtn.classList.add('hidden');
             setRandomQuestion();
             if (tramTimerInterval) clearInterval(tramTimerInterval);
-            tramTimerInterval = setInterval(() => {
+            tramTimerInterval = setInterval(function() {
                 if (tramWaitSeconds > 0) {
                     tramWaitSeconds--;
                     updateTramTimerDisplay();
@@ -1961,33 +2490,31 @@
         }
 
         function updateTramTimerDisplay() {
-            const minutes = Math.floor(tramWaitSeconds / 60);
-            const seconds = tramWaitSeconds % 60;
-            document.getElementById('tramWaitTimer').textContent = 
-                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            var minutes = Math.floor(tramWaitSeconds / 60);
+            var seconds = tramWaitSeconds % 60;
+            document.getElementById('tramWaitTimer').textContent =
+                String(minutes).padStart(2, '0') + ':' + String(seconds).padStart(2, '0');
         }
 
         function setRandomQuestion() {
-            const questionText = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
-            document.getElementById('tramQuestionText').textContent = questionText;
+            var q = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
+            document.getElementById('tramQuestionText').textContent = q;
             playTone(600, 0.1);
         }
 
         function boardTram() {
             if (tramTimerInterval) clearInterval(tramTimerInterval);
             playSuccessSound();
-            showSuccess('🚋', '電車到站！', '前往中環', () => {
-                showScreen('level3Screen');
-            }, 2000);
+            showSuccess('🚋', '電車到站！', '前往中環', function() { showScreen('level3Screen'); }, 2000);
         }
 
-        // ========== LEVEL 3 ==========
-        let password3 = '';
-        const correctPassword3 = '72';
+        /* ========== LEVEL 3 ========== */
+        var password3 = '';
+        var correctPassword3 = '72';
 
         function updatePassword3Display() {
-            const slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
-            slots.forEach((slot, i) => {
+            var slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
+            slots.forEach(function(slot, i) {
                 slot.classList.remove('active', 'filled');
                 if (i < password3.length) { slot.textContent = password3[i]; slot.classList.add('filled'); }
                 else if (i === password3.length) { slot.textContent = '_'; slot.classList.add('active'); }
@@ -1999,35 +2526,58 @@
             if (password3.length < 2) { showInputStatus('level3Status', '請輸入完整號碼', 'error'); playErrorSound(); return; }
             if (password3 === correctPassword3) {
                 playSuccessSound();
-                showSuccess('🚃', '恭喜你成功找到電車站編號', '恭喜通關！', () => showScreen('finalScreen'), 15000);
+                showSuccess('🚃', '恭喜你成功找到電車站編號', '恭喜通關！', function() { showScreen('finalScreen'); }, 15000);
             } else { showInputStatus('level3Status', '號碼錯誤，請重試！', 'error'); playErrorSound(); }
         }
 
-        // ========== EVENT LISTENERS ==========
-        document.addEventListener('DOMContentLoaded', () => {
+        /* ========== EVENT LISTENERS ========== */
+        document.addEventListener('DOMContentLoaded', function() {
             initRotaryDial();
             updateTimerDisplay();
             window.addEventListener('resize', initRotaryDial);
-            
-            // 啟動所有提示定時器
             startAllTipTimers();
 
-            document.getElementById('startGameBtn').addEventListener('click', () => {
+            /* Windows 95 Login: OK button starts the game */
+            document.getElementById('win95OkBtn').addEventListener('click', function() {
                 getAudioContext();
-                alert('📩 請打開第一個信封，然後按「開始計時」');
-                showScreen('timerSetupScreen');
+                playWin95StartupSound();
+                showModal(
+                    '請打開第一個信封，然後按「確定」開始計時',
+                    '迷途顯影 · 提示',
+                    '📩',
+                    function() {
+                        showScreen('timerSetupScreen');
+                    }
+                );
             });
 
-            document.getElementById('startTimerBtn').addEventListener('click', () => {
+            /* Windows 95 Login: Cancel button also works (shows a hint) */
+            document.getElementById('win95CancelBtn').addEventListener('click', function() {
+                showModal(
+                    '你必須登入才能開始密室逃脫遊戲！請按 OK 開始。',
+                    '存取被拒',
+                    '⛔'
+                );
+            });
+
+            /* Enter key on password field triggers OK */
+            document.getElementById('win95pass').addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    document.getElementById('win95OkBtn').click();
+                }
+            });
+
+            document.getElementById('startTimerBtn').addEventListener('click', function() {
                 startTimer();
                 showScreen('terminalScreen');
                 updateTerminalPasswordDisplay();
             });
 
-            // Terminal keyboard
-            document.querySelectorAll('#terminalKeyboard .terminal-key').forEach(key => {
-                key.addEventListener('click', () => {
-                    const keyValue = key.dataset.key;
+            /* Terminal keyboard */
+            document.querySelectorAll('#terminalKeyboard .terminal-key').forEach(function(key) {
+                key.addEventListener('click', function() {
+                    var keyValue = key.dataset.key;
                     if (keyValue === 'backspace') {
                         terminalPassword = terminalPassword.slice(0, -1);
                         updateTerminalPasswordDisplay();
@@ -2042,11 +2592,11 @@
                 });
             });
 
-            document.addEventListener('keydown', (e) => {
-                const activeScreen = document.querySelector('.screen.active');
+            document.addEventListener('keydown', function(e) {
+                var activeScreen = document.querySelector('.screen.active');
                 if (!activeScreen) return;
                 if (activeScreen.id === 'terminalScreen') {
-                    const key = e.key.toUpperCase();
+                    var key = e.key.toUpperCase();
                     if (key === 'BACKSPACE') {
                         terminalPassword = terminalPassword.slice(0, -1);
                         updateTerminalPasswordDisplay();
@@ -2064,49 +2614,42 @@
                 }
             });
 
-            // Rotary dial
-            document.getElementById('dialPlate').addEventListener('click', (e) => {
-                const hole = e.target.closest('.dial-hole');
+            /* Rotary dial */
+            document.getElementById('dialPlate').addEventListener('click', function(e) {
+                var hole = e.target.closest('.dial-hole');
                 if (hole && !isDialing) dialNumber(hole.dataset.num);
             });
 
-            document.getElementById('dialPlate').addEventListener('touchend', (e) => {
-                const touch = e.changedTouches[0];
-                const hole = document.elementFromPoint(touch.clientX, touch.clientY)?.closest('.dial-hole');
+            document.getElementById('dialPlate').addEventListener('touchend', function(e) {
+                var touch = e.changedTouches[0];
+                var el = document.elementFromPoint(touch.clientX, touch.clientY);
+                var hole = el ? el.closest('.dial-hole') : null;
                 if (hole && !isDialing) { e.preventDefault(); dialNumber(hole.dataset.num); }
             });
 
-            document.getElementById('phoneClearBtn').addEventListener('click', () => {
-                phoneNumber = '';
-                updatePhoneDisplay();
-                playTone(300, 0.1);
+            document.getElementById('phoneClearBtn').addEventListener('click', function() {
+                phoneNumber = ''; updatePhoneDisplay(); playTone(300, 0.1);
             });
             document.getElementById('phoneCallBtn').addEventListener('click', checkPhoneNumber);
 
-            // Level 2
-            document.querySelectorAll('#level2Screen .password-key').forEach(key => {
-                key.addEventListener('click', () => {
-                    const num = key.dataset.num;
+            /* Level 2 */
+            document.querySelectorAll('#level2Screen .password-key').forEach(function(key) {
+                key.addEventListener('click', function() {
+                    var num = key.dataset.num;
                     if (num === 'back') { password2 = password2.slice(0, -1); updatePassword2Display(); playTone(300, 0.08); }
                     else if (num === 'submit') checkPassword2();
                     else if (password2.length < 4) { password2 += num; updatePassword2Display(); playTone(500, 0.08); }
                 });
             });
 
-            // 第四關
-            document.getElementById('tramChatBtn').addEventListener('click', () => {
-                setRandomQuestion();
-            });
-            document.getElementById('boardTramBtn').addEventListener('click', () => {
-                if (tramArrived) {
-                    boardTram();
-                }
-            });
+            /* Tram */
+            document.getElementById('tramChatBtn').addEventListener('click', function() { setRandomQuestion(); });
+            document.getElementById('boardTramBtn').addEventListener('click', function() { if (tramArrived) boardTram(); });
 
-            // Level 3
-            document.querySelectorAll('#level3Screen .password-key').forEach(key => {
-                key.addEventListener('click', () => {
-                    const num = key.dataset.num;
+            /* Level 3 */
+            document.querySelectorAll('#level3Screen .password-key').forEach(function(key) {
+                key.addEventListener('click', function() {
+                    var num = key.dataset.num;
                     if (num === 'back') { password3 = password3.slice(0, -1); updatePassword3Display(); playTone(300, 0.08); }
                     else if (num === 'submit') checkPassword3();
                     else if (password3.length < 2) { password3 += num; updatePassword3Display(); playTone(500, 0.08); }
