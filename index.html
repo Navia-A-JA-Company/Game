@@ -8,7 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <style>
-        /* 🌑 完整保留所有原始變數與樣式 — 無任何遺失 */
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
@@ -48,9 +47,7 @@
             --win95-white: #ffffff;
             --win95-black: #000000;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Noto Sans HK', sans-serif;
             background: var(--bg-primary);
@@ -59,8 +56,6 @@
             overflow-x: hidden;
             position: relative;
         }
-
-        /* 永恆的背景 — Justanimage.JPG 覆蓋每一頁 */
         body::before {
             content: "";
             position: fixed;
@@ -77,7 +72,6 @@
             z-index: -1;
             pointer-events: none;
         }
-
         body::after {
             content: "";
             position: fixed;
@@ -89,7 +83,6 @@
             z-index: -1;
             pointer-events: none;
         }
-
         .screen {
             display: none;
             min-height: 100vh;
@@ -98,25 +91,20 @@
             position: relative;
             z-index: 1;
         }
-
         .screen.active {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
         }
-
         @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes pulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.05); } }
         @keyframes glow { 0%,100% { box-shadow: 0 0 20px var(--shadow-glow); } 50% { box-shadow: 0 0 40px var(--shadow-glow), 0 0 60px var(--shadow-blue); } }
         @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-8px); } 40%,80% { transform: translateX(8px); } }
-        @keyframes flicker { 0%,100% { opacity: 1; } 50% { opacity: 0.8; } }
         @keyframes trainMove { 0% { transform: translateX(-20px); opacity: 0.6; } 50% { transform: translateX(20px); opacity: 1; } 100% { transform: translateX(-20px); opacity: 0.6; } }
         @keyframes windowAppear { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
         @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
-
-        /* ========== 主選單 — Lost in Hong Kong ========== */
         .menu-screen {
             text-align: center;
             max-width: 900px;
@@ -178,8 +166,6 @@
             border-top: 1px solid rgba(255,255,255,0.2);
             padding-top: 30px;
         }
-
-        /* ========== 計時器設定 ========== */
         .timer-setup {
             text-align: center;
             max-width: 450px;
@@ -226,8 +212,6 @@
         }
         .start-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 40px var(--shadow-glow); }
         .start-btn:active { transform: translateY(0) scale(0.98); }
-
-        /* ========== 信封指示專用畫面 ========== */
         .envelope-screen {
             text-align: center;
             max-width: 600px;
@@ -275,8 +259,6 @@
         }
         .envelope-btn:hover { transform: translateY(-4px) scale(1.03); box-shadow: 0 0 70px rgba(255,215,0,0.8); }
         .envelope-note { margin-top: 30px; font-size: 1rem; color: var(--text-secondary); border-top: 1px solid rgba(255,215,0,0.3); padding-top: 20px; }
-
-        /* ========== Windows 95 登入殿堂 ========== */
         .win95-desktop {
             position: relative;
             width: 100%;
@@ -336,8 +318,6 @@
         .win95-start-btn .start-flag { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
         .win95-taskbar-spacer { flex: 1; }
         .win95-taskbar-tray { display: flex; align-items: center; gap: 8px; border: 2px inset var(--win95-light); padding: 2px 10px; height: 24px; font-size: 11px; color: #000; }
-
-        /* ========== 固定計時器 ========== */
         .timer-fixed {
             position: fixed;
             top: 20px;
@@ -354,8 +334,6 @@
         .timer-display { font-family: 'Orbitron', sans-serif; font-size: 1.5rem; font-weight: 900; color: var(--accent-2); letter-spacing: 3px; }
         .timer-fixed.warning .timer-display { color: var(--accent-3); animation: pulse 1s infinite; }
         .timer-fixed.danger .timer-display { color: var(--danger); animation: pulse 0.5s infinite; }
-
-        /* ========== 時間增減提示 ========== */
         .time-modifier {
             position: fixed;
             top: 80px;
@@ -373,8 +351,6 @@
         .time-modifier.show { opacity: 1; transform: translateY(0); }
         .time-modifier.add { background: linear-gradient(135deg, var(--accent-1), #00cc6a); color: var(--bg-primary); }
         .time-modifier.subtract { background: linear-gradient(135deg, var(--danger), #ff6b81); color: white; }
-
-        /* ========== 趣味冷知識容器 — 全新加入，每個關卡專屬 ========== */
         .fact-container {
             width: 100%;
             max-width: 650px;
@@ -425,8 +401,6 @@
             left: 4px;
             top: -2px;
         }
-
-        /* ========== 旋轉撥號電話 ========== */
         .rotary-phone-container {
             background: linear-gradient(145deg, rgba(26,74,66,0.9), rgba(15,47,40,0.95));
             backdrop-filter: blur(8px);
@@ -496,8 +470,6 @@
         .phone-status.error { background: rgba(255,71,87,0.2); color: var(--danger); border: 2px solid var(--danger); }
         .phone-status.success { background: rgba(0,255,136,0.2); color: var(--accent-1); border: 2px solid var(--accent-1); }
         .dial-instruction { text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--phone-gold); opacity: 0.8; }
-
-        /* ========== 密碼鎖畫面 (4位 / 2位) ========== */
         .password-screen {
             text-align: center;
             max-width: 450px;
@@ -532,8 +504,6 @@
         .input-status { padding: 12px; border-radius: 10px; font-weight: 700; opacity: 0; transition: all 0.3s ease; }
         .input-status.show { opacity: 1; }
         .input-status.error { background: rgba(255,71,87,0.2); color: var(--danger); border: 2px solid var(--danger); animation: shake 0.5s ease; }
-
-        /* ========== 電車站 · 等候聊天 ========== */
         .questions-screen {
             text-align: center;
             max-width: 600px;
@@ -555,8 +525,6 @@
         .board-tram-btn { padding: 20px 40px; background: linear-gradient(135deg, var(--tram-blue), #0066cc); border: none; border-radius: 60px; font-family: 'Noto Sans HK', sans-serif; font-size: 1.5rem; font-weight: 900; color: white; cursor: pointer; transition: all 0.3s ease; box-shadow: 0 0 30px rgba(0,153,255,0.7); animation: trainMove 1.5s infinite ease-in-out; border: 3px solid rgba(255,255,255,0.5); letter-spacing: 4px; margin-top: 20px; width: 100%; max-width: 450px; }
         .board-tram-btn:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(0,153,255,0.9); background: linear-gradient(135deg, #0088ff, #0055cc); }
         .hidden { display: none !important; }
-
-        /* ========== 終點 · 勝利殿堂 ========== */
         .victory-screen {
             text-align: center; max-width: 700px;
             background: rgba(26,26,36,0.85); backdrop-filter: blur(8px);
@@ -570,8 +538,6 @@
         .form-link { display: inline-block; margin-top: 15px; padding: 14px 28px; background: linear-gradient(135deg, var(--accent-gold), #ffb347); color: var(--bg-primary); font-weight: 900; text-decoration: none; border-radius: 40px; font-size: 1.1rem; letter-spacing: 1px; box-shadow: 0 4px 20px rgba(255,215,0,0.5); transition: all 0.25s ease; border: 2px solid rgba(255,255,255,0.3); }
         .form-link:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 8px 30px rgba(255,215,0,0.8); background: linear-gradient(135deg, #ffd700, #ffa500); color: black; }
         .trophy-icon { font-size: 6rem; margin-bottom: 20px; animation: bounce 1.5s infinite; }
-
-        /* ========== 自訂 Modal ========== */
         .win95-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 9999; align-items: center; justify-content: center; }
         .win95-modal-overlay.show { display: flex; }
         .win95-modal { width: 90%; max-width: 380px; background: var(--win95-gray); border: 3px outset var(--win95-light); box-shadow: 4px 4px 0 rgba(0,0,0,0.4); }
@@ -580,15 +546,12 @@
         .win95-modal-icon { font-size: 32px; flex-shrink: 0; }
         .win95-modal-text { font-size: 13px; color: #000; line-height: 1.6; }
         .win95-modal-footer { display: flex; justify-content: center; padding: 0 20px 16px; gap: 10px; }
-
-        /* ========== 成功覆層 ========== */
         .success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; animation: fadeIn 0.3s ease; }
         .success-overlay.show { display: flex; }
         .success-content { text-align: center; padding: 50px; background: var(--bg-card); border-radius: 30px; border: 4px solid var(--accent-1); box-shadow: 0 0 60px var(--shadow-glow); max-width: 450px; }
         .success-icon { font-size: 5rem; margin-bottom: 20px; animation: bounce 1s infinite; }
         .success-title { font-size: 1.8rem; font-weight: 900; color: var(--accent-1); margin-bottom: 15px; line-height: 1.6; }
         .success-subtitle { font-size: 1rem; color: var(--text-secondary); }
-
         @media (max-width: 480px) {
             .menu-title { font-size: 2.8rem; } .menu-btn { padding: 18px 50px; font-size: 1.5rem; }
             .timer-big { font-size: 3.5rem; } .envelope-title { font-size: 1.8rem; } .envelope-message { font-size: 1.1rem; }
@@ -600,13 +563,11 @@
     </style>
 </head>
 <body>
-    <!-- 固定計時器 -->
     <div class="timer-fixed" id="timerFixed">
         <div class="timer-display" id="timerDisplay">45:00</div>
     </div>
     <div class="time-modifier" id="timeModifier"></div>
 
-    <!-- ========== 畫面 1：主選單 (Lost in Hong Kong) ========== -->
     <div class="screen active" id="menuScreen">
         <div class="menu-screen">
             <div class="menu-title">迷途顯影</div>
@@ -619,7 +580,6 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 2：計時器設定 ========== -->
     <div class="screen" id="timerSetupScreen">
         <div class="timer-setup">
             <h2 class="game-title">倒數計時</h2>
@@ -630,25 +590,19 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 3：信封 #1 指示（登入前）========= -->
     <div class="screen" id="envelope1Screen">
         <div class="envelope-screen">
             <div class="envelope-icon">📩</div>
             <div class="envelope-title">信封 #1</div>
             <div class="envelope-message">
                 請打開第一個信封<br>
-                
-
-
-
-
+                🔐 裡面有 Windows 95 登入密碼<br>
                 <span style="display:block; margin-top:20px; font-size:1.2rem; color:var(--accent-1);">準備好後按「繼續」</span>
             </div>
             <button class="envelope-btn" id="envelope1ContinueBtn">繼續</button>
         </div>
     </div>
 
-    <!-- ========== 畫面 4：Windows 95 登入 ========== -->
     <div class="screen" id="win95LoginScreen">
         <div class="win95-desktop">
             <div class="crt-overlay"></div>
@@ -710,7 +664,6 @@
         </div>
     </div>
 
-    <!-- 自訂 Modal -->
     <div class="win95-modal-overlay" id="customModal">
         <div class="win95-modal">
             <div class="win95-titlebar">
@@ -725,7 +678,6 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 5：旋轉撥號電話 · 信封 #2 — 加入冷知識 ========== -->
     <div class="screen" id="phoneScreen">
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
@@ -748,7 +700,6 @@
             <div class="dial-instruction">將手指放入數字孔，順時針旋轉至擋片後放開</div>
             <div class="phone-status" id="phoneStatus"></div>
         </div>
-        <!-- 信封 #2 冷知識：花碼 -->
         <div class="fact-container">
             <div class="fact-title">
                 <span style="font-size:1.5rem;">📊</span> 花碼 · 香港記憶
@@ -762,7 +713,6 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 6：四位數字密碼 · 鐵閘 · 信封 #3 — 加入冷知識 ========== -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
             <div class="level-prompt">
@@ -782,7 +732,6 @@
             </div>
             <div class="input-status" id="level2Status"></div>
         </div>
-        <!-- 信封 #3 冷知識：通花鐵閘 -->
         <div class="fact-container">
             <div class="fact-title">
                 <span style="font-size:1.5rem;">🔩</span> 通花鐵閘 · 鋪屋情深
@@ -796,7 +745,6 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 7：電車等候 · 信封 #4 — 加入冷知識 ========== -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
@@ -811,7 +759,6 @@
                 <button class="board-tram-btn hidden" id="boardTramBtn">🚃 電車終於到站，按這裏上車！</button>
             </div>
         </div>
-        <!-- 信封 #4 冷知識：過山車、中環街市、尖沙咀鐘樓 — 第1關的趣聞放這裡 (跟據指示1st) -->
         <div class="fact-container">
             <div class="fact-title">
                 <span style="font-size:1.5rem;">🎢</span> 舊日足跡
@@ -825,7 +772,6 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 8：兩位數字 · 電車站編號 · 信封 #5 — 加入冷知識 ========== -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
             <div class="level-prompt">
@@ -845,7 +791,6 @@
             </div>
             <div class="input-status" id="level3Status"></div>
         </div>
-        <!-- 信封 #5 冷知識：水荒、水籌、北漏洞拉、第一收容港 -->
         <div class="fact-container">
             <div class="fact-title">
                 <span style="font-size:1.5rem;">💧</span> 水·難民·香港往事
@@ -862,7 +807,6 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 9：終點 · 勝利 ========== -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
@@ -878,7 +822,6 @@
         </div>
     </div>
 
-    <!-- 成功覆層（過關動畫） -->
     <div class="success-overlay" id="successOverlay">
         <div class="success-content">
             <div class="success-icon" id="successIcon">🎉</div>
@@ -888,7 +831,6 @@
     </div>
 
     <script>
-        // ========== 自訂 MODAL ==========
         function showModal(message, title, icon, onClose) {
             let overlay = document.getElementById('customModal');
             document.getElementById('modalText').textContent = message;
@@ -899,8 +841,6 @@
             document.getElementById('modalOkBtn').onclick = close;
             document.getElementById('modalCloseX').onclick = close;
         }
-
-        // ========== Windows 95 時鐘 ==========
         function updateWin95Clock() {
             let now = new Date();
             let h = String(now.getHours()).padStart(2,'0');
@@ -910,8 +850,6 @@
         }
         setInterval(updateWin95Clock, 30000);
         updateWin95Clock();
-
-        // ========== 音訊系統 — 完整保留 ==========
         let audioContext = null;
         function getAudioContext() {
             if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -971,8 +909,6 @@
                 osc.start(ctx.currentTime); osc.stop(ctx.currentTime + n.d);
             }, n.t*1000));
         }
-
-        // ========== 計時器 ==========
         let timerInterval = null, totalSeconds = 45*60, timerRunning = false;
         function updateTimerDisplay() {
             let m = Math.floor(totalSeconds/60), s = totalSeconds%60;
@@ -988,16 +924,6 @@
             document.getElementById('timerFixed').classList.add('active');
             timerInterval = setInterval(()=>{ if(totalSeconds>0) totalSeconds--; updateTimerDisplay(); },1000);
         }
-        function modifyTime(seconds, isAdd) {
-            totalSeconds += seconds; if (totalSeconds<0) totalSeconds=0;
-            updateTimerDisplay();
-            let mod = document.getElementById('timeModifier');
-            mod.textContent = isAdd ? ('+'+Math.abs(seconds/60)+' 分鐘') : ('-'+Math.abs(seconds/60)+' 分鐘');
-            mod.className = 'time-modifier show ' + (isAdd ? 'add' : 'subtract');
-            setTimeout(()=>mod.classList.remove('show'), 2500);
-        }
-
-        // ========== 畫面切換 ==========
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -1010,8 +936,6 @@
             ov.classList.add('show'); playSuccessSound();
             setTimeout(()=>{ ov.classList.remove('show'); if(callback) callback(); }, delay);
         }
-
-        // ========== 旋轉撥號 — 完整實作 ==========
         let phoneConfig = {
             correct: { '56123517': { audio: '豬肉榮.m4a', name:'豬肉榮' } },
             wrong: { '63589512': { audio:'李太.m4a', message:'打錯了！這是李太的電話。' },
@@ -1086,8 +1010,6 @@
                 showPhoneStatus(phoneConfig.wrong[phoneNumber].message,'error'); playErrorSound();
             } else { showPhoneStatus('號碼錯誤，請重試！','error'); playErrorSound(); }
         }
-
-        // ========== 鐵閘密碼 (4位) 信封 #3 ==========
         let password2 = ''; const correctPassword2 = '3122';
         function updatePassword2Display() {
             let slots = document.getElementById('password2Display').querySelectorAll('.password-slot');
@@ -1110,8 +1032,6 @@
                 showSuccess('🔓','恭喜你成功破解鐵閘密碼','現在打開信封 #4 · 電車站', ()=>{ showScreen('questionsScreen'); startTramWaiting(); }, 5000);
             } else { showInputStatus('level2Status','密碼錯誤，請重試！','error'); playErrorSound(); }
         }
-
-        // ========== 電車等候 (信封 #4) ==========
         let randomQuestions = ["你最喜歡香港嘅邊個地方？","如果可以去世界任何地方，你會去邊度？","你覺得香港最好食嘅嘢係乜？","你細個最鍾意玩咩遊戲？","你最難忘嘅童年回憶？","如果你可以擁有一種超能力，你會揀乜？"];
         let tramTimerInterval = null, tramWaitSeconds = 7*60, tramArrived = false;
         function startTramWaiting() {
@@ -1144,8 +1064,6 @@
             playSuccessSound();
             showSuccess('🚋','電車到站！','現在打開信封 #5 · 中環站', ()=>showScreen('level3Screen'), 2000);
         }
-
-        // ========== 電車站編號 (2位) 信封 #5 ==========
         let password3 = ''; const correctPassword3 = '72';
         function updatePassword3Display() {
             let slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
@@ -1163,34 +1081,30 @@
                 showSuccess('🚃','恭喜你成功找到電車站編號','恭喜通關！', ()=>showScreen('finalScreen'), 5000);
             } else { showInputStatus('level3Status','號碼錯誤，請重試！','error'); playErrorSound(); }
         }
-
-        // ========== DOM 初始化 & 事件監聽 ==========
         document.addEventListener('DOMContentLoaded', function() {
             initRotaryDial(); updateTimerDisplay(); window.addEventListener('resize', initRotaryDial);
-
-            // 1. 主選單 → 計時器設定 (跳過標題畫面)
             document.getElementById('menuStartBtn').addEventListener('click', function() {
                 showScreen('timerSetupScreen');
             });
-
-            // 2. 開始計時 → 信封 #1 指示
             document.getElementById('startTimerBtn').addEventListener('click', function() {
                 startTimer();
                 showScreen('envelope1Screen');
             });
-
-            // 3. 信封 #1 繼續 → Windows 95 登入
             document.getElementById('envelope1ContinueBtn').addEventListener('click', function() {
                 showScreen('win95LoginScreen');
             });
-
-            // 4. Windows 95 登入成功 → 信封 #2 (電話)
             document.getElementById('win95OkBtn').addEventListener('click', function() {
-                getAudioContext();
-                playWin95StartupSound();
-                showSuccess('🔑','登入成功！','現在打開信封 #2 · 撥號電話', function() {
-                    showScreen('phoneScreen');
-                }, 3000);
+                let enteredPass = document.getElementById('win95pass').value;
+                if (enteredPass === 'VRDU') {
+                    getAudioContext();
+                    playWin95StartupSound();
+                    showSuccess('🔑','登入成功！','現在打開信封 #2 · 撥號電話', function() {
+                        showScreen('phoneScreen');
+                    }, 3000);
+                } else {
+                    playErrorSound();
+                    showModal('密碼錯誤，請重新輸入！','登入失敗','⛔');
+                }
             });
             document.getElementById('win95CancelBtn').addEventListener('click', function() {
                 showModal('請輸入正確密碼登入遊戲','存取被拒','⛔');
@@ -1198,8 +1112,6 @@
             document.getElementById('win95pass').addEventListener('keydown', function(e) {
                 if(e.key === 'Enter') { e.preventDefault(); document.getElementById('win95OkBtn').click(); }
             });
-
-            // 撥號盤事件
             document.getElementById('dialPlate').addEventListener('click', function(e) {
                 let hole = e.target.closest('.dial-hole');
                 if(hole && !isDialing) dialNumber(hole.dataset.num);
@@ -1212,8 +1124,6 @@
             });
             document.getElementById('phoneClearBtn').addEventListener('click', ()=>{ phoneNumber=''; updatePhoneDisplay(); playTone(300,0.1); });
             document.getElementById('phoneCallBtn').addEventListener('click', checkPhoneNumber);
-
-            // 鐵閘密碼 (4位)
             document.querySelectorAll('#level2Screen .password-key').forEach(k => {
                 k.addEventListener('click', function() {
                     let n = this.dataset.num;
@@ -1222,12 +1132,8 @@
                     else if(password2.length < 4) { password2 += n; updatePassword2Display(); playTone(500,0.08); }
                 });
             });
-
-            // 電車聊天
             document.getElementById('tramChatBtn').addEventListener('click', setRandomQuestion);
             document.getElementById('boardTramBtn').addEventListener('click', function() { if(tramArrived) boardTram(); });
-
-            // 電車站編號 (2位)
             document.querySelectorAll('#level3Screen .password-key').forEach(k => {
                 k.addEventListener('click', function() {
                     let n = this.dataset.num;
