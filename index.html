@@ -35,6 +35,8 @@
             --windows-gray: #f3f3f3;
             --windows-text: #000000;
             --form-link: #ffd700;
+            --tram-blue: #0099ff;
+            --old-hongkong: #d4af37;
         }
 
         * {
@@ -65,7 +67,7 @@
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
-            opacity: 0.25; /* Light overlay to let image show through */
+            opacity: 0.25;
             z-index: -1;
             pointer-events: none;
         }
@@ -78,7 +80,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Dark overlay for readability */
+            background: rgba(0, 0, 0, 0.6);
             z-index: -1;
             pointer-events: none;
         }
@@ -128,6 +130,12 @@
         @keyframes flicker {
             0%, 100% { opacity: 1; }
             50% { opacity: 0.8; }
+        }
+
+        @keyframes trainMove {
+            0% { transform: translateX(-20px); opacity: 0.6; }
+            50% { transform: translateX(20px); opacity: 1; }
+            100% { transform: translateX(-20px); opacity: 0.6; }
         }
 
         /* Timer Display */
@@ -958,88 +966,155 @@
             animation: shake 0.5s ease;
         }
 
-        /* Random Questions Screen */
+        /* Random Questions Screen - 強制等待 + 可跳過 (無獎勵) */
         .questions-screen {
             text-align: center;
-            max-width: 500px;
-            background: rgba(26, 26, 36, 0.8);
+            max-width: 600px;
+            background: rgba(26, 26, 36, 0.85);
             backdrop-filter: blur(8px);
             padding: 40px 30px;
             border-radius: 40px;
             border: 2px solid rgba(0, 212, 255, 0.3);
+            width: 100%;
         }
 
-        .question-card {
+        .tram-wait-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .tram-header {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: var(--accent-gold);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .tram-timer {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: var(--accent-2);
+            text-shadow: 0 0 20px var(--shadow-blue);
+            background: rgba(0, 0, 0, 0.5);
+            padding: 15px 30px;
+            border-radius: 50px;
+            border: 2px solid var(--accent-2);
+            letter-spacing: 5px;
+            margin-bottom: 15px;
+        }
+
+        .tram-message {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            background: rgba(0, 153, 255, 0.15);
+            border: 2px solid var(--tram-blue);
+            border-radius: 30px;
+            padding: 15px 25px;
+            margin-bottom: 20px;
+        }
+
+        .tram-question-area {
+            width: 100%;
             background: var(--bg-card);
-            border: 3px solid var(--accent-2);
+            border: 2px solid var(--accent-2);
             border-radius: 24px;
-            padding: 40px 30px;
-            margin-bottom: 30px;
+            padding: 30px 20px;
+            margin-bottom: 20px;
         }
 
-        .question-text {
+        .tram-question-text {
             font-size: 1.4rem;
             font-weight: 700;
             color: var(--text-primary);
             line-height: 1.8;
+            margin-bottom: 25px;
         }
 
-        .question-actions {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+        .chat-btn {
+            padding: 16px 30px;
+            background: linear-gradient(135deg, var(--bg-button), #2a2a3a);
+            border: 2px solid var(--accent-2);
+            border-radius: 40px;
+            font-family: 'Noto Sans HK', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 212, 255, 0.2);
+            width: 100%;
+            max-width: 350px;
+            margin: 0 auto;
         }
 
-        .question-btn {
-            padding: 18px 30px;
-            border: none;
-            border-radius: 14px;
+        .chat-btn:hover {
+            background: var(--accent-2);
+            color: var(--bg-primary);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow-blue);
+        }
+
+        .skip-btn {
+            padding: 14px 28px;
+            background: rgba(100, 100, 100, 0.5);
+            border: 2px solid var(--text-secondary);
+            border-radius: 40px;
             font-family: 'Noto Sans HK', sans-serif;
             font-size: 1.1rem;
             font-weight: 700;
+            color: var(--text-secondary);
             cursor: pointer;
             transition: all 0.2s ease;
+            backdrop-filter: blur(4px);
+            margin-top: 10px;
         }
 
-        .question-btn.new {
-            background: var(--bg-button);
+        .skip-btn:hover {
+            background: rgba(150, 150, 150, 0.6);
+            border-color: var(--text-primary);
             color: var(--text-primary);
-            border: 2px solid var(--accent-2);
+            transform: translateY(-2px);
         }
 
-        .question-btn.proceed {
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            color: var(--bg-primary);
+        .board-tram-btn {
+            padding: 20px 40px;
+            background: linear-gradient(135deg, var(--tram-blue), #0066cc);
+            border: none;
+            border-radius: 60px;
+            font-family: 'Noto Sans HK', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 30px rgba(0, 153, 255, 0.7);
+            animation: trainMove 1.5s infinite ease-in-out;
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            letter-spacing: 4px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 450px;
         }
 
-        .question-btn.skip {
-            background: linear-gradient(135deg, #ffd700, #ffb800);
-            color: var(--bg-primary);
+        .board-tram-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 50px rgba(0, 153, 255, 0.9);
+            background: linear-gradient(135deg, #0088ff, #0055cc);
         }
 
-        .question-btn:hover {
-            transform: translateY(-3px);
+        .hidden {
+            display: none !important;
         }
 
-        .questions-time-info {
-            background: rgba(0, 255, 136, 0.1);
-            border: 2px solid var(--accent-1);
-            border-radius: 16px;
-            padding: 15px 20px;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .time-info-text {
-            font-size: 1rem;
-            color: var(--accent-1);
-            font-weight: 700;
-        }
-
-        /* Victory Screen with Form Link */
+        /* Victory Screen with Old Hong Kong message */
         .victory-screen {
             text-align: center;
-            max-width: 650px;
+            max-width: 700px;
             background: rgba(26, 26, 36, 0.85);
             backdrop-filter: blur(8px);
             padding: 50px 40px;
@@ -1076,6 +1151,18 @@
             background: var(--bg-card);
             border-radius: 16px;
             border: 1px solid var(--accent-gold);
+        }
+        
+        .old-hk-message {
+            background: rgba(212, 175, 55, 0.15);
+            border: 2px solid var(--old-hongkong);
+            border-radius: 20px;
+            padding: 20px;
+            margin-bottom: 25px;
+            color: #ffd966;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
         }
         
         .form-link {
@@ -1163,6 +1250,10 @@
             .start-screen, .timer-setup, .password-screen, .questions-screen, .victory-screen {
                 padding: 30px 20px;
             }
+            .tram-timer { font-size: 1.8rem; }
+            .tram-header { font-size: 1.5rem; }
+            .board-tram-btn { font-size: 1.2rem; padding: 16px 30px; }
+            .old-hk-message { font-size: 0.95rem; }
         }
 
         @media (max-width: 768px) {
@@ -1179,7 +1270,7 @@
     <!-- Time Modifier Popup -->
     <div class="time-modifier" id="timeModifier"></div>
 
-    <!-- Screen 1: Start Screen — 迷途顯影 · 拼圖標誌 -->
+    <!-- Screen 1: Start Screen -->
     <div class="screen active" id="startScreen">
         <div class="start-screen">
             <h1 class="game-title">迷途顯影</h1>
@@ -1234,7 +1325,6 @@
                     <div class="terminal-slot">_</div>
                 </div>
                 <div class="terminal-keyboard" id="terminalKeyboard">
-                    <!-- Letters A-M -->
                     <button class="terminal-key" data-key="A">A</button>
                     <button class="terminal-key" data-key="B">B</button>
                     <button class="terminal-key" data-key="C">C</button>
@@ -1248,8 +1338,6 @@
                     <button class="terminal-key" data-key="K">K</button>
                     <button class="terminal-key" data-key="L">L</button>
                     <button class="terminal-key" data-key="M">M</button>
-                    
-                    <!-- Letters N-Z -->
                     <button class="terminal-key" data-key="N">N</button>
                     <button class="terminal-key" data-key="O">O</button>
                     <button class="terminal-key" data-key="P">P</button>
@@ -1263,8 +1351,6 @@
                     <button class="terminal-key" data-key="X">X</button>
                     <button class="terminal-key" data-key="Y">Y</button>
                     <button class="terminal-key" data-key="Z">Z</button>
-                    
-                    <!-- Control keys -->
                     <button class="terminal-key backspace" data-key="backspace">⌫ 刪除</button>
                     <button class="terminal-key enter" data-key="enter">↵ 確認</button>
                 </div>
@@ -1325,19 +1411,35 @@
         </div>
     </div>
 
-    <!-- Screen 6: Random Questions -->
+    <!-- Screen 6: 第四關 — 等電車，可跳過（無獎勵） -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
-            <div class="questions-time-info">
-                <p class="time-info-text">⚠️ 回答此問題可獲得額外5分鐘！<br>或選擇跳過直接進入下一關</p>
-            </div>
-            <div class="question-card">
-                <p class="question-text" id="questionText">問題載入中...</p>
-            </div>
-            <div class="question-actions">
-                <button class="question-btn new" id="newQuestionBtn">💬 我想再傾多啲</button>
-                <button class="question-btn proceed" id="proceedBtn">✅ 回答問題 (+5分鐘)</button>
-                <button class="question-btn skip" id="skipQuestionBtn">⏭️ 跳過此關</button>
+            <div class="tram-wait-container">
+                <div class="tram-header">🚋 電車站 · 等候中</div>
+                <div class="tram-timer" id="tramWaitTimer">07:00</div>
+                <div class="tram-message" id="tramMessage">
+                    仲有少少時間，同朋友傾吓計啦～<br>（可以㩒「跳過等車」直接離開，唔會有獎勵）
+                </div>
+                
+                <!-- 聊天區域：只有一個按鈕，可以無限次點擊換問題 -->
+                <div class="tram-question-area">
+                    <div class="tram-question-text" id="tramQuestionText">
+                        你最喜歡香港嘅邊個地方？
+                    </div>
+                    <button class="chat-btn" id="tramChatBtn">
+                        💬 我想再傾多啲
+                    </button>
+                </div>
+                
+                <!-- 跳過按鈕 — 無時間獎勵，直接去下一關 -->
+                <button class="skip-btn" id="skipTramBtn">
+                    ⏭️ 跳過等車（無獎勵）
+                </button>
+                
+                <!-- 7分鐘後出現的電車上車按鈕（初始隱藏） -->
+                <button class="board-tram-btn hidden" id="boardTramBtn">
+                    🚃 電車終於到站，按這裏上車！
+                </button>
             </div>
         </div>
     </div>
@@ -1368,15 +1470,21 @@
         </div>
     </div>
 
-    <!-- Screen 8: Final Victory — with form link -->
+    <!-- Screen 8: Final Victory — with old Hong Kong pictures message -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
             <h1 class="victory-title">恭喜你成功準時到達比賽現場並成功通關！</h1>
             <p class="victory-instruction">📖 請大家閱讀說明書第七頁</p>
+            
+            <!-- 新加：舊香港相片訊息 -->
+            <div class="old-hk-message">
+                📸 通關後可以慢慢欣賞背面嘅相片，<br>
+                每一張都展現舊香港嘅珍貴景象。
+            </div>
+            
             <div class="feedback-text">
                 <p style="margin-bottom: 16px;">希望你有個好的遊戲體驗！<br>若你有任何想法或意見，歡迎填寫產品回饋表：</p>
-                <!-- Google Form link -->
                 <a class="form-link" href="https://docs.google.com/forms/d/e/1FAIpQLSfU3oFH5eu60wD_37TQ97h5D6swfk9sIAe7G0emI0QfjaMYkQ/viewform?pli=1&authuser=0" target="_blank" rel="noopener noreferrer">
                     📝 填寫回饋表
                 </a>
@@ -1461,7 +1569,6 @@
         function playTerminalAccessSound() {
             const ctx = getAudioContext();
             if (!ctx) return;
-            
             const tones = [
                 { freq: 300, time: 0 },
                 { freq: 600, time: 0.1 },
@@ -1469,7 +1576,6 @@
                 { freq: 1200, time: 0.3 },
                 { freq: 1500, time: 0.4 }
             ];
-            
             tones.forEach(tone => {
                 setTimeout(() => {
                     const oscillator = ctx.createOscillator();
@@ -1607,7 +1713,6 @@
                 playErrorSound();
                 return;
             }
-
             if (terminalPassword === correctTerminalPassword) {
                 playTerminalAccessSound();
                 showSuccess('💾', '系統登入成功', '終端機已解鎖！', () => {
@@ -1734,9 +1839,9 @@
             } else { showPhoneStatus('號碼錯誤，請重試！', 'error'); playErrorSound(); }
         }
 
-        // ========== LEVEL 2 & 3 ==========
-        let password2 = '', password3 = '';
-        const correctPassword2 = '3122', correctPassword3 = '72';
+        // ========== LEVEL 2 ==========
+        let password2 = '';
+        const correctPassword2 = '3122';
 
         function updatePassword2Display() {
             const slots = document.getElementById('password2Display').querySelectorAll('.password-slot');
@@ -1744,16 +1849,6 @@
                 slot.classList.remove('active', 'filled');
                 if (i < password2.length) { slot.textContent = password2[i]; slot.classList.add('filled'); }
                 else if (i === password2.length) { slot.textContent = '_'; slot.classList.add('active'); }
-                else slot.textContent = '_';
-            });
-        }
-
-        function updatePassword3Display() {
-            const slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
-            slots.forEach((slot, i) => {
-                slot.classList.remove('active', 'filled');
-                if (i < password3.length) { slot.textContent = password3[i]; slot.classList.add('filled'); }
-                else if (i === password3.length) { slot.textContent = '_'; slot.classList.add('active'); }
                 else slot.textContent = '_';
             });
         }
@@ -1769,11 +1864,122 @@
             if (password2.length < 4) { showInputStatus('level2Status', '請輸入完整密碼', 'error'); playErrorSound(); return; }
             if (password2 === correctPassword2) {
                 playUnlockSound();
-                showSuccess('🔓', '恭喜你成功破解鐵閘密碼', '現在進入隨機問題環節', () => {
+                showSuccess('🔓', '恭喜你成功破解鐵閘密碼', '現在去電車站等車', () => {
+                    // 進入第四關 — 強制7分鐘等待 + 可跳過
                     showScreen('questionsScreen');
-                    showRandomQuestion();
+                    startTramWaiting();
                 }, 15000);
             } else { showInputStatus('level2Status', '密碼錯誤，請重試！', 'error'); playErrorSound(); }
+        }
+
+        // ========== 第四關：等電車，可跳過（無時間獎勵） ==========
+        const randomQuestions = [
+            "你最喜歡香港嘅邊個地方？", 
+            "如果可以去世界任何地方，你會去邊度？", 
+            "你覺得香港最好食嘅嘢係乜？",
+            "你細個最鍾意玩咩遊戲？", 
+            "你最難忘嘅童年回憶？", 
+            "如果你可以擁有一種超能力，你會揀乜？",
+            "你最欣賞身邊邊個人？點解？", 
+            "你覺得最能代表香港嘅係乜嘢？", 
+            "你最近學識咗啲乜新嘢？",
+            "如果你只可以食一種嘢一世，你會揀乜？", 
+            "你覺得朋友最重要嘅特質係乜？", 
+            "你最想實現嘅願望係乜？",
+            "你覺得人生最緊要嘅係乜嘢？", 
+            "你最鍾意嘅節日係邊個？點解？", 
+            "如果你可以同任何人食飯，你會揀邊個？"
+        ];
+
+        let tramTimerInterval = null;
+        let tramWaitSeconds = 7 * 60; // 7分鐘 = 420秒
+        let tramArrived = false;
+
+        function startTramWaiting() {
+            // 重置狀態
+            tramWaitSeconds = 7 * 60;
+            tramArrived = false;
+            
+            // 更新計時器顯示
+            updateTramTimerDisplay();
+            
+            // 隱藏上車按鈕，顯示聊天區域和跳過按鈕
+            const boardBtn = document.getElementById('boardTramBtn');
+            boardBtn.classList.add('hidden');
+            
+            // 設定第一個問題
+            setRandomQuestion();
+            
+            // 清除舊計時器
+            if (tramTimerInterval) clearInterval(tramTimerInterval);
+            
+            // 開始7分鐘倒數
+            tramTimerInterval = setInterval(() => {
+                if (tramWaitSeconds > 0) {
+                    tramWaitSeconds--;
+                    updateTramTimerDisplay();
+                    
+                    // 當時間到達0:00，顯示電車上車按鈕
+                    if (tramWaitSeconds <= 0 && !tramArrived) {
+                        tramArrived = true;
+                        clearInterval(tramTimerInterval);
+                        document.getElementById('tramMessage').innerHTML = '🚃 電車終於到站！快啲上車啦～';
+                        boardBtn.classList.remove('hidden');
+                        playSuccessSound();
+                    }
+                }
+            }, 1000);
+        }
+
+        function updateTramTimerDisplay() {
+            const minutes = Math.floor(tramWaitSeconds / 60);
+            const seconds = tramWaitSeconds % 60;
+            document.getElementById('tramWaitTimer').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function setRandomQuestion() {
+            const questionText = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
+            document.getElementById('tramQuestionText').textContent = questionText;
+            playTone(600, 0.1);
+        }
+
+        function boardTram() {
+            // 清除計時器
+            if (tramTimerInterval) clearInterval(tramTimerInterval);
+            
+            // 播放音效
+            playSuccessSound();
+            
+            // 前往下一關（電車站編號）
+            showSuccess('🚋', '電車到站！', '前往中環', () => {
+                showScreen('level3Screen');
+            }, 2000);
+        }
+        
+        function skipTram() {
+            // 清除計時器
+            if (tramTimerInterval) clearInterval(tramTimerInterval);
+            
+            // 沒有時間獎勵，直接前往下一關
+            playTone(400, 0.2); // 簡單提示音
+            
+            // 直接前往電車站編號關卡
+            showScreen('level3Screen');
+        }
+
+        // ========== LEVEL 3 ==========
+        let password3 = '';
+        const correctPassword3 = '72';
+
+        function updatePassword3Display() {
+            const slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
+            slots.forEach((slot, i) => {
+                slot.classList.remove('active', 'filled');
+                if (i < password3.length) { slot.textContent = password3[i]; slot.classList.add('filled'); }
+                else if (i === password3.length) { slot.textContent = '_'; slot.classList.add('active'); }
+                else slot.textContent = '_';
+            });
         }
 
         function checkPassword3() {
@@ -1782,37 +1988,6 @@
                 playSuccessSound();
                 showSuccess('🚃', '恭喜你成功找到電車站編號', '恭喜通關！', () => showScreen('finalScreen'), 15000);
             } else { showInputStatus('level3Status', '號碼錯誤，請重試！', 'error'); playErrorSound(); }
-        }
-
-        // ========== RANDOM QUESTIONS ==========
-        const randomQuestions = [
-            "你最喜歡香港嘅邊個地方？", "如果可以去世界任何地方，你會去邊度？", "你覺得香港最好食嘅嘢係乜？",
-            "你細個最鍾意玩咩遊戲？", "你最難忘嘅童年回憶？", "如果你可以擁有一種超能力，你會揀乜？",
-            "你最欣賞身邊邊個人？點解？", "你覺得最能代表香港嘅係乜嘢？", "你最近學識咗啲乜新嘢？",
-            "如果你只可以食一種嘢一世，你會揀乜？", "你覺得朋友最重要嘅特質係乜？", "你最想實現嘅願望係乜？",
-            "你覺得人生最緊要嘅係乜嘢？", "你最鍾意嘅節日係邊個？點解？", "如果你可以同任何人食飯，你會揀邊個？"
-        ];
-
-        let questionAnswered = false;
-
-        function showRandomQuestion() {
-            document.getElementById('questionText').textContent = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
-            questionAnswered = false;
-            playTone(600, 0.1);
-        }
-
-        function answerQuestion() {
-            if (questionAnswered) return;
-            questionAnswered = true;
-            modifyTime(300, true);
-            showSuccess('⏱️', '回答問題成功', '獲得+5分鐘獎勵！', () => {
-                showScreen('level3Screen');
-            }, 3000);
-        }
-
-        function skipQuestion() {
-            questionAnswered = true;
-            showScreen('level3Screen');
         }
 
         // ========== EVENT LISTENERS ==========
@@ -1833,10 +2008,10 @@
                 updateTerminalPasswordDisplay();
             });
 
+            // Terminal keyboard
             document.querySelectorAll('#terminalKeyboard .terminal-key').forEach(key => {
                 key.addEventListener('click', () => {
                     const keyValue = key.dataset.key;
-                    
                     if (keyValue === 'backspace') {
                         terminalPassword = terminalPassword.slice(0, -1);
                         updateTerminalPasswordDisplay();
@@ -1854,10 +2029,8 @@
             document.addEventListener('keydown', (e) => {
                 const activeScreen = document.querySelector('.screen.active');
                 if (!activeScreen) return;
-                
                 if (activeScreen.id === 'terminalScreen') {
                     const key = e.key.toUpperCase();
-                    
                     if (key === 'BACKSPACE') {
                         terminalPassword = terminalPassword.slice(0, -1);
                         updateTerminalPasswordDisplay();
@@ -1875,6 +2048,7 @@
                 }
             });
 
+            // Rotary dial
             document.getElementById('dialPlate').addEventListener('click', (e) => {
                 const hole = e.target.closest('.dial-hole');
                 if (hole && !isDialing) dialNumber(hole.dataset.num);
@@ -1893,6 +2067,7 @@
             });
             document.getElementById('phoneCallBtn').addEventListener('click', checkPhoneNumber);
 
+            // Level 2
             document.querySelectorAll('#level2Screen .password-key').forEach(key => {
                 key.addEventListener('click', () => {
                     const num = key.dataset.num;
@@ -1902,6 +2077,24 @@
                 });
             });
 
+            // 第四關：聊天按鈕（無限換問題）
+            document.getElementById('tramChatBtn').addEventListener('click', () => {
+                setRandomQuestion();
+            });
+
+            // 第四關：跳過按鈕（無獎勵，直接去下一關）
+            document.getElementById('skipTramBtn').addEventListener('click', () => {
+                skipTram();
+            });
+
+            // 第四關：上車按鈕（7分鐘後出現）
+            document.getElementById('boardTramBtn').addEventListener('click', () => {
+                if (tramArrived) {
+                    boardTram();
+                }
+            });
+
+            // Level 3
             document.querySelectorAll('#level3Screen .password-key').forEach(key => {
                 key.addEventListener('click', () => {
                     const num = key.dataset.num;
@@ -1910,10 +2103,6 @@
                     else if (password3.length < 2) { password3 += num; updatePassword3Display(); playTone(500, 0.08); }
                 });
             });
-
-            document.getElementById('newQuestionBtn').addEventListener('click', showRandomQuestion);
-            document.getElementById('proceedBtn').addEventListener('click', answerQuestion);
-            document.getElementById('skipQuestionBtn').addEventListener('click', skipQuestion);
         });
     </script>
 </body>
