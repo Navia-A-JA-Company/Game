@@ -38,8 +38,8 @@
             --form-link: #ffd700;
             --tram-blue: #0099ff;
             --old-hongkong: #d4af37;
-            --tip-bg: rgba(0, 0, 0, 0.7);
-            --tip-border: #ffd700;
+            --fact-bg: rgba(20, 30, 40, 0.85);
+            --fact-border: rgba(100, 200, 255, 0.5);
             --win95-teal: #008080;
             --win95-gray: #c0c0c0;
             --win95-dark: #808080;
@@ -374,6 +374,58 @@
         .time-modifier.add { background: linear-gradient(135deg, var(--accent-1), #00cc6a); color: var(--bg-primary); }
         .time-modifier.subtract { background: linear-gradient(135deg, var(--danger), #ff6b81); color: white; }
 
+        /* ========== 趣味冷知識容器 — 全新加入，每個關卡專屬 ========== */
+        .fact-container {
+            width: 100%;
+            max-width: 650px;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            padding: 20px 25px;
+            background: var(--fact-bg);
+            backdrop-filter: blur(6px);
+            border-left: 8px solid var(--fact-border);
+            border-radius: 16px;
+            font-family: 'Noto Sans HK', sans-serif;
+            font-size: 0.95rem;
+            color: #e6f7ff;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+            box-shadow: 0 6px 20px rgba(0, 30, 50, 0.7);
+            border: 1px solid rgba(100, 200, 255, 0.4);
+            position: relative;
+            z-index: 10;
+        }
+        .fact-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #aae0ff;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(100,200,255,0.5);
+            padding-bottom: 8px;
+        }
+        .fact-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .fact-list li {
+            margin-bottom: 10px;
+            padding-left: 24px;
+            position: relative;
+            line-height: 1.6;
+        }
+        .fact-list li::before {
+            content: "•";
+            color: #88ddff;
+            font-weight: bold;
+            font-size: 1.2rem;
+            position: absolute;
+            left: 4px;
+            top: -2px;
+        }
+
         /* ========== 旋轉撥號電話 ========== */
         .rotary-phone-container {
             background: linear-gradient(145deg, rgba(26,74,66,0.9), rgba(15,47,40,0.95));
@@ -445,7 +497,7 @@
         .phone-status.success { background: rgba(0,255,136,0.2); color: var(--accent-1); border: 2px solid var(--accent-1); }
         .dial-instruction { text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--phone-gold); opacity: 0.8; }
 
-        /* ========== 密碼鎖畫面 (4位 / 2位) — 每個畫面都有信封提示 ========== */
+        /* ========== 密碼鎖畫面 (4位 / 2位) ========== */
         .password-screen {
             text-align: center;
             max-width: 450px;
@@ -543,6 +595,7 @@
             .rotary-phone-container { padding: 20px; max-width: 340px; } .rotary-dial { width: 240px; height: 240px; } .dial-plate { width: 210px; height: 210px; } .dial-hole { width: 30px; height: 30px; } .dial-number { font-size: 0.95rem; }
             .password-slot { width: 55px; height: 70px; font-size: 1.8rem; } .level-prompt { font-size: 1.2rem; }
             .victory-title { font-size: 1.5rem; } .win95-icons { top: 10px; left: 10px; gap: 20px; }
+            .fact-container { padding: 16px; font-size: 0.9rem; }
         }
     </style>
 </head>
@@ -668,7 +721,7 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 5：旋轉撥號電話 · 信封 #2 — 加入信封提示 ========== -->
+    <!-- ========== 畫面 5：旋轉撥號電話 · 信封 #2 — 加入冷知識 ========== -->
     <div class="screen" id="phoneScreen">
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
@@ -691,10 +744,21 @@
             <div class="dial-instruction">將手指放入數字孔，順時針旋轉至擋片後放開</div>
             <div class="phone-status" id="phoneStatus"></div>
         </div>
-        <!-- 所有提示框已移除 -->
+        <!-- 信封 #2 冷知識：花碼 -->
+        <div class="fact-container">
+            <div class="fact-title">
+                <span style="font-size:1.5rem;">📊</span> 花碼 · 香港記憶
+            </div>
+            <ul class="fact-list">
+                <li>花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價</li>
+                <li>花碼以簡便的線條作速記，通常分兩行書寫以表示數字與量級</li>
+                <li>花碼在阿拉伯數字普及後，僅在極少數舊店或招牌可見</li>
+                <li>第一代小巴價錢牌是以花碼寫成</li>
+            </ul>
+        </div>
     </div>
 
-    <!-- ========== 畫面 6：四位數字密碼 · 鐵閘 · 信封 #3 — 加入信封提示 ========== -->
+    <!-- ========== 畫面 6：四位數字密碼 · 鐵閘 · 信封 #3 — 加入冷知識 ========== -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
             <div class="level-prompt">
@@ -714,10 +778,21 @@
             </div>
             <div class="input-status" id="level2Status"></div>
         </div>
-        <!-- 所有提示框已移除 -->
+        <!-- 信封 #3 冷知識：通花鐵閘 -->
+        <div class="fact-container">
+            <div class="fact-title">
+                <span style="font-size:1.5rem;">🔩</span> 通花鐵閘 · 鋪屋情深
+            </div>
+            <ul class="fact-list">
+                <li>通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。若有緊急的事，請拍門吧！</li>
+                <li>以「前舖後居」方式經營的店舖，沒有窗戶，通花鐵閘成為了唯一的通風口</li>
+                <li>許多店主會將店舖字號或花紋直接鑿在鐵閘上，視為另類廣告</li>
+                <li>隨時代發展，現代商鋪多用節省空間的捲閘</li>
+            </ul>
+        </div>
     </div>
 
-    <!-- ========== 畫面 7：電車等候 · 信封 #4 — 加入信封提示 ========== -->
+    <!-- ========== 畫面 7：電車等候 · 信封 #4 — 加入冷知識 ========== -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
@@ -732,10 +807,21 @@
                 <button class="board-tram-btn hidden" id="boardTramBtn">🚃 電車終於到站，按這裏上車！</button>
             </div>
         </div>
-        <!-- 所有提示框已移除 -->
+        <!-- 信封 #4 冷知識：過山車、中環街市、尖沙咀鐘樓 — 第1關的趣聞放這裡 (跟據指示1st) -->
+        <div class="fact-container">
+            <div class="fact-title">
+                <span style="font-size:1.5rem;">🎢</span> 舊日足跡
+            </div>
+            <ul class="fact-list">
+                <li>過山車列車設計為綠紫色飛龍</li>
+                <li>中環街市是香港少數在二戰前建成的室內街市，具有重要的歷史價值</li>
+                <li>尖沙咀鐘樓內部的響鬧報時裝置在1950年被抽走，歷經71年無聲鐘</li>
+                <li>過山車最高時速達每小時25公里</li>
+            </ul>
+        </div>
     </div>
 
-    <!-- ========== 畫面 8：兩位數字 · 電車站編號 · 信封 #5 — 加入信封提示 ========== -->
+    <!-- ========== 畫面 8：兩位數字 · 電車站編號 · 信封 #5 — 加入冷知識 ========== -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
             <div class="level-prompt">
@@ -754,6 +840,21 @@
                 <button class="password-key submit" data-num="submit">✓</button>
             </div>
             <div class="input-status" id="level3Status"></div>
+        </div>
+        <!-- 信封 #5 冷知識：水荒、水籌、北漏洞拉、第一收容港 -->
+        <div class="fact-container">
+            <div class="fact-title">
+                <span style="font-size:1.5rem;">💧</span> 水·難民·香港往事
+            </div>
+            <ul class="fact-list">
+                <li>為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止</li>
+                <li>當時政府也採取了關閉公共浴室、暫緩慢性病外科手術及重開舊水井等極端措施</li>
+                <li>據說水荒時，向人借水跟來討債的人一樣不受歡迎</li>
+                <li>北漏洞拉，越南與廣播用於宣傳「甄別政策」，告知船民將被扣留並遣返</li>
+                <li>「樓下閂水喉呀!」</li>
+                <li>香港曾被稱為「第一收容港」</li>
+                <li>難民營內常因不同政治背景發生衝突，警隊需將兩派船民分開居住，並常搜出自行製造的武器</li>
+            </ul>
         </div>
     </div>
 
