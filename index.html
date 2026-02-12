@@ -116,7 +116,7 @@
         @keyframes windowAppear { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
         @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
 
-        /* ========== 主選單 — 全新 ========== */
+        /* ========== 主選單 — Lost in Hong Kong ========== */
         .menu-screen {
             text-align: center;
             max-width: 900px;
@@ -179,59 +179,7 @@
             padding-top: 30px;
         }
 
-        /* ========== 遊戲標題畫面 (保留作為銜接) ========== */
-        .title-screen {
-            text-align: center;
-            max-width: 800px;
-            background: rgba(10, 10, 15, 0.8);
-            backdrop-filter: blur(12px);
-            padding: 60px 40px;
-            border-radius: 60px;
-            border: 3px solid rgba(0, 255, 136, 0.5);
-            box-shadow: 0 0 80px rgba(0, 255, 136, 0.3);
-            animation: glow 3s infinite;
-        }
-        .main-title {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-gold));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 20px;
-            letter-spacing: 8px;
-            text-shadow: 0 0 30px rgba(0,255,136,0.3);
-            animation: pulse 2s infinite;
-        }
-        .sub-title {
-            font-size: 1.6rem;
-            color: var(--text-secondary);
-            margin-bottom: 60px;
-            letter-spacing: 4px;
-            border-bottom: 2px solid var(--accent-1);
-            padding-bottom: 20px;
-            display: inline-block;
-        }
-        .begin-btn {
-            padding: 24px 80px;
-            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
-            border: none;
-            border-radius: 80px;
-            font-family: 'Noto Sans HK', sans-serif;
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--bg-primary);
-            cursor: pointer;
-            transition: all 0.4s ease;
-            box-shadow: 0 0 40px var(--shadow-glow);
-            border: 2px solid rgba(255,255,255,0.5);
-            letter-spacing: 8px;
-        }
-        .begin-btn:hover { transform: translateY(-6px) scale(1.05); box-shadow: 0 0 70px var(--shadow-glow), 0 0 120px var(--shadow-blue); }
-        .begin-btn:active { transform: translateY(2px) scale(0.98); }
-
-        /* ========== 計時器設定 — 現在放在登入之前 ========== */
+        /* ========== 計時器設定 ========== */
         .timer-setup {
             text-align: center;
             max-width: 450px;
@@ -497,7 +445,7 @@
         .phone-status.success { background: rgba(0,255,136,0.2); color: var(--accent-1); border: 2px solid var(--accent-1); }
         .dial-instruction { text-align: center; margin-top: 15px; font-size: 0.85rem; color: var(--phone-gold); opacity: 0.8; }
 
-        /* ========== 密碼鎖畫面 (4位 / 2位) ========== */
+        /* ========== 密碼鎖畫面 (4位 / 2位) — 每個畫面都有信封提示 ========== */
         .password-screen {
             text-align: center;
             max-width: 450px;
@@ -581,10 +529,6 @@
         .win95-modal-text { font-size: 13px; color: #000; line-height: 1.6; }
         .win95-modal-footer { display: flex; justify-content: center; padding: 0 20px 16px; gap: 10px; }
 
-        /* ========== 小提示框 ========== */
-        .tip-container { width: 100%; max-width: 650px; margin-top: 20px; margin-bottom: 10px; padding: 16px 24px; background: var(--tip-bg); border-left: 6px solid var(--tip-border); border-radius: 12px; backdrop-filter: blur(4px); font-family: 'Noto Sans HK', sans-serif; font-size: 0.95rem; color: #fff3cd; text-shadow: 0 1px 2px rgba(0,0,0,0.5); box-shadow: 0 4px 15px rgba(0,0,0,0.6); transition: opacity 0.3s ease; position: relative; z-index: 10; border: 1px solid rgba(255,215,0,0.3); }
-        .tip-icon { font-size: 1.2rem; margin-right: 10px; display: inline-block; }
-
         /* ========== 成功覆層 ========== */
         .success-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: none; align-items: center; justify-content: center; z-index: 2000; animation: fadeIn 0.3s ease; }
         .success-overlay.show { display: flex; }
@@ -595,7 +539,6 @@
 
         @media (max-width: 480px) {
             .menu-title { font-size: 2.8rem; } .menu-btn { padding: 18px 50px; font-size: 1.5rem; }
-            .main-title { font-size: 2.5rem; } .sub-title { font-size: 1.2rem; } .begin-btn { padding: 18px 50px; font-size: 1.5rem; }
             .timer-big { font-size: 3.5rem; } .envelope-title { font-size: 1.8rem; } .envelope-message { font-size: 1.1rem; }
             .rotary-phone-container { padding: 20px; max-width: 340px; } .rotary-dial { width: 240px; height: 240px; } .dial-plate { width: 210px; height: 210px; } .dial-hole { width: 30px; height: 30px; } .dial-number { font-size: 0.95rem; }
             .password-slot { width: 55px; height: 70px; font-size: 1.8rem; } .level-prompt { font-size: 1.2rem; }
@@ -610,7 +553,7 @@
     </div>
     <div class="time-modifier" id="timeModifier"></div>
 
-    <!-- ========== 畫面 1：主選單 (全新) ========== -->
+    <!-- ========== 畫面 1：主選單 (Lost in Hong Kong) ========== -->
     <div class="screen active" id="menuScreen">
         <div class="menu-screen">
             <div class="menu-title">迷途顯影</div>
@@ -623,19 +566,7 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 2：遊戲標題 (保留過渡) ========== -->
-    <div class="screen" id="titleScreen">
-        <div class="title-screen">
-            <div class="main-title">迷途顯影</div>
-            <div class="sub-title">Lost in Hong Kong</div>
-            <button class="begin-btn" id="beginGameBtn">繼續旅程</button>
-            <div style="margin-top: 40px; color: var(--text-secondary); font-size: 1.1rem; letter-spacing: 2px;">
-                ⚠️ 請先仔細閱讀說明書才打開任何信封
-            </div>
-        </div>
-    </div>
-
-    <!-- ========== 畫面 3：計時器設定 — 現在放在登入之前 ========== -->
+    <!-- ========== 畫面 2：計時器設定 ========== -->
     <div class="screen" id="timerSetupScreen">
         <div class="timer-setup">
             <h2 class="game-title">倒數計時</h2>
@@ -646,7 +577,7 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 4：信封 #1 指示（登入前）========= -->
+    <!-- ========== 畫面 3：信封 #1 指示（登入前）========= -->
     <div class="screen" id="envelope1Screen">
         <div class="envelope-screen">
             <div class="envelope-icon">📩</div>
@@ -657,13 +588,10 @@
                 <span style="display:block; margin-top:20px; font-size:1.2rem; color:var(--accent-1);">準備好後按「繼續」</span>
             </div>
             <button class="envelope-btn" id="envelope1ContinueBtn">繼續</button>
-            <div class="envelope-note">
-                💡 提示：密碼隱藏在說明書中
-            </div>
         </div>
     </div>
 
-    <!-- ========== 畫面 5：Windows 95 登入 ========== -->
+    <!-- ========== 畫面 4：Windows 95 登入 ========== -->
     <div class="screen" id="win95LoginScreen">
         <div class="win95-desktop">
             <div class="crt-overlay"></div>
@@ -740,11 +668,14 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 6：旋轉撥號電話 · 信封 #2 ========== -->
+    <!-- ========== 畫面 5：旋轉撥號電話 · 信封 #2 — 加入信封提示 ========== -->
     <div class="screen" id="phoneScreen">
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
-            <div class="phone-header"><h2 class="phone-title">📞 信封 #2 · 撥號電話</h2></div>
+            <div class="phone-header">
+                <h2 class="phone-title" style="font-size: 1.5rem; margin-bottom: 10px;">📩 請打開信封 #2</h2>
+                <h2 class="phone-title">📞 撥號電話</h2>
+            </div>
             <div class="phone-display"><div class="display-number empty" id="phoneDisplay">輸入號碼</div></div>
             <div class="rotary-dial-wrapper">
                 <div class="rotary-dial" id="rotaryDial">
@@ -760,15 +691,16 @@
             <div class="dial-instruction">將手指放入數字孔，順時針旋轉至擋片後放開</div>
             <div class="phone-status" id="phoneStatus"></div>
         </div>
-        <div class="tip-container" id="tip2" style="margin-top:20px; max-width:380px;">
-            <span class="tip-icon">💡</span><span id="tip2Text">花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價</span>
-        </div>
+        <!-- 所有提示框已移除 -->
     </div>
 
-    <!-- ========== 畫面 7：四位數字密碼 · 鐵閘 · 信封 #3 ========== -->
+    <!-- ========== 畫面 6：四位數字密碼 · 鐵閘 · 信封 #3 — 加入信封提示 ========== -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
-            <div class="level-prompt">📩 請打開信封 #3<br>🔒 破解鐵閘密碼鎖 · 四位數字</div>
+            <div class="level-prompt">
+                📩 請打開信封 #3<br>
+                🔒 破解鐵閘密碼鎖 · 四位數字
+            </div>
             <div class="password-display" id="password2Display">
                 <div class="password-slot active">_</div><div class="password-slot">_</div><div class="password-slot">_</div><div class="password-slot">_</div>
             </div>
@@ -782,16 +714,15 @@
             </div>
             <div class="input-status" id="level2Status"></div>
         </div>
-        <div class="tip-container" id="tip3" style="margin-top:20px; max-width:450px;">
-            <span class="tip-icon">💡</span><span id="tip3Text">通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。</span>
-        </div>
+        <!-- 所有提示框已移除 -->
     </div>
 
-    <!-- ========== 畫面 8：電車等候 · 信封 #4 ========== -->
+    <!-- ========== 畫面 7：電車等候 · 信封 #4 — 加入信封提示 ========== -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
-                <div class="tram-header">🚋 請打開信封 #4 · 電車站等候</div>
+                <div class="tram-header">📩 請打開信封 #4</div>
+                <div class="tram-header" style="font-size: 1.5rem; margin-top: -10px;">🚋 電車站等候</div>
                 <div class="tram-timer" id="tramWaitTimer">07:00</div>
                 <div class="tram-message" id="tramMessage">仲有少少時間，同朋友傾吓計啦～</div>
                 <div class="tram-question-area">
@@ -801,15 +732,16 @@
                 <button class="board-tram-btn hidden" id="boardTramBtn">🚃 電車終於到站，按這裏上車！</button>
             </div>
         </div>
-        <div class="tip-container" id="tip5" style="margin-top:20px; max-width:600px;">
-            <span class="tip-icon">💡</span><span id="tip5Text">為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止</span>
-        </div>
+        <!-- 所有提示框已移除 -->
     </div>
 
-    <!-- ========== 畫面 9：兩位數字 · 電車站編號 · 信封 #5 ========== -->
+    <!-- ========== 畫面 8：兩位數字 · 電車站編號 · 信封 #5 — 加入信封提示 ========== -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
-            <div class="level-prompt">📩 請打開信封 #5<br>🚃 電車站號碼 · 兩位數字 前往中環</div>
+            <div class="level-prompt">
+                📩 請打開信封 #5<br>
+                🚃 電車站號碼 · 兩位數字 前往中環
+            </div>
             <div class="password-display" id="password3Display">
                 <div class="password-slot active">_</div><div class="password-slot">_</div>
             </div>
@@ -825,7 +757,7 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 10：終點 · 勝利 ========== -->
+    <!-- ========== 畫面 9：終點 · 勝利 ========== -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
@@ -972,20 +904,6 @@
             document.getElementById('successSubtitle').textContent = subtitle;
             ov.classList.add('show'); playSuccessSound();
             setTimeout(()=>{ ov.classList.remove('show'); if(callback) callback(); }, delay);
-        }
-
-        // ========== 小提示輪播 ==========
-        let tipsLevel2 = ["花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價","花碼以簡便的線條作速記，通常分兩行書寫","第一代小巴價錢牌是以花碼寫成"];
-        let tipsLevel3 = ["通了花便會透光，晚上能從發亮的通花得悉燈還沒關","以「前舖後居」方式經營的店舖，沒有窗戶","許多店主會將店舖字號或花紋直接鑿在鐵閘上"];
-        let tipsLevel5 = ["為節省用水，酒樓派發「水籌」，硬性規定沖茶次數","香港曾被稱為「第一收容港」","難民營內常因不同政治背景發生衝突"];
-        function rotateTip(arr, elId) { let idx = Math.floor(Math.random()*arr.length); let el = document.getElementById(elId); if(el) el.textContent = arr[idx]; }
-        let tipInt2, tipInt3, tipInt5;
-        function startAllTipTimers() {
-            if(tipInt2) clearInterval(tipInt2); if(tipInt3) clearInterval(tipInt3); if(tipInt5) clearInterval(tipInt5);
-            rotateTip(tipsLevel2,'tip2Text'); rotateTip(tipsLevel3,'tip3Text'); rotateTip(tipsLevel5,'tip5Text');
-            tipInt2 = setInterval(()=>rotateTip(tipsLevel2,'tip2Text'), 120000);
-            tipInt3 = setInterval(()=>rotateTip(tipsLevel3,'tip3Text'), 120000);
-            tipInt5 = setInterval(()=>rotateTip(tipsLevel5,'tip5Text'), 120000);
         }
 
         // ========== 旋轉撥號 — 完整實作 ==========
@@ -1144,30 +1062,24 @@
         // ========== DOM 初始化 & 事件監聽 ==========
         document.addEventListener('DOMContentLoaded', function() {
             initRotaryDial(); updateTimerDisplay(); window.addEventListener('resize', initRotaryDial);
-            startAllTipTimers();
 
-            // 1. 主選單 → 標題畫面 (保留傳統)
+            // 1. 主選單 → 計時器設定 (跳過標題畫面)
             document.getElementById('menuStartBtn').addEventListener('click', function() {
-                showScreen('titleScreen');
-            });
-
-            // 2. 標題 → 計時器設定
-            document.getElementById('beginGameBtn').addEventListener('click', function() {
                 showScreen('timerSetupScreen');
             });
 
-            // 3. 開始計時 → 信封 #1 指示 (計時器先啟動)
+            // 2. 開始計時 → 信封 #1 指示
             document.getElementById('startTimerBtn').addEventListener('click', function() {
                 startTimer();
                 showScreen('envelope1Screen');
             });
 
-            // 4. 信封 #1 繼續 → Windows 95 登入
+            // 3. 信封 #1 繼續 → Windows 95 登入
             document.getElementById('envelope1ContinueBtn').addEventListener('click', function() {
                 showScreen('win95LoginScreen');
             });
 
-            // 5. Windows 95 登入成功 → 信封 #2 (電話)
+            // 4. Windows 95 登入成功 → 信封 #2 (電話)
             document.getElementById('win95OkBtn').addEventListener('click', function() {
                 getAudioContext();
                 playWin95StartupSound();
