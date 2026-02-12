@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-HK">
 <head>
@@ -38,6 +37,8 @@
             --form-link: #ffd700;
             --tram-blue: #0099ff;
             --old-hongkong: #d4af37;
+            --tip-bg: rgba(0, 0, 0, 0.7);
+            --tip-border: #ffd700;
         }
 
         * {
@@ -277,6 +278,34 @@
             margin-bottom: 20px;
         }
 
+        /* ========== 共通提示框樣式 ========== */
+        .tip-container {
+            width: 100%;
+            max-width: 650px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding: 16px 24px;
+            background: var(--tip-bg);
+            border-left: 6px solid var(--tip-border);
+            border-radius: 12px;
+            backdrop-filter: blur(4px);
+            font-family: 'Noto Sans HK', sans-serif;
+            font-size: 0.95rem;
+            color: #fff3cd;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            transition: opacity 0.3s ease;
+            position: relative;
+            z-index: 10;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+
+        .tip-icon {
+            font-size: 1.2rem;
+            margin-right: 10px;
+            display: inline-block;
+        }
+
         /* Computer Terminal Screen */
         .terminal-screen {
             width: 100%;
@@ -367,54 +396,6 @@
             line-height: 1.6;
             margin-bottom: 10px;
             white-space: pre-wrap;
-        }
-
-        .terminal-line {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            color: var(--terminal-green);
-            margin-bottom: 8px;
-        }
-
-        .terminal-prompt {
-            color: var(--accent-2);
-            font-weight: bold;
-            margin-right: 10px;
-        }
-
-        .terminal-input-line {
-            display: flex;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        .terminal-cursor {
-            display: inline-block;
-            width: 8px;
-            height: 18px;
-            background-color: var(--terminal-green);
-            margin-left: 2px;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        .terminal-input {
-            background: transparent;
-            border: none;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1rem;
-            color: var(--terminal-green);
-            outline: none;
-            flex-grow: 1;
-            letter-spacing: 1px;
-        }
-
-        .terminal-input::placeholder {
-            color: rgba(0, 255, 0, 0.5);
         }
 
         .terminal-password-display {
@@ -852,7 +833,7 @@
             color: var(--text-secondary);
         }
 
-        /* Password Input Screen */
+        /* Password Input Screen (Level 2 & 3) */
         .password-screen {
             text-align: center;
             max-width: 450px;
@@ -967,7 +948,7 @@
             animation: shake 0.5s ease;
         }
 
-        /* Random Questions Screen - 強制等待7分鐘，無跳過按鈕 */
+        /* Random Questions Screen - 強制等待7分鐘 */
         .questions-screen {
             text-align: center;
             max-width: 600px;
@@ -1233,6 +1214,7 @@
             .tram-header { font-size: 1.5rem; }
             .board-tram-btn { font-size: 1.2rem; padding: 16px 30px; }
             .old-hk-message { font-size: 0.95rem; }
+            .tip-container { font-size: 0.85rem; padding: 12px 16px; }
         }
 
         @media (max-width: 768px) {
@@ -1269,7 +1251,7 @@
         </div>
     </div>
 
-    <!-- Screen 3: Terminal Computer Password -->
+    <!-- Screen 3: Terminal Computer Password (第1關) + 隨機2分鐘提示 -->
     <div class="screen" id="terminalScreen">
         <div class="terminal-screen">
             <div class="terminal-container">
@@ -1335,10 +1317,15 @@
                 </div>
                 <div class="terminal-status-message" id="terminalStatus"></div>
             </div>
+            <!-- 第1關提示：隨機2分鐘更換 -->
+            <div class="tip-container" id="tip1">
+                <span class="tip-icon">💡</span> 
+                <span id="tip1Text">過山車列車設計為綠紫色飛龍</span>
+            </div>
         </div>
     </div>
 
-    <!-- Screen 4: Rotary Phone Level -->
+    <!-- Screen 4: Rotary Phone Level (第2關) + 隨機2分鐘提示 -->
     <div class="screen" id="phoneScreen">
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
@@ -1360,9 +1347,14 @@
             <div class="dial-instruction">將手指放入數字孔，順時針旋轉至擋片後放開</div>
             <div class="phone-status" id="phoneStatus"></div>
         </div>
+        <!-- 第2關提示：隨機2分鐘更換（花碼）-->
+        <div class="tip-container" id="tip2" style="margin-top: 20px; max-width: 380px;">
+            <span class="tip-icon">💡</span> 
+            <span id="tip2Text">花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價</span>
+        </div>
     </div>
 
-    <!-- Screen 5: 4-digit Password (鐵閘解鎖) -->
+    <!-- Screen 5: 4-digit Password (鐵閘解鎖 - 第3關) + 隨機2分鐘提示 -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
             <div class="level-prompt">🔒 你現在需要找到四位數字密碼<br>破解鐵閘密碼鎖</div>
@@ -1388,9 +1380,14 @@
             </div>
             <div class="input-status" id="level2Status"></div>
         </div>
+        <!-- 第3關提示：通花鐵閘 -->
+        <div class="tip-container" id="tip3" style="margin-top: 20px; max-width: 450px;">
+            <span class="tip-icon">💡</span> 
+            <span id="tip3Text">通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。若有緊急的事，請拍門吧！</span>
+        </div>
     </div>
 
-    <!-- Screen 6: 第四關 — 等電車，強制7分鐘，無跳過按鈕 -->
+    <!-- Screen 6: 第四關 — 等電車，強制7分鐘，無跳過（第5關提示放在這裡） -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
@@ -1400,7 +1397,6 @@
                     仲有少少時間，同朋友傾吓計啦～
                 </div>
                 
-                <!-- 聊天區域：只有一個按鈕，可以無限次點擊換問題（無跳過） -->
                 <div class="tram-question-area">
                     <div class="tram-question-text" id="tramQuestionText">
                         你最喜歡香港嘅邊個地方？
@@ -1410,15 +1406,20 @@
                     </button>
                 </div>
                 
-                <!-- 7分鐘後出現的電車上車按鈕（初始隱藏） -->
+                <!-- 7分鐘後出現的電車上車按鈕 -->
                 <button class="board-tram-btn hidden" id="boardTramBtn">
                     🚃 電車終於到站，按這裏上車！
                 </button>
             </div>
         </div>
+        <!-- 第5關提示：水籌／制水／越南難民等（隨機2分鐘更換）-->
+        <div class="tip-container" id="tip5" style="margin-top: 20px; max-width: 600px;">
+            <span class="tip-icon">💡</span> 
+            <span id="tip5Text">為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止</span>
+        </div>
     </div>
 
-    <!-- Screen 7: 2-digit Number (電車站編號) -->
+    <!-- Screen 7: 2-digit Number (電車站編號 - 無關卡提示，但保留原結構) -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
             <div class="level-prompt">🚃 電車站號碼咁多…<br>睇嚟要搵一個兩位數字號碼<br>先可以去到中環</div>
@@ -1442,6 +1443,7 @@
             </div>
             <div class="input-status" id="level3Status"></div>
         </div>
+        <!-- 第5關的提示已經在上一屏，此處不需要重複 -->
     </div>
 
     <!-- Screen 8: Final Victory — with old Hong Kong pictures message -->
@@ -1451,7 +1453,6 @@
             <h1 class="victory-title">恭喜你成功準時到達比賽現場並成功通關！</h1>
             <p class="victory-instruction">📖 請大家閱讀說明書第七頁</p>
             
-            <!-- 舊香港相片訊息 -->
             <div class="old-hk-message">
                 📸 通關後可以慢慢欣賞背面嘅相片，<br>
                 每一張都展現舊香港嘅珍貴景象。
@@ -1654,6 +1655,74 @@
             setTimeout(() => { overlay.classList.remove('show'); if (callback) callback(); }, delay);
         }
 
+        // ========== 關卡提示系統 ==========
+        // 第1關提示 (電腦終端)
+        const tipsLevel1 = [
+            "過山車列車設計為綠紫色飛龍",
+            "中環街市是香港少數在二戰前建成的室內街市，具有重要的歷史價值",
+            "尖沙咀鐘樓內部的響鬧報時裝置在1950年被抽走，歷經71年無聲鐘",
+            "過山車最高時速達每小時25公里"
+        ];
+        
+        // 第2關提示 (旋轉電話／花碼)
+        const tipsLevel2 = [
+            "花碼被廣泛用於街市、舊式茶餐廳、藥房和公共小巴標價",
+            "花碼以簡便的線條作速記，通常分兩行書寫以表示數字與量級",
+            "花碼在阿拉伯數字普及後，僅在極少數舊店或招牌可見",
+            "第一代小巴價錢牌是以花碼寫成"
+        ];
+        
+        // 第3關提示 (鐵閘密碼)
+        const tipsLevel3 = [
+            "通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡。若有緊急的事，請拍門吧！",
+            "以「前舖後居」方式經營的店舖，沒有窗戶，通花鐵閘成為了唯一的通風口",
+            "許多店主會將店舖字號或花紋直接鑿在鐵閘上，視為另類廣告",
+            "隨時代發展，現代商鋪多用節省空間的捲閘"
+        ];
+        
+        // 第5關提示 (等電車關卡 - 水籌／制水／越南難民)
+        const tipsLevel5 = [
+            "為節省用水，酒樓派發「水籌」，硬性規定沖茶次數，用完即止",
+            "當時政府也採取了關閉公共浴室、暫緩慢性病外科手術及重開舊水井等極端措施",
+            "據說水荒時，向人借水跟來討債的人一樣不受歡迎",
+            "北漏洞拉，越南與廣播用於宣傳「甄別政策」，告知船民將被扣留並遣返",
+            "「樓下閂水喉呀!」",
+            "香港曾被稱為「第一收容港」",
+            "難民營內常因不同政治背景發生衝突，警隊需將兩派船民分開居住，並常搜出自行製造的武器"
+        ];
+
+        // 隨機更換提示的函數
+        function rotateTip(tipArray, elementId) {
+            const randomIndex = Math.floor(Math.random() * tipArray.length);
+            const tipElement = document.getElementById(elementId);
+            if (tipElement) {
+                tipElement.textContent = tipArray[randomIndex];
+            }
+        }
+
+        // 設定所有提示定時器 (每2分鐘 = 120000毫秒)
+        let tipInterval1, tipInterval2, tipInterval3, tipInterval5;
+
+        function startAllTipTimers() {
+            // 清除舊的定時器
+            if (tipInterval1) clearInterval(tipInterval1);
+            if (tipInterval2) clearInterval(tipInterval2);
+            if (tipInterval3) clearInterval(tipInterval3);
+            if (tipInterval5) clearInterval(tipInterval5);
+            
+            // 立即顯示一次隨機提示
+            rotateTip(tipsLevel1, 'tip1Text');
+            rotateTip(tipsLevel2, 'tip2Text');
+            rotateTip(tipsLevel3, 'tip3Text');
+            rotateTip(tipsLevel5, 'tip5Text');
+            
+            // 每2分鐘更換一次
+            tipInterval1 = setInterval(() => rotateTip(tipsLevel1, 'tip1Text'), 120000);
+            tipInterval2 = setInterval(() => rotateTip(tipsLevel2, 'tip2Text'), 120000);
+            tipInterval3 = setInterval(() => rotateTip(tipsLevel3, 'tip3Text'), 120000);
+            tipInterval5 = setInterval(() => rotateTip(tipsLevel5, 'tip5Text'), 120000);
+        }
+
         // ========== TERMINAL COMPUTER PASSWORD ==========
         let terminalPassword = '';
         const correctTerminalPassword = 'VRDU';
@@ -1839,14 +1908,13 @@
             if (password2 === correctPassword2) {
                 playUnlockSound();
                 showSuccess('🔓', '恭喜你成功破解鐵閘密碼', '現在去電車站等車', () => {
-                    // 進入第四關 — 強制7分鐘等待（無跳過）
                     showScreen('questionsScreen');
                     startTramWaiting();
                 }, 15000);
             } else { showInputStatus('level2Status', '密碼錯誤，請重試！', 'error'); playErrorSound(); }
         }
 
-        // ========== 第四關：強制等電車7分鐘，只有聊天按鈕，無跳過 ==========
+        // ========== 第四關：強制等電車7分鐘 ==========
         const randomQuestions = [
             "你最喜歡香港嘅邊個地方？", 
             "如果可以去世界任何地方，你會去邊度？", 
@@ -1866,34 +1934,21 @@
         ];
 
         let tramTimerInterval = null;
-        let tramWaitSeconds = 7 * 60; // 7分鐘 = 420秒
+        let tramWaitSeconds = 7 * 60;
         let tramArrived = false;
 
         function startTramWaiting() {
-            // 重置狀態
             tramWaitSeconds = 7 * 60;
             tramArrived = false;
-            
-            // 更新計時器顯示
             updateTramTimerDisplay();
-            
-            // 隱藏上車按鈕
             const boardBtn = document.getElementById('boardTramBtn');
             boardBtn.classList.add('hidden');
-            
-            // 設定第一個問題
             setRandomQuestion();
-            
-            // 清除舊計時器
             if (tramTimerInterval) clearInterval(tramTimerInterval);
-            
-            // 開始7分鐘倒數
             tramTimerInterval = setInterval(() => {
                 if (tramWaitSeconds > 0) {
                     tramWaitSeconds--;
                     updateTramTimerDisplay();
-                    
-                    // 當時間到達0:00，顯示電車上車按鈕
                     if (tramWaitSeconds <= 0 && !tramArrived) {
                         tramArrived = true;
                         clearInterval(tramTimerInterval);
@@ -1919,13 +1974,8 @@
         }
 
         function boardTram() {
-            // 清除計時器
             if (tramTimerInterval) clearInterval(tramTimerInterval);
-            
-            // 播放音效
             playSuccessSound();
-            
-            // 前往下一關（電車站編號）
             showSuccess('🚋', '電車到站！', '前往中環', () => {
                 showScreen('level3Screen');
             }, 2000);
@@ -1958,6 +2008,9 @@
             initRotaryDial();
             updateTimerDisplay();
             window.addEventListener('resize', initRotaryDial);
+            
+            // 啟動所有提示定時器
+            startAllTipTimers();
 
             document.getElementById('startGameBtn').addEventListener('click', () => {
                 getAudioContext();
@@ -2040,12 +2093,10 @@
                 });
             });
 
-            // 第四關：聊天按鈕（無限換問題）- 無跳過按鈕
+            // 第四關
             document.getElementById('tramChatBtn').addEventListener('click', () => {
                 setRandomQuestion();
             });
-
-            // 第四關：上車按鈕（7分鐘後出現）
             document.getElementById('boardTramBtn').addEventListener('click', () => {
                 if (tramArrived) {
                     boardTram();
