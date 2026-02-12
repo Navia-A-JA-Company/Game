@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <style>
-        /* 🌑 深淵色調 — 完整保留所有原始變數與樣式 */
+        /* 🌑 完整保留所有原始變數與樣式 — 無任何遺失 */
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
@@ -116,7 +116,70 @@
         @keyframes windowAppear { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
         @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
 
-        /* ========== 標題畫面 — 華麗登場 ========== */
+        /* ========== 主選單 — 全新 ========== */
+        .menu-screen {
+            text-align: center;
+            max-width: 900px;
+            background: rgba(10, 10, 15, 0.85);
+            backdrop-filter: blur(16px);
+            padding: 70px 50px;
+            border-radius: 80px;
+            border: 4px solid rgba(0, 255, 136, 0.6);
+            box-shadow: 0 0 100px rgba(0, 255, 136, 0.4);
+            animation: glow 3s infinite;
+        }
+        .menu-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+            letter-spacing: 12px;
+            text-shadow: 0 0 40px rgba(0,255,136,0.5);
+            animation: pulse 2s infinite;
+        }
+        .menu-sub {
+            font-size: 1.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 50px;
+            letter-spacing: 6px;
+            border-bottom: 2px solid var(--accent-1);
+            padding-bottom: 20px;
+            display: inline-block;
+        }
+        .menu-btn {
+            padding: 24px 90px;
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+            border: none;
+            border-radius: 80px;
+            font-family: 'Noto Sans HK', sans-serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--bg-primary);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            box-shadow: 0 0 50px var(--shadow-glow);
+            border: 3px solid rgba(255,255,255,0.6);
+            letter-spacing: 10px;
+            margin-top: 20px;
+        }
+        .menu-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 0 90px var(--shadow-glow), 0 0 140px var(--shadow-blue);
+        }
+        .menu-btn:active { transform: translateY(2px) scale(0.98); }
+        .menu-credit {
+            margin-top: 60px;
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            border-top: 1px solid rgba(255,255,255,0.2);
+            padding-top: 30px;
+        }
+
+        /* ========== 遊戲標題畫面 (保留作為銜接) ========== */
         .title-screen {
             text-align: center;
             max-width: 800px;
@@ -128,7 +191,6 @@
             box-shadow: 0 0 80px rgba(0, 255, 136, 0.3);
             animation: glow 3s infinite;
         }
-
         .main-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 4rem;
@@ -142,7 +204,6 @@
             text-shadow: 0 0 30px rgba(0,255,136,0.3);
             animation: pulse 2s infinite;
         }
-
         .sub-title {
             font-size: 1.6rem;
             color: var(--text-secondary);
@@ -152,7 +213,6 @@
             padding-bottom: 20px;
             display: inline-block;
         }
-
         .begin-btn {
             padding: 24px 80px;
             background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
@@ -168,15 +228,10 @@
             border: 2px solid rgba(255,255,255,0.5);
             letter-spacing: 8px;
         }
-
-        .begin-btn:hover {
-            transform: translateY(-6px) scale(1.05);
-            box-shadow: 0 0 70px var(--shadow-glow), 0 0 120px var(--shadow-blue);
-        }
-
+        .begin-btn:hover { transform: translateY(-6px) scale(1.05); box-shadow: 0 0 70px var(--shadow-glow), 0 0 120px var(--shadow-blue); }
         .begin-btn:active { transform: translateY(2px) scale(0.98); }
 
-        /* ========== 計時器設定 ========== */
+        /* ========== 計時器設定 — 現在放在登入之前 ========== */
         .timer-setup {
             text-align: center;
             max-width: 450px;
@@ -186,7 +241,6 @@
             border-radius: 40px;
             border: 2px solid rgba(0, 212, 255, 0.3);
         }
-
         .game-title {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
@@ -198,7 +252,6 @@
             margin-bottom: 30px;
             letter-spacing: 4px;
         }
-
         .timer-big {
             font-family: 'Orbitron', sans-serif;
             font-size: 5rem;
@@ -208,9 +261,7 @@
             margin: 40px 0;
             letter-spacing: 8px;
         }
-
         .timer-label { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 20px; }
-
         .start-btn {
             padding: 20px 60px;
             background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
@@ -225,11 +276,10 @@
             box-shadow: 0 8px 30px var(--shadow-glow);
             margin-bottom: 40px;
         }
-
         .start-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 40px var(--shadow-glow); }
         .start-btn:active { transform: translateY(0) scale(0.98); }
 
-        /* ========== 信封指示專用畫面 — 完整保留 ========== */
+        /* ========== 信封指示專用畫面 ========== */
         .envelope-screen {
             text-align: center;
             max-width: 600px;
@@ -240,7 +290,6 @@
             border: 4px solid var(--accent-gold);
             box-shadow: 0 0 60px rgba(255, 215, 0, 0.4);
         }
-
         .envelope-icon { font-size: 6rem; margin-bottom: 20px; animation: bounce 1.5s infinite; }
         .envelope-title {
             font-family: 'Orbitron', sans-serif;
@@ -377,7 +426,7 @@
         .time-modifier.add { background: linear-gradient(135deg, var(--accent-1), #00cc6a); color: var(--bg-primary); }
         .time-modifier.subtract { background: linear-gradient(135deg, var(--danger), #ff6b81); color: white; }
 
-        /* ========== 旋轉撥號電話 — 完整保留 ========== */
+        /* ========== 旋轉撥號電話 ========== */
         .rotary-phone-container {
             background: linear-gradient(145deg, rgba(26,74,66,0.9), rgba(15,47,40,0.95));
             backdrop-filter: blur(8px);
@@ -458,7 +507,18 @@
             border-radius: 40px;
             border: 2px solid rgba(0,212,255,0.3);
         }
-        .level-prompt { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); line-height: 1.8; padding: 25px; background: var(--bg-card); border-radius: 20px; border: 2px solid var(--accent-2); margin-bottom: 35px; }
+        .level-prompt {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.8;
+            padding: 25px;
+            background: var(--bg-card);
+            border-radius: 20px;
+            border: 2px solid var(--accent-2);
+            margin-bottom: 35px;
+            white-space: pre-line;
+        }
         .password-display { display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
         .password-slot { width: 65px; height: 85px; background: var(--bg-primary); border: 3px solid var(--accent-2); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--text-primary); transition: all 0.2s ease; }
         .password-slot.active { border-color: var(--accent-1); box-shadow: 0 0 20px var(--shadow-glow); }
@@ -533,8 +593,8 @@
         .success-title { font-size: 1.8rem; font-weight: 900; color: var(--accent-1); margin-bottom: 15px; line-height: 1.6; }
         .success-subtitle { font-size: 1rem; color: var(--text-secondary); }
 
-        /* ========== 響應式 ========== */
         @media (max-width: 480px) {
+            .menu-title { font-size: 2.8rem; } .menu-btn { padding: 18px 50px; font-size: 1.5rem; }
             .main-title { font-size: 2.5rem; } .sub-title { font-size: 1.2rem; } .begin-btn { padding: 18px 50px; font-size: 1.5rem; }
             .timer-big { font-size: 3.5rem; } .envelope-title { font-size: 1.8rem; } .envelope-message { font-size: 1.1rem; }
             .rotary-phone-container { padding: 20px; max-width: 340px; } .rotary-dial { width: 240px; height: 240px; } .dial-plate { width: 210px; height: 210px; } .dial-hole { width: 30px; height: 30px; } .dial-number { font-size: 0.95rem; }
@@ -550,29 +610,43 @@
     </div>
     <div class="time-modifier" id="timeModifier"></div>
 
-    <!-- ========== 畫面 1：遊戲標題（開場）========= -->
-    <div class="screen active" id="titleScreen">
+    <!-- ========== 畫面 1：主選單 (全新) ========== -->
+    <div class="screen active" id="menuScreen">
+        <div class="menu-screen">
+            <div class="menu-title">迷途顯影</div>
+            <div class="menu-sub">Lost in Shadows</div>
+            <button class="menu-btn" id="menuStartBtn">開始遊戲</button>
+            <div class="menu-credit">
+                ⚠️ 請先仔細閱讀說明書才打開任何信封<br>
+                共五個信封，順序挑戰
+            </div>
+        </div>
+    </div>
+
+    <!-- ========== 畫面 2：遊戲標題 (保留過渡) ========== -->
+    <div class="screen" id="titleScreen">
         <div class="title-screen">
             <div class="main-title">迷途顯影</div>
             <div class="sub-title">Lost in Shadows</div>
-            <button class="begin-btn" id="beginGameBtn">開始旅程</button>
+            <button class="begin-btn" id="beginGameBtn">繼續旅程</button>
             <div style="margin-top: 40px; color: var(--text-secondary); font-size: 1.1rem; letter-spacing: 2px;">
                 ⚠️ 請先仔細閱讀說明書才打開任何信封
             </div>
         </div>
     </div>
 
-    <!-- ========== 畫面 2：計時器設定 ========== -->
+    <!-- ========== 畫面 3：計時器設定 — 現在放在登入之前 ========== -->
     <div class="screen" id="timerSetupScreen">
         <div class="timer-setup">
-            <h2 class="game-title">準備開始</h2>
-            <p class="timer-label">倒計時</p>
+            <h2 class="game-title">倒數計時</h2>
+            <p class="timer-label">限時 45 分鐘</p>
             <div class="timer-big">45:00</div>
             <button class="start-btn" id="startTimerBtn">開始計時</button>
+            <p style="color: var(--text-secondary); font-size: 0.9rem;">計時開始後將進入登入畫面</p>
         </div>
     </div>
 
-    <!-- ========== 畫面 3：信封 #1 指示（登入前）========= -->
+    <!-- ========== 畫面 4：信封 #1 指示（登入前）========= -->
     <div class="screen" id="envelope1Screen">
         <div class="envelope-screen">
             <div class="envelope-icon">📩</div>
@@ -589,7 +663,7 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 4：Windows 95 登入 ========== -->
+    <!-- ========== 畫面 5：Windows 95 登入 ========== -->
     <div class="screen" id="win95LoginScreen">
         <div class="win95-desktop">
             <div class="crt-overlay"></div>
@@ -666,7 +740,7 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 5：旋轉撥號電話 · 信封 #2 ========== -->
+    <!-- ========== 畫面 6：旋轉撥號電話 · 信封 #2 ========== -->
     <div class="screen" id="phoneScreen">
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
@@ -691,10 +765,10 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 6：四位數字密碼 · 鐵閘 · 信封 #3 ========== -->
+    <!-- ========== 畫面 7：四位數字密碼 · 鐵閘 · 信封 #3 ========== -->
     <div class="screen" id="level2Screen">
         <div class="password-screen">
-            <div class="level-prompt">🔒 信封 #3 · 破解鐵閘密碼鎖<br>四位數字密碼</div>
+            <div class="level-prompt">📩 請打開信封 #3<br>🔒 破解鐵閘密碼鎖 · 四位數字</div>
             <div class="password-display" id="password2Display">
                 <div class="password-slot active">_</div><div class="password-slot">_</div><div class="password-slot">_</div><div class="password-slot">_</div>
             </div>
@@ -713,11 +787,11 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 7：電車等候 · 信封 #4 ========== -->
+    <!-- ========== 畫面 8：電車等候 · 信封 #4 ========== -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
-                <div class="tram-header">🚋 信封 #4 · 電車站等候</div>
+                <div class="tram-header">🚋 請打開信封 #4 · 電車站等候</div>
                 <div class="tram-timer" id="tramWaitTimer">07:00</div>
                 <div class="tram-message" id="tramMessage">仲有少少時間，同朋友傾吓計啦～</div>
                 <div class="tram-question-area">
@@ -732,10 +806,10 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 8：兩位數字 · 電車站編號 · 信封 #5 ========== -->
+    <!-- ========== 畫面 9：兩位數字 · 電車站編號 · 信封 #5 ========== -->
     <div class="screen" id="level3Screen">
         <div class="password-screen">
-            <div class="level-prompt">🚃 信封 #5 · 電車站號碼<br>兩位數字 前往中環</div>
+            <div class="level-prompt">📩 請打開信封 #5<br>🚃 電車站號碼 · 兩位數字 前往中環</div>
             <div class="password-display" id="password3Display">
                 <div class="password-slot active">_</div><div class="password-slot">_</div>
             </div>
@@ -751,7 +825,7 @@
         </div>
     </div>
 
-    <!-- ========== 畫面 9：終點 · 勝利 ========== -->
+    <!-- ========== 畫面 10：終點 · 勝利 ========== -->
     <div class="screen" id="finalScreen">
         <div class="victory-screen">
             <div class="trophy-icon">🏆</div>
@@ -1072,23 +1146,28 @@
             initRotaryDial(); updateTimerDisplay(); window.addEventListener('resize', initRotaryDial);
             startAllTipTimers();
 
-            // 1. 標題 → 計時器
+            // 1. 主選單 → 標題畫面 (保留傳統)
+            document.getElementById('menuStartBtn').addEventListener('click', function() {
+                showScreen('titleScreen');
+            });
+
+            // 2. 標題 → 計時器設定
             document.getElementById('beginGameBtn').addEventListener('click', function() {
                 showScreen('timerSetupScreen');
             });
 
-            // 2. 開始計時 → 信封 #1 指示
+            // 3. 開始計時 → 信封 #1 指示 (計時器先啟動)
             document.getElementById('startTimerBtn').addEventListener('click', function() {
                 startTimer();
                 showScreen('envelope1Screen');
             });
 
-            // 3. 信封 #1 繼續 → Windows 95 登入
+            // 4. 信封 #1 繼續 → Windows 95 登入
             document.getElementById('envelope1ContinueBtn').addEventListener('click', function() {
                 showScreen('win95LoginScreen');
             });
 
-            // 4. Windows 95 登入成功 → 信封 #2 (電話)
+            // 5. Windows 95 登入成功 → 信封 #2 (電話)
             document.getElementById('win95OkBtn').addEventListener('click', function() {
                 getAudioContext();
                 playWin95StartupSound();
