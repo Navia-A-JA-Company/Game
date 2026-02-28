@@ -343,7 +343,7 @@
             <div class="win95-taskbar">
                 <button class="win95-start-btn"><span class="start-flag">🪟</span><span data-i18n="start">Start</span></button>
                 <div class="win95-taskbar-spacer"></div>
-                <div class="win95-taskbar-tray"><span>🔊</span><span id="win95Clock">--:--</span></div>
+                <div class="win95-taskbar-tray"><span>🔊</span><span id="win95Clock">14:00</span></div>
             </div>
         </div>
     </div>
@@ -1091,12 +1091,33 @@
                 playErrorSound(); 
             }
         }
+        
+        // ========== 修復的 Windows 95 時鐘函數 ==========
+        // 設定起始時間為 14:00 並持續運行
+        let win95StartTime = null;
+        let win95CurrentTime = null;
+        
         function updateWin95Clock() {
-            let now = new Date();
-            let h = String(now.getHours()).padStart(2,'0');
-            let m = String(now.getMinutes()).padStart(2,'0');
             let el = document.getElementById('win95Clock');
-            if (el) el.textContent = h + ':' + m;
+            if (!el) return;
+            
+            // 初始化起始時間為 14:00
+            if (!win95StartTime) {
+                win95StartTime = new Date();
+                win95StartTime.setHours(14, 0, 0, 0); // 設定為 14:00:00
+                win95CurrentTime = new Date(win95StartTime);
+            } else {
+                // 計算從開始到現在經過的時間
+                let now = new Date();
+                let elapsedMs = now - win95StartTime;
+                
+                // 將經過的時間加到 14:00
+                win95CurrentTime = new Date(win95StartTime.getTime() + elapsedMs);
+            }
+            
+            let h = String(win95CurrentTime.getHours()).padStart(2, '0');
+            let m = String(win95CurrentTime.getMinutes()).padStart(2, '0');
+            el.textContent = h + ':' + m;
         }
 
         // ========== DOM 初始化 ==========
@@ -1117,9 +1138,9 @@
             // 計時器顯示
             updateTimerDisplay();
             
-            // Win95時鐘
+            // Win95時鐘 - 立即顯示 14:00 並每秒更新
             updateWin95Clock();
-            setInterval(updateWin95Clock, 30000);
+            setInterval(updateWin95Clock, 1000); // 每秒更新一次
 
             // ===== 所有按鈕事件監聽 =====
             document.getElementById('menuStartBtn').addEventListener('click', function() {
