@@ -1147,8 +1147,15 @@
             // 計時器顯示
             updateTimerDisplay();
             
-            // Windows 95 時鐘 - 立即顯示並每秒更新
-            updateWin95Clock();
+            // 確保 Windows 95 時鐘立即顯示 14:00
+            const clockElement = document.getElementById('win95Clock');
+            if (clockElement) {
+                clockElement.textContent = '14:00';
+            }
+            
+            // 初始化時鐘並每秒更新
+            win95StartTime = new Date();
+            win95StartTime.setHours(14, 0, 0, 0);
             setInterval(updateWin95Clock, 1000);
 
             // ===== 所有按鈕事件監聽 =====
