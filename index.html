@@ -888,10 +888,24 @@
         }
 
         // ========== 畫面切換 ==========
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
+        // ========== 畫面切換 ==========
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+    
+    // 如果切換到 Windows 95 登入畫面，重設時鐘到 14:00
+    if (screenId === 'win95LoginScreen') {
+        // 重設起始時間為現在，但時間設為 14:00
+        win95StartTime = new Date();
+        win95StartTime.setHours(14, 0, 0, 0);
+        
+        // 立即更新顯示
+        const clockElement = document.getElementById('win95Clock');
+        if (clockElement) {
+            clockElement.textContent = '14:00';
         }
+    }
+}
 
         // ========== 成功提示 ==========
         function showSuccess(icon, title, subtitle, callback, delay=3000) {
