@@ -370,6 +370,23 @@
             padding: 4px 10px;
             border-radius: 20px;
         }
+        .hint-prev-btn {
+            background: var(--win95-gray);
+            border: 2px outset var(--win95-light);
+            padding: 8px 16px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        .hint-prev-btn:hover {
+            background: var(--win95-dark);
+            color: white;
+        }
+        .hint-nav {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
 
         /* 反思問題浮層樣式 */
         .reflection-overlay {
@@ -584,6 +601,13 @@
             <div class="hint-content">
                 <div class="hint-level-indicator" id="hintLevelIndicator">
                     第 <span id="currentLevel">1</span> 關
+                </div>
+                
+                <!-- 提示導航按鈕 -->
+                <div class="hint-nav" id="hintNav">
+                    <button class="hint-prev-btn" id="prevHintBtn" disabled>◀ 上一個</button>
+                    <span id="hintPosition">0/0</span>
+                    <button class="hint-prev-btn" id="nextHintBtn" disabled>下一個 ▶</button>
                 </div>
                 
                 <!-- 提示顯示區域 (只顯示一個提示) -->
@@ -1205,12 +1229,13 @@
 
         // 提示系統變數
         let hintProgress = {
-            level1: { current: 0, total: 3, hints: ["每張圖片上的地方視乎與那些句子有關聯！", "這些地方現在變成什麼樣？", "數字與字母對對碰！"] },
-            level2: { unlocked: false, current: 0, total: 3, hints: ["若想找到誰是熟客，記得留意說明書！", "〥 = 5", "〨 = 8"] },
-            level3: { current: 0, total: 2, hints: ["通花鐵閘的花紋通常是有規律的", "花紋的數目便是密碼"] },
-            level4: { current: 0, total: 4, hints: ["可以留意一下劇情卡那兩行突兀的地點名稱", "在那兩份報紙及大廈公告可以找到兩個地點的名稱", "電車編號與報紙及大廈公告的內容無關！", "把字眼連起來，數字便自然出現了！"] }
+            level1: { current: 0, total: 3, hints: ["每張圖片上的地方視乎與那些句子有關聯！", "這些地方現在變成什麼樣？", "數字與字母對對碰！"], currentIndex: 0 },
+            level2: { unlocked: false, current: 0, total: 3, hints: ["若想找到誰是熟客，記得留意說明書！", "〥 = 5", "〨 = 8"], currentIndex: 0 },
+            level3: { current: 0, total: 2, hints: ["通花鐵閘的花紋通常是有規律的", "花紋的數目便是密碼"], currentIndex: 0 },
+            level4: { current: 0, total: 4, hints: ["可以留意一下劇情卡那兩行突兀的地點名稱", "在那兩份報紙及大廈公告可以找到兩個地點的名稱", "電車編號與報紙及大廈公告的內容無關！", "把字眼連起來，數字便自然出現了！"], currentIndex: 0 }
         };
         let currentLevel = 1;
+        let hintViewIndex = 0; // 當前查看的提示索引 (用於翻閱)
 
         // ========== 語言切換函數 ==========
         function setLanguage(lang) {
@@ -1347,6 +1372,7 @@
             updateLevelIndicator();
             updateHintDisplay();
             updateHintCounter();
+            updateHintNavigation();
         }
         
         function closeHintOverlay() {
@@ -1364,6 +1390,56 @@
             }
         }
         
+        function updateHintNavigation() {
+            let progress = hintProgress[`level${currentLevel}`];
+            let prevBtn = document.getElementById('prevHintBtn');
+            let nextBtn = document.getElementById('nextHintBtn');
+            let positionSpan = document.getElementById('hintPosition');
+            
+            if (!progress) return;
+            
+            if (progress.current === 0) {
+                // 沒有提示，隱藏導航
+                document.getElementById('hintNav').classList.add('hidden');
+                return;
+            } else {
+                document.getElementById('hintNav').classList.remove('hidden');
+                positionSpan.textContent = `${hintViewIndex + 1}/${progress.current}`;
+                
+                // 啟用/禁用上一個按鈕
+                if (hintViewIndex <= 0) {
+                    prevBtn.disabled = true;
+                } else {
+                    prevBtn.disabled = false;
+                }
+                
+                // 啟用/禁用下一個按鈕
+                if (hintViewIndex >= progress.current - 1) {
+                    nextBtn.disabled = true;
+                } else {
+                    nextBtn.disabled = false;
+                }
+            }
+        }
+        
+        function showPreviousHint() {
+            let progress = hintProgress[`level${currentLevel}`];
+            if (hintViewIndex > 0) {
+                hintViewIndex--;
+                updateHintDisplay();
+                updateHintNavigation();
+            }
+        }
+        
+        function showNextHint() {
+            let progress = hintProgress[`level${currentLevel}`];
+            if (hintViewIndex < progress.current - 1) {
+                hintViewIndex++;
+                updateHintDisplay();
+                updateHintNavigation();
+            }
+        }
+        
         function updateHintDisplay() {
             let progress = hintProgress[`level${currentLevel}`];
             let display = document.getElementById('hintDisplay');
@@ -1377,6 +1453,7 @@
                 display.classList.add('hidden');
                 questionArea.classList.remove('hidden');
                 getHintBtn.disabled = true;
+                document.getElementById('hintNav').classList.add('hidden');
             } else {
                 display.classList.remove('hidden');
                 questionArea.classList.add('hidden');
@@ -1385,8 +1462,14 @@
                 // 顯示當前提示
                 if (progress.current === 0) {
                     display.innerHTML = '點擊下方按鈕獲取提示 (-3分鐘)';
+                    document.getElementById('hintNav').classList.add('hidden');
                 } else {
-                    display.innerHTML = `<strong>提示 ${progress.current}/${progress.total}:</strong><br>${progress.hints[progress.current - 1]}`;
+                    // 確保 hintViewIndex 在有效範圍內
+                    if (hintViewIndex >= progress.current) {
+                        hintViewIndex = progress.current - 1;
+                    }
+                    display.innerHTML = `<strong>提示 ${hintViewIndex + 1}/${progress.current}:</strong><br>${progress.hints[hintViewIndex]}`;
+                    updateHintNavigation();
                 }
             }
         }
@@ -1405,10 +1488,12 @@
             
             // 解鎖下一個提示
             progress.current++;
+            hintViewIndex = progress.current - 1; // 自動跳轉到最新提示
             
             // 更新顯示
             updateHintDisplay();
             updateHintCounter();
+            updateHintNavigation();
             
             // 顯示成功訊息
             showModal(`提示 ${progress.current} 已解鎖！`, '🔓 提示解鎖', '💡');
@@ -1475,6 +1560,9 @@
             } else if (screenId === 'level3Screen') {
                 currentLevel = 5;
             }
+            
+            // 重置提示查看索引
+            hintViewIndex = 0;
             
             // 控制提示按鈕顯示 - 只在菜單頁和第4關隱藏
             const hintButton = document.getElementById('hintButton');
@@ -1793,6 +1881,8 @@
             document.getElementById('hintClose').addEventListener('click', closeHintOverlay);
             document.getElementById('getHintBtn').addEventListener('click', getNextHint);
             document.getElementById('huaMaSubmit').addEventListener('click', checkHuaMaAnswer);
+            document.getElementById('prevHintBtn').addEventListener('click', showPreviousHint);
+            document.getElementById('nextHintBtn').addEventListener('click', showNextHint);
 
             // ===== 反思問題事件監聽 =====
             document.getElementById('reflectionClose').addEventListener('click', closeReflection);
@@ -1814,7 +1904,8 @@
 
             document.getElementById('win95OkBtn').addEventListener('click', function() {
                 let enteredPass = document.getElementById('win95pass').value;
-                if (enteredPass === 'VRDU') {
+                // 轉換為大寫再比較，接受大小寫
+                if (enteredPass.toUpperCase() === 'VRDU') {
                     getAudioContext();
                     playWin95StartupSound();
                     showSuccess('🔑', i18nStrings[currentLang]['success'] || '登入成功！', 
