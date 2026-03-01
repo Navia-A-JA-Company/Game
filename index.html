@@ -84,19 +84,36 @@
             z-index: -1;
             pointer-events: none;
         }
-        /* ----- 語言選擇器 ----- */
-        .lang-selector-wrapper {
+        /* ----- 頂部控制欄 ----- */
+        .top-controls {
             position: fixed;
             top: 20px;
-            left: 20px;
-            z-index: 10000;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+        .top-controls > * {
+            pointer-events: auto;
+        }
+        .left-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        /* ----- 語言選擇器 ----- */
+        .lang-selector-wrapper {
             background: rgba(0,0,0,0.9);
             backdrop-filter: blur(12px);
             padding: 8px 16px;
             border-radius: 40px;
             border: 2px solid var(--accent-1);
             box-shadow: 0 0 25px var(--shadow-glow);
-            pointer-events: auto;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -139,15 +156,10 @@
 
         /* ----- 固定計時器 ----- */
         .timer-fixed {
-            position: fixed;
-            top: 20px;
-            right: 20px;
             background: var(--bg-card);
             padding: 12px 28px;
             border-radius: 50px;
             border: 3px solid var(--accent-2);
-            z-index: 1000;
-            display: block;
             box-shadow: 0 0 30px var(--shadow-blue);
             backdrop-filter: blur(8px);
         }
@@ -162,21 +174,17 @@
         .timer-fixed.warning .timer-display { color: var(--accent-gold); }
         .timer-fixed.danger .timer-display { color: var(--danger); animation: pulse 1s infinite; }
 
-        /* ----- 提示按鈕樣式 ----- */
+        /* ----- 提示按鈕樣式 (頂部) ----- */
         .hint-button {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
             background: linear-gradient(135deg, #ffd700, #ffb347);
             color: var(--bg-primary);
-            padding: 15px 25px;
+            padding: 12px 25px;
             border-radius: 50px;
             border: 3px solid white;
             font-family: 'Noto Sans HK', sans-serif;
             font-weight: 900;
             font-size: 1.2rem;
             cursor: pointer;
-            z-index: 1000;
             box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
             transition: all 0.3s ease;
             display: flex;
@@ -555,10 +563,13 @@
         @media (max-width: 480px) {
             .menu-title { font-size: 2.8rem; } 
             .menu-btn { padding: 18px 50px; font-size: 1.5rem; }
-            .lang-selector-wrapper { top: 10px; left: 10px; padding: 5px 10px; }
+            .top-controls { flex-direction: column; align-items: flex-end; gap: 10px; }
+            .left-controls { flex-direction: column; align-items: flex-end; }
+            .lang-selector-wrapper { padding: 5px 10px; }
             .lang-dropdown { padding: 5px 20px 5px 8px; font-size: 0.75rem; background-position: right 5px center; }
-            .timer-fixed { top: 10px; right: 10px; padding: 6px 15px; }
+            .timer-fixed { padding: 6px 15px; }
             .timer-display { font-size: 1.2rem; }
+            .hint-button { padding: 8px 15px; font-size: 1rem; }
             .rotary-dial { width: 240px; height: 240px; }
             .dial-plate { width: 210px; height: 210px; }
             .dial-hole { width: 30px; height: 30px; }
@@ -566,26 +577,31 @@
     </style>
 </head>
 <body>
-    <!-- 語言選擇器 -->
-    <div class="lang-selector-wrapper">
-        <label for="langDropdown" style="color:var(--accent-1);">🌐</label>
-        <select class="lang-dropdown" id="langDropdown">
-            <option value="zh-hk" selected>繁體中文</option>
-            <option value="en">English</option>
-            <option value="zh-cn">简体中文</option>
-        </select>
-    </div>
-
-    <!-- 固定計時器 -->
-    <div class="timer-fixed" id="timerFixed">
-        <div class="timer-display" id="timerDisplay">45:00</div>
-    </div>
-
-    <!-- 提示按鈕 -->
-    <div class="hint-button hidden" id="hintButton">
-        <span>💡</span>
-        <span data-i18n="hintButton">如需要提示按此</span>
-        <span class="hint-penalty">-3分鐘</span>
+    <!-- 頂部控制欄 - 包含語言選擇器、提示按鈕和計時器 -->
+    <div class="top-controls">
+        <div class="left-controls">
+            <!-- 語言選擇器 -->
+            <div class="lang-selector-wrapper">
+                <label for="langDropdown" style="color:var(--accent-1);">🌐</label>
+                <select class="lang-dropdown" id="langDropdown">
+                    <option value="zh-hk" selected>繁體中文</option>
+                    <option value="en">English</option>
+                    <option value="zh-cn">简体中文</option>
+                </select>
+            </div>
+            
+            <!-- 提示按鈕 (移到頂部) -->
+            <div class="hint-button hidden" id="hintButton">
+                <span>💡</span>
+                <span data-i18n="hintButton">如需要提示按此</span>
+                <span class="hint-penalty">-3分鐘</span>
+            </div>
+        </div>
+        
+        <!-- 固定計時器 -->
+        <div class="timer-fixed" id="timerFixed">
+            <div class="timer-display" id="timerDisplay">45:00</div>
+        </div>
     </div>
 
     <!-- 提示浮層 (Windows 95 風格) -->
