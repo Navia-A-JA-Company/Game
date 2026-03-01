@@ -162,6 +162,209 @@
         .timer-fixed.warning .timer-display { color: var(--accent-gold); }
         .timer-fixed.danger .timer-display { color: var(--danger); animation: pulse 1s infinite; }
 
+        /* ----- 提示按鈕樣式 ----- */
+        .hint-button {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #ffd700, #ffb347);
+            color: var(--bg-primary);
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 3px solid white;
+            font-family: 'Noto Sans HK', sans-serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 1px;
+        }
+        .hint-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.8);
+        }
+        .hint-button:active {
+            transform: scale(0.95);
+        }
+        .hint-penalty {
+            font-size: 0.8rem;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            padding: 3px 8px;
+            border-radius: 30px;
+            margin-left: 5px;
+        }
+
+        /* ----- 提示浮層 (Windows 95 風格) ----- */
+        .hint-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(4px);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+        }
+        .hint-overlay.show {
+            display: flex;
+        }
+        .hint-window {
+            width: 90%;
+            max-width: 500px;
+            background: var(--win95-gray);
+            border: 4px outset var(--win95-light);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+            animation: windowAppear 0.3s ease;
+        }
+        .hint-titlebar {
+            background: linear-gradient(90deg, #000080, #1084d0);
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        .hint-titlebar-icon {
+            margin-right: 8px;
+        }
+        .hint-close {
+            background: var(--win95-gray);
+            border: 2px outset var(--win95-light);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            color: black;
+            font-size: 1.2rem;
+        }
+        .hint-close:hover {
+            background: var(--win95-dark);
+        }
+        .hint-content {
+            padding: 25px;
+            background: var(--win95-light);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+        .hint-level-tabs {
+            display: flex;
+            gap: 5px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--win95-dark);
+            padding-bottom: 5px;
+        }
+        .hint-tab {
+            padding: 8px 16px;
+            background: var(--win95-gray);
+            border: 2px outset var(--win95-light);
+            cursor: pointer;
+            font-weight: bold;
+            color: black;
+        }
+        .hint-tab.active {
+            background: var(--win95-dark);
+            border: 2px inset var(--win95-light);
+            color: white;
+        }
+        .hint-list {
+            flex: 1;
+            margin-bottom: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+            background: white;
+            padding: 15px;
+            border: 2px inset var(--win95-light);
+        }
+        .hint-item {
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f0f0f0;
+            border: 1px solid var(--win95-dark);
+            border-radius: 4px;
+            color: black;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+        .hint-item:last-child {
+            margin-bottom: 0;
+        }
+        .hint-item.locked {
+            opacity: 0.6;
+            filter: blur(2px);
+            pointer-events: none;
+            user-select: none;
+        }
+        .hint-question {
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #e6f2f9;
+            border: 2px solid var(--windows-blue);
+            border-radius: 4px;
+            color: black;
+        }
+        .hint-question p {
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .hint-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .hint-option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: white;
+            border: 1px solid var(--win95-dark);
+            cursor: pointer;
+        }
+        .hint-option:hover {
+            background: var(--win95-gray);
+        }
+        .hint-option input[type="radio"] {
+            width: 16px;
+            height: 16px;
+        }
+        .hint-submit {
+            padding: 10px 20px;
+            background: var(--windows-blue);
+            border: 2px outset var(--win95-light);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+        }
+        .hint-submit:hover {
+            background: var(--windows-dark);
+        }
+        .hint-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 10px;
+            color: black;
+            font-size: 0.9rem;
+        }
+        .hint-warning {
+            color: #8B0000;
+            font-weight: bold;
+        }
+
         /* 其餘原始樣式 */
         .screen { display: none; min-height: 100vh; padding: 20px; animation: fadeIn 0.5s ease; position: relative; z-index: 1; }
         .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -259,6 +462,110 @@
     <!-- 固定計時器 -->
     <div class="timer-fixed" id="timerFixed">
         <div class="timer-display" id="timerDisplay">45:00</div>
+    </div>
+
+    <!-- 提示按鈕 -->
+    <div class="hint-button" id="hintButton">
+        <span>💡</span>
+        <span data-i18n="hintButton">如需要提示按此</span>
+        <span class="hint-penalty">-3分鐘</span>
+    </div>
+
+    <!-- 提示浮層 (Windows 95 風格) -->
+    <div class="hint-overlay" id="hintOverlay">
+        <div class="hint-window">
+            <div class="hint-titlebar">
+                <div>
+                    <span class="hint-titlebar-icon">💡</span>
+                    <span data-i18n="hintTitle">遊戲提示</span>
+                </div>
+                <div class="hint-close" id="hintClose">✕</div>
+            </div>
+            <div class="hint-content">
+                <div class="hint-level-tabs">
+                    <button class="hint-tab active" data-level="1" id="hintTab1">第1關</button>
+                    <button class="hint-tab" data-level="2" id="hintTab2">第2關</button>
+                    <button class="hint-tab" data-level="3" id="hintTab3">第3關</button>
+                    <button class="hint-tab" data-level="4" id="hintTab4">最後關</button>
+                </div>
+                
+                <!-- 第1關提示 (無條件) -->
+                <div class="hint-list" id="hintList1">
+                    <div class="hint-item">
+                        <strong>提示一：</strong>每張圖片上的地方視乎與那些句子有關聯！
+                    </div>
+                    <div class="hint-item">
+                        <strong>提示二：</strong>這些地方現在變成什麼樣？
+                    </div>
+                    <div class="hint-item">
+                        <strong>提示三：</strong>數字與字母對對碰！
+                    </div>
+                </div>
+
+                <!-- 第2關提示 (需要回答問題) -->
+                <div class="hint-list hidden" id="hintList2">
+                    <div class="hint-question" id="huaMaQuestion">
+                        <p>📌 <span data-i18n="huaMaQuestion">花碼最常使用場景是什麼？</span></p>
+                        <div class="hint-options" id="huaMaOptions">
+                            <label class="hint-option">
+                                <input type="radio" name="huaMa" value="A"> A. 巴士編號
+                            </label>
+                            <label class="hint-option">
+                                <input type="radio" name="huaMa" value="B"> B. 六合彩號碼
+                            </label>
+                            <label class="hint-option">
+                                <input type="radio" name="huaMa" value="C"> C. 茶餐廳食品標價
+                            </label>
+                            <label class="hint-option">
+                                <input type="radio" name="huaMa" value="D"> D. 以上皆是
+                            </label>
+                        </div>
+                        <button class="hint-submit" id="huaMaSubmit" data-i18n="submitAnswer">提交答案</button>
+                    </div>
+                    <div class="hint-item locked" id="hint2_1">
+                        <strong>提示一：</strong>若想找到誰是熟客，記得留意說明書！
+                    </div>
+                    <div class="hint-item locked" id="hint2_2">
+                        <strong>提示二：</strong>〥 = 5
+                    </div>
+                    <div class="hint-item locked" id="hint2_3">
+                        <strong>提示三：</strong>〨 = 8
+                    </div>
+                </div>
+
+                <!-- 第3關提示 -->
+                <div class="hint-list hidden" id="hintList3">
+                    <div class="hint-item">
+                        <strong>提示一：</strong>通花鐵閘的花紋通常是有規律的
+                        <div style="margin-top:8px; font-size:0.8rem; color:#666;">(使用一個提示會扣2分鐘)</div>
+                    </div>
+                    <div class="hint-item">
+                        <strong>提示二：</strong>花紋的數目便是密碼
+                    </div>
+                </div>
+
+                <!-- 最後關提示 -->
+                <div class="hint-list hidden" id="hintList4">
+                    <div class="hint-item">
+                        <strong>提示一：</strong>可以留意一下劇情卡那兩行突兀的地點名稱
+                    </div>
+                    <div class="hint-item">
+                        <strong>提示二：</strong>在那兩份報紙及大廈公告可以找到兩個地點的名稱
+                    </div>
+                    <div class="hint-item">
+                        <strong>提示三：</strong>電車編號與報紙及大廈公告的內容無關！
+                    </div>
+                    <div class="hint-item">
+                        <strong>提示四：</strong>把字眼連起來，數字便自然出現了！
+                    </div>
+                </div>
+
+                <div class="hint-footer">
+                    <span class="hint-warning">⚠️ <span data-i18n="hintWarning">打錯一個電話會 -2分鐘！！</span></span>
+                    <span id="hintPenaltyDisplay">-3分鐘/提示</span>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 主選單 -->
@@ -600,7 +907,17 @@
                 'passwordError': '密碼錯誤，請重試！',
                 'enterFull': '請輸入完整密碼',
                 'enterFullNumber': '請輸入完整號碼',
-                'tramArrived': '🚃 電車終於到站！快啲上車啦～'
+                'tramArrived': '🚃 電車終於到站！快啲上車啦～',
+                'hintButton': '如需要提示按此',
+                'hintTitle': '遊戲提示',
+                'huaMaQuestion': '花碼最常使用場景是什麼？',
+                'submitAnswer': '提交答案',
+                'hintWarning': '打錯一個電話會 -2分鐘！！',
+                'correctAnswer': '✅ 答案正確！',
+                'wrongAnswer': '❌ 答案錯誤，再試試看',
+                'hintUnlocked': '🔓 提示已解鎖！',
+                'timePenalty': '⏰ 時間已扣減 3 分鐘',
+                'huaMaAnswer': 'C'
             },
             'en': {
                 'title': 'Lost in Hong Kong · Escape Room',
@@ -680,7 +997,17 @@
                 'passwordError': 'Incorrect password, please try again!',
                 'enterFull': 'Please enter full password',
                 'enterFullNumber': 'Please enter full number',
-                'tramArrived': '🚃 Tram has finally arrived! Board now!'
+                'tramArrived': '🚃 Tram has finally arrived! Board now!',
+                'hintButton': 'Need a hint? Click here',
+                'hintTitle': 'Game Hints',
+                'huaMaQuestion': 'What is the most common use of Fahua?',
+                'submitAnswer': 'Submit Answer',
+                'hintWarning': 'Wrong call will cost -2 minutes!!',
+                'correctAnswer': '✅ Correct!',
+                'wrongAnswer': '❌ Wrong, try again',
+                'hintUnlocked': '🔓 Hint unlocked!',
+                'timePenalty': '⏰ 3 minutes deducted',
+                'huaMaAnswer': 'C'
             },
             'zh-cn': {
                 'title': '迷途显影 · 密室逃脱',
@@ -760,7 +1087,17 @@
                 'passwordError': '密码错误，请重试！',
                 'enterFull': '请输入完整密码',
                 'enterFullNumber': '请输入完整号码',
-                'tramArrived': '🚃 电车终于到站！快上车吧～'
+                'tramArrived': '🚃 电车终于到站！快上车吧～',
+                'hintButton': '需要提示点击这里',
+                'hintTitle': '游戏提示',
+                'huaMaQuestion': '花码最常使用场景是什么？',
+                'submitAnswer': '提交答案',
+                'hintWarning': '打错一个电话会 -2分钟！！',
+                'correctAnswer': '✅ 答案正确！',
+                'wrongAnswer': '❌ 答案错误，再试试看',
+                'hintUnlocked': '🔓 提示已解锁！',
+                'timePenalty': '⏰ 时间已扣减 3 分钟',
+                'huaMaAnswer': 'C'
             }
         };
 
@@ -782,6 +1119,15 @@
         // Windows 95 時鐘變數
         let win95StartTime = null;
         let win95ClockInterval = null;
+
+        // 提示系統變數
+        let hintUnlocked = {
+            level1: true,
+            level2: false,
+            level3: false,
+            level4: false
+        };
+        let currentHintLevel = 1;
 
         // ========== 語言切換函數 ==========
         function setLanguage(lang) {
@@ -887,6 +1233,117 @@
             timerRunning = true;
             timerInterval = setInterval(()=>{ if(totalSeconds>0) totalSeconds--; updateTimerDisplay(); },1000);
         }
+        
+        // 扣減時間函數
+        function deductTime(minutes) {
+            totalSeconds = Math.max(0, totalSeconds - (minutes * 60));
+            updateTimerDisplay();
+            playErrorSound();
+            
+            // 顯示扣時間訊息
+            let msg = i18nStrings[currentLang]['timePenalty'] || `⏰ 時間已扣減 ${minutes} 分鐘`;
+            showModal(msg, '⏰ 時間處罰', '⏰');
+        }
+
+        // ========== 提示系統函數 ==========
+        function showHintOverlay() {
+            document.getElementById('hintOverlay').classList.add('show');
+            updateHintTabs();
+        }
+        
+        function closeHintOverlay() {
+            document.getElementById('hintOverlay').classList.remove('show');
+        }
+        
+        function switchHintLevel(level) {
+            currentHintLevel = level;
+            
+            // 更新 tab 樣式
+            document.querySelectorAll('.hint-tab').forEach((tab, index) => {
+                if (index + 1 === level) {
+                    tab.classList.add('active');
+                } else {
+                    tab.classList.remove('active');
+                }
+            });
+            
+            // 顯示對應的提示列表
+            document.querySelectorAll('.hint-list').forEach((list, index) => {
+                if (index + 1 === level) {
+                    list.classList.remove('hidden');
+                } else {
+                    list.classList.add('hidden');
+                }
+            });
+            
+            // 如果是第2關且未解鎖，顯示問題
+            if (level === 2 && !hintUnlocked.level2) {
+                document.getElementById('huaMaQuestion').classList.remove('hidden');
+                document.getElementById('hint2_1').classList.add('locked');
+                document.getElementById('hint2_2').classList.add('locked');
+                document.getElementById('hint2_3').classList.add('locked');
+            } else if (level === 2 && hintUnlocked.level2) {
+                document.getElementById('huaMaQuestion').classList.add('hidden');
+                document.getElementById('hint2_1').classList.remove('locked');
+                document.getElementById('hint2_2').classList.remove('locked');
+                document.getElementById('hint2_3').classList.remove('locked');
+            }
+        }
+        
+        function updateHintTabs() {
+            // 根據當前顯示的畫面決定可用的提示關卡
+            const activeScreen = document.querySelector('.screen.active');
+            if (activeScreen) {
+                const screenId = activeScreen.id;
+                
+                // 啟用對應的 tab
+                if (screenId === 'win95LoginScreen' || screenId === 'envelope1Screen') {
+                    switchHintLevel(1);
+                } else if (screenId === 'phoneScreen') {
+                    switchHintLevel(2);
+                } else if (screenId === 'level2Screen') {
+                    switchHintLevel(3);
+                } else if (screenId === 'questionsScreen' || screenId === 'level3Screen') {
+                    switchHintLevel(4);
+                }
+            }
+        }
+        
+        function unlockLevel2Hints() {
+            hintUnlocked.level2 = true;
+            document.getElementById('huaMaQuestion').classList.add('hidden');
+            document.getElementById('hint2_1').classList.remove('locked');
+            document.getElementById('hint2_2').classList.remove('locked');
+            document.getElementById('hint2_3').classList.remove('locked');
+            
+            // 顯示解鎖成功訊息
+            let msg = i18nStrings[currentLang]['hintUnlocked'] || '🔓 提示已解鎖！';
+            showModal(msg, '✅ 成功', '🔓');
+        }
+        
+        function checkHuaMaAnswer() {
+            const selected = document.querySelector('input[name="huaMa"]:checked');
+            if (!selected) {
+                showModal('請選擇一個答案', '⚠️ 提示', '❓');
+                return;
+            }
+            
+            const correctAnswer = i18nStrings[currentLang]['huaMaAnswer'] || 'C';
+            
+            if (selected.value === correctAnswer) {
+                // 答案正確，扣3分鐘並解鎖提示
+                deductTime(3);
+                unlockLevel2Hints();
+                
+                // 顯示正確訊息
+                let msg = i18nStrings[currentLang]['correctAnswer'] || '✅ 答案正確！';
+                showModal(msg, '✅ 正確', '🎉');
+            } else {
+                // 答案錯誤
+                let msg = i18nStrings[currentLang]['wrongAnswer'] || '❌ 答案錯誤，再試試看';
+                showModal(msg, '❌ 錯誤', '❌');
+            }
+        }
 
         // ========== 畫面切換 ==========
         function showScreen(screenId) {
@@ -897,6 +1354,9 @@
             if (screenId === 'win95LoginScreen') {
                 startWin95Clock();
             }
+            
+            // 更新提示 tab
+            updateHintTabs();
         }
 
         // ========== Windows 95 時鐘函數 ==========
@@ -1048,9 +1508,13 @@
                          i18nStrings[currentLang]['callWrong2'];
                 showPhoneStatus(msg, 'error'); 
                 playErrorSound();
+                // 打錯電話扣2分鐘
+                deductTime(2);
             } else { 
                 showPhoneStatus(i18nStrings[currentLang]['wrongNumber'] || '號碼錯誤，請重試！','error'); 
-                playErrorSound(); 
+                playErrorSound();
+                // 打錯電話扣2分鐘
+                deductTime(2);
             }
         }
 
@@ -1174,6 +1638,17 @@
             if (clockElement) {
                 clockElement.textContent = '14:00';
             }
+
+            // ===== 提示系統事件監聽 =====
+            document.getElementById('hintButton').addEventListener('click', showHintOverlay);
+            document.getElementById('hintClose').addEventListener('click', closeHintOverlay);
+            
+            document.getElementById('hintTab1').addEventListener('click', () => switchHintLevel(1));
+            document.getElementById('hintTab2').addEventListener('click', () => switchHintLevel(2));
+            document.getElementById('hintTab3').addEventListener('click', () => switchHintLevel(3));
+            document.getElementById('hintTab4').addEventListener('click', () => switchHintLevel(4));
+            
+            document.getElementById('huaMaSubmit').addEventListener('click', checkHuaMaAnswer);
 
             // ===== 所有按鈕事件監聽 =====
             document.getElementById('menuStartBtn').addEventListener('click', function() {
