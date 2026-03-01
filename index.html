@@ -371,6 +371,100 @@
             border-radius: 20px;
         }
 
+        /* 反思問題浮層樣式 */
+        .reflection-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            z-index: 10002;
+            align-items: center;
+            justify-content: center;
+        }
+        .reflection-overlay.show {
+            display: flex;
+        }
+        .reflection-window {
+            width: 90%;
+            max-width: 500px;
+            background: var(--win95-gray);
+            border: 4px outset var(--win95-light);
+            box-shadow: 8px 8px 0 rgba(0,0,0,0.5);
+            animation: windowAppear 0.3s ease;
+        }
+        .reflection-titlebar {
+            background: linear-gradient(90deg, #800080, #a34da3);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .reflection-close {
+            background: var(--win95-gray);
+            border: 2px outset var(--win95-light);
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            cursor: pointer;
+            color: black;
+            font-size: 1.2rem;
+        }
+        .reflection-close:hover {
+            background: var(--win95-dark);
+        }
+        .reflection-content {
+            padding: 30px;
+            background: var(--win95-light);
+            min-height: 200px;
+        }
+        .reflection-question {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            color: black;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: bold;
+        }
+        .reflection-note {
+            font-size: 1rem;
+            color: #4a4a4a;
+            text-align: center;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        .reflection-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+        .reflection-btn {
+            padding: 12px 30px;
+            background: var(--windows-blue);
+            border: 2px outset var(--win95-light);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .reflection-btn:hover {
+            background: var(--windows-dark);
+        }
+        .reflection-btn.secondary {
+            background: var(--win95-gray);
+            color: black;
+        }
+        .reflection-btn.secondary:hover {
+            background: var(--win95-dark);
+            color: white;
+        }
+
         /* 其餘原始樣式 */
         .screen { display: none; min-height: 100vh; padding: 20px; animation: fadeIn 0.5s ease; position: relative; z-index: 1; }
         .screen.active { display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -524,6 +618,26 @@
 
                 <div class="hint-footer">
                     <span class="hint-counter" id="hintCounter">0/3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 反思問題浮層 -->
+    <div class="reflection-overlay" id="reflectionOverlay">
+        <div class="reflection-window">
+            <div class="reflection-titlebar">
+                <div>
+                    <span class="hint-titlebar-icon">💭</span>
+                    <span>反思時刻</span>
+                </div>
+                <div class="reflection-close" id="reflectionClose">✕</div>
+            </div>
+            <div class="reflection-content">
+                <div class="reflection-question" id="reflectionQuestion"></div>
+                <div class="reflection-note" id="reflectionNote">(可以同身邊嘅朋友分享你嘅諗法)</div>
+                <div class="reflection-buttons">
+                    <button class="reflection-btn" id="reflectionContinueBtn">繼續遊戲</button>
                 </div>
             </div>
         </div>
@@ -1062,6 +1176,14 @@
             }
         };
 
+        // ========== 反思問題 ==========
+        const reflectionQuestions = {
+            level1: "大家可以分享對於遊戲裏不同地標的回憶",
+            level2: "分享一個以前在日常生活常見到花碼的場景 (若沒有請跳過)",
+            level3: "你細個嗰陣住嘅地方有冇呢啲通花鐵閘？\n\n如果有一日全港嘅通花鐵閘都要被拆晒，你哋覺得應唔應該保留一啲作為文化遺產？",
+            level5: "如果你屋企突然制水一個禮拜，你覺得你生活上最大嘅困擾會係咩？\n\n你仲記唔記得香港出現「越南船民」呢件事？第一次聽到有咩感覺？"
+        };
+
         // ========== 全域變數 ==========
         let currentLang = 'zh-hk';
         let timerInterval = null, totalSeconds = 45 * 60, timerRunning = false;
@@ -1319,6 +1441,23 @@
             }
         }
 
+        // ========== 反思問題函數 ==========
+        function showReflection(level) {
+            let question = '';
+            if (level === 1) question = reflectionQuestions.level1;
+            else if (level === 2) question = reflectionQuestions.level2;
+            else if (level === 3) question = reflectionQuestions.level3;
+            else if (level === 5) question = reflectionQuestions.level5;
+            else return;
+            
+            document.getElementById('reflectionQuestion').innerHTML = question.replace(/\n/g, '<br>');
+            document.getElementById('reflectionOverlay').classList.add('show');
+        }
+        
+        function closeReflection() {
+            document.getElementById('reflectionOverlay').classList.remove('show');
+        }
+
         // ========== 畫面切換和提示按鈕顯示控制 ==========
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1400,7 +1539,12 @@
             document.getElementById('successTitle').innerHTML = title;
             document.getElementById('successSubtitle').innerHTML = subtitle;
             ov.classList.add('show'); playSuccessSound();
-            setTimeout(()=>{ ov.classList.remove('show'); if(callback) callback(); }, delay);
+            
+            // 延遲後執行回調
+            setTimeout(()=>{ 
+                ov.classList.remove('show'); 
+                if(callback) callback(); 
+            }, delay);
         }
 
         // ========== Modal ==========
@@ -1494,7 +1638,10 @@
                 setTimeout(() => {
                     showSuccess('🎉', i18nStrings[currentLang]['success'] || '成功！', 
                         i18nStrings[currentLang]['continueNext'] || '繼續下一關', 
-                        ()=>showScreen('level2Screen'), 5000);
+                        function() { 
+                            showReflection(2);
+                            showScreen('level2Screen'); 
+                        }, 5000);
                 }, 1500);
             } else if(phoneConfig.wrong[phoneNumber]) {
                 let msg = i18nStrings[currentLang]['callWrong'] + phoneConfig.wrong[phoneNumber].message + 
@@ -1536,7 +1683,11 @@
                 playUnlockSound();
                 showSuccess('🔓', i18nStrings[currentLang]['success'] || '成功！', 
                     i18nStrings[currentLang]['continueNext'] || '繼續下一關', 
-                    ()=>{ showScreen('questionsScreen'); startTramWaiting(); }, 5000);
+                    function() { 
+                        showReflection(3);
+                        showScreen('questionsScreen'); 
+                        startTramWaiting(); 
+                    }, 5000);
             } else { 
                 showInputStatus('level2Status', i18nStrings[currentLang]['passwordError'] || '密碼錯誤，請重試！', 'error'); 
                 playErrorSound(); 
@@ -1579,7 +1730,9 @@
             playSuccessSound();
             showSuccess('🚋', i18nStrings[currentLang]['success'] || '成功！', 
                 i18nStrings[currentLang]['continueNext'] || '繼續下一關', 
-                ()=>showScreen('level3Screen'), 2000);
+                function() { 
+                    showScreen('level3Screen'); 
+                }, 2000);
         }
 
         // ========== 密碼3 (電車站) ==========
@@ -1602,7 +1755,10 @@
                 playSuccessSound();
                 showSuccess('🚃', i18nStrings[currentLang]['success'] || '成功！', 
                     i18nStrings[currentLang]['continueNext'] || '恭喜通關！', 
-                    ()=>showScreen('finalScreen'), 5000);
+                    function() { 
+                        showReflection(5);
+                        showScreen('finalScreen'); 
+                    }, 5000);
             } else { 
                 showInputStatus('level3Status', i18nStrings[currentLang]['wrongNumber'] || '號碼錯誤，請重試！', 'error'); 
                 playErrorSound(); 
@@ -1638,6 +1794,10 @@
             document.getElementById('getHintBtn').addEventListener('click', getNextHint);
             document.getElementById('huaMaSubmit').addEventListener('click', checkHuaMaAnswer);
 
+            // ===== 反思問題事件監聽 =====
+            document.getElementById('reflectionClose').addEventListener('click', closeReflection);
+            document.getElementById('reflectionContinueBtn').addEventListener('click', closeReflection);
+
             // ===== 所有按鈕事件監聽 =====
             document.getElementById('menuStartBtn').addEventListener('click', function() {
                 showScreen('timerSetupScreen');
@@ -1659,7 +1819,10 @@
                     playWin95StartupSound();
                     showSuccess('🔑', i18nStrings[currentLang]['success'] || '登入成功！', 
                         i18nStrings[currentLang]['continueNext'] || '現在打開信封 #2 · 撥號電話', 
-                        function() { showScreen('phoneScreen'); }, 3000);
+                        function() { 
+                            showReflection(1);
+                            showScreen('phoneScreen'); 
+                        }, 3000);
                 } else {
                     playErrorSound();
                     showModal(i18nStrings[currentLang]['loginError'] || '密碼錯誤，請重新輸入！', 
