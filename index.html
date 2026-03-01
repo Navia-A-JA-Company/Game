@@ -356,8 +356,7 @@
         }
         .hint-footer {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: flex-end;
             margin-top: 15px;
             color: black;
             font-size: 0.9rem;
@@ -472,7 +471,7 @@
     </div>
 
     <!-- 提示按鈕 -->
-    <div class="hint-button" id="hintButton">
+    <div class="hint-button hidden" id="hintButton">
         <span>💡</span>
         <span data-i18n="hintButton">如需要提示按此</span>
         <span class="hint-penalty">-3分鐘</span>
@@ -1197,6 +1196,16 @@
             if (timerRunning) return;
             timerRunning = true;
             timerInterval = setInterval(()=>{ if(totalSeconds>0) totalSeconds--; updateTimerDisplay(); },1000);
+            
+            // 計時開始後，顯示提示按鈕（如果不是在菜單頁或第4關）
+            const activeScreen = document.querySelector('.screen.active');
+            if (activeScreen) {
+                const screenId = activeScreen.id;
+                const hintButton = document.getElementById('hintButton');
+                if (screenId !== 'menuScreen' && screenId !== 'questionsScreen') {
+                    hintButton.classList.remove('hidden');
+                }
+            }
         }
         
         // 扣減時間函數
@@ -1328,11 +1337,12 @@
                 currentLevel = 5;
             }
             
-            // 控制提示按鈕顯示
+            // 控制提示按鈕顯示 - 只在菜單頁和第4關隱藏
             const hintButton = document.getElementById('hintButton');
             if (screenId === 'menuScreen' || screenId === 'questionsScreen') {
                 hintButton.classList.add('hidden');
-            } else {
+            } else if (timerRunning) {
+                // 只有計時開始後才顯示提示按鈕
                 hintButton.classList.remove('hidden');
             }
             
