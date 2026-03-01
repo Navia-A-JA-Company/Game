@@ -191,6 +191,9 @@
         .hint-button:active {
             transform: scale(0.95);
         }
+        .hint-button.hidden {
+            display: none;
+        }
         .hint-penalty {
             font-size: 0.8rem;
             background: rgba(0,0,0,0.5);
@@ -361,10 +364,6 @@
             border-top: 1px solid var(--win95-dark);
             padding-top: 10px;
         }
-        .hint-warning {
-            color: #8B0000;
-            font-weight: bold;
-        }
         .hint-counter {
             font-family: 'Orbitron', sans-serif;
             background: var(--win95-dark);
@@ -525,7 +524,6 @@
                 </div>
 
                 <div class="hint-footer">
-                    <span class="hint-warning">⚠️ <span data-i18n="hintWarning">打錯一個電話會 -2分鐘！！</span></span>
                     <span class="hint-counter" id="hintCounter">0/3</span>
                 </div>
             </div>
@@ -876,7 +874,6 @@
                 'hintTitle': '遊戲提示',
                 'huaMaQuestion': '花碼最常使用場景是什麼？',
                 'submitAnswer': '提交答案',
-                'hintWarning': '打錯一個電話會 -2分鐘！！',
                 'correctAnswer': '✅ 答案正確！',
                 'wrongAnswer': '❌ 答案錯誤，再試試看',
                 'hintUnlocked': '🔓 提示已解鎖！',
@@ -967,7 +964,6 @@
                 'hintTitle': 'Game Hints',
                 'huaMaQuestion': 'What is the most common use of Fahua?',
                 'submitAnswer': 'Submit Answer',
-                'hintWarning': 'Wrong call will cost -2 minutes!!',
                 'correctAnswer': '✅ Correct!',
                 'wrongAnswer': '❌ Wrong, try again',
                 'hintUnlocked': '🔓 Hint unlocked!',
@@ -1058,7 +1054,6 @@
                 'hintTitle': '游戏提示',
                 'huaMaQuestion': '花码最常使用场景是什么？',
                 'submitAnswer': '提交答案',
-                'hintWarning': '打错一个电话会 -2分钟！！',
                 'correctAnswer': '✅ 答案正确！',
                 'wrongAnswer': '❌ 答案错误，再试试看',
                 'hintUnlocked': '🔓 提示已解锁！',
@@ -1315,7 +1310,7 @@
             }
         }
 
-        // ========== 畫面切換 ==========
+        // ========== 畫面切換和提示按鈕顯示控制 ==========
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(screenId).classList.add('active');
@@ -1327,8 +1322,18 @@
                 currentLevel = 2;
             } else if (screenId === 'level2Screen') {
                 currentLevel = 3;
-            } else if (screenId === 'questionsScreen' || screenId === 'level3Screen') {
+            } else if (screenId === 'questionsScreen') {
                 currentLevel = 4;
+            } else if (screenId === 'level3Screen') {
+                currentLevel = 5;
+            }
+            
+            // 控制提示按鈕顯示
+            const hintButton = document.getElementById('hintButton');
+            if (screenId === 'menuScreen' || screenId === 'questionsScreen') {
+                hintButton.classList.add('hidden');
+            } else {
+                hintButton.classList.remove('hidden');
             }
             
             // 如果切換到 Windows 95 登入畫面，啟動時鐘
