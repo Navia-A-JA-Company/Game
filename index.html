@@ -566,7 +566,7 @@
         @keyframes bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
         @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-8px); } 40%,80% { transform: translateX(8px); } }
         @keyframes trainMove { 0% { transform: translateX(-20px); opacity: 0.6; } 50% { transform: translateX(20px); opacity: 1; } 100% { transform: translateX(-20px); opacity: 0.6; } }
-        @keyframes windowAppear { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0; } 60% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(1); opacity: 0; } }
+        @keyframes windowAppear { 0% { transform: scale(0.3); opacity: 0; } 60% { transform: scale(1.05); opacity: 1; } 100% { transform: scale(1); opacity: 1; } }
         @keyframes scanline { 0% { top: -100%; } 100% { top: 100%; } }
         .menu-screen { text-align: center; max-width: 900px; background: rgba(10, 10, 15, 0.85); backdrop-filter: blur(16px); padding: 70px 50px; border-radius: 80px; border: 4px solid rgba(0, 255, 136, 0.6); box-shadow: 0 0 100px rgba(0, 255, 136, 0.4); animation: glow 3s infinite; }
         .menu-title { font-family: 'Orbitron', sans-serif; font-size: 4.5rem; font-weight: 900; background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-gold)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 20px; letter-spacing: 12px; text-shadow: 0 0 40px rgba(0,255,136,0.5); animation: pulse 2s infinite; }
@@ -582,24 +582,119 @@
         .envelope-title { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--accent-gold); text-shadow: 0 0 20px rgba(255,215,0,0.5); margin-bottom: 30px; letter-spacing: 3px; }
         .envelope-message { font-size: 1.4rem; color: var(--text-primary); line-height: 1.8; background: rgba(0,0,0,0.4); padding: 30px; border-radius: 30px; border: 2px solid var(--accent-gold); margin-bottom: 40px; }
         .envelope-btn { padding: 18px 50px; background: linear-gradient(135deg, var(--accent-gold), #ffb347); border: none; border-radius: 60px; font-family: 'Noto Sans HK', 'Noto Sans SC', 'Noto Sans', sans-serif; font-size: 1.5rem; font-weight: 900; color: var(--bg-primary); cursor: pointer; box-shadow: 0 0 40px rgba(255,215,0,0.5); border: 2px solid rgba(255,255,255,0.5); letter-spacing: 4px; }
-        .win95-desktop { position: relative; width: 100%; min-height: 100vh; background: var(--win95-teal); overflow: hidden; font-family: 'Segoe UI', 'MS Sans Serif', Tahoma, sans-serif; }
-        .win95-icons { position: absolute; top: 20px; left: 20px; display: flex; flex-direction: column; gap: 30px; z-index: 5; }
-        .win95-icon-label { font-size: 11px; color: #fff; text-shadow: 1px 1px 2px rgba(0,0,0,0.9); }
-        .win95-github-window { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 30; width: 92%; max-width: 420px; animation: windowAppear 0.6s 1.2s both; }
-        .win95-window { background: var(--win95-gray); border: 3px outset var(--win95-light); box-shadow: 4px 4px 0 rgba(0,0,0,0.4); }
-        .win95-titlebar { background: linear-gradient(90deg, #000080, #1084d0); padding: 3px 4px; display: flex; align-items: center; justify-content: space-between; }
-        .win95-titlebar-text { color: #fff; font-size: 12px; font-weight: bold; padding-left: 4px; }
-        .win95-window-body { padding: 16px 20px 20px; }
-        .win95-input { width: 100%; padding: 4px 6px; font-size: 14px; border: 2px inset var(--win95-light); background: #fff; color: #000; }
-        .win95-btn { min-width: 80px; padding: 5px 16px; font-size: 12px; background: var(--win95-gray); border: 2px outset var(--win95-light); cursor: pointer; color: #000; }
-        .win95-btn.primary { outline: 2px solid #000; outline-offset: -4px; }
-        .win95-game-badge { position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); z-index: 15; padding: 10px 28px; background: rgba(0,0,0,0.65); border: 1px solid rgba(0,255,136,0.4); border-radius: 8px; }
-        .badge-title { font-family: 'Orbitron', sans-serif; font-size: 1.2rem; font-weight: 900; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .win95-taskbar { position: absolute; bottom: 0; left: 0; right: 0; height: 36px; background: var(--win95-gray); border-top: 2px outset var(--win95-light); display: flex; align-items: center; padding: 0 4px; z-index: 40; }
+        
+        /* Windows 95 登入畫面 - 修正可見性問題 */
+        .win95-desktop { 
+            position: relative; 
+            width: 100%; 
+            min-height: 100vh; 
+            background: var(--win95-teal); 
+            overflow: visible; 
+            font-family: 'Segoe UI', 'MS Sans Serif', Tahoma, sans-serif; 
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .win95-icons { 
+            position: absolute; 
+            top: 20px; 
+            left: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 30px; 
+            z-index: 5; 
+        }
+        .win95-icon-label { 
+            font-size: 11px; 
+            color: #fff; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.9); 
+        }
+        .win95-github-window { 
+            position: relative;
+            z-index: 30; 
+            width: 92%; 
+            max-width: 420px; 
+            margin: 20px auto;
+            animation: windowAppear 0.6s 1.2s both; 
+        }
+        .win95-window { 
+            background: var(--win95-gray); 
+            border: 3px outset var(--win95-light); 
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.4); 
+        }
+        .win95-titlebar { 
+            background: linear-gradient(90deg, #000080, #1084d0); 
+            padding: 3px 4px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+        }
+        .win95-titlebar-text { 
+            color: #fff; 
+            font-size: 12px; 
+            font-weight: bold; 
+            padding-left: 4px; 
+        }
+        .win95-window-body { 
+            padding: 16px 20px 20px; 
+        }
+        .win95-input { 
+            width: 100%; 
+            padding: 4px 6px; 
+            font-size: 14px; 
+            border: 2px inset var(--win95-light); 
+            background: #fff; 
+            color: #000; 
+        }
+        .win95-btn { 
+            min-width: 80px; 
+            padding: 5px 16px; 
+            font-size: 12px; 
+            background: var(--win95-gray); 
+            border: 2px outset var(--win95-light); 
+            cursor: pointer; 
+            color: #000; 
+        }
+        .win95-btn.primary { 
+            outline: 2px solid #000; 
+            outline-offset: -4px; 
+        }
+        .win95-game-badge { 
+            position: relative;
+            margin: 20px auto 10px;
+            padding: 10px 28px; 
+            background: rgba(0,0,0,0.65); 
+            border: 1px solid rgba(0,255,136,0.4); 
+            border-radius: 8px; 
+            display: inline-block;
+            z-index: 15; 
+        }
+        .badge-title { 
+            font-family: 'Orbitron', sans-serif; 
+            font-size: 1.2rem; 
+            font-weight: 900; 
+            background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); 
+            -webkit-background-clip: text; 
+            -webkit-text-fill-color: transparent; 
+        }
+        .win95-taskbar { 
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            height: 36px; 
+            background: var(--win95-gray); 
+            border-top: 2px outset var(--win95-light); 
+            display: flex; 
+            align-items: center; 
+            padding: 0 4px; 
+            z-index: 40; 
+        }
         .rotary-phone-container { background: linear-gradient(145deg, rgba(26,74,66,0.9), rgba(15,47,40,0.95)); backdrop-filter: blur(8px); border-radius: 40px 40px 30px 30px; padding: 30px; max-width: 380px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,0.8); position: relative; }
         .phone-display { background: linear-gradient(145deg, #0a0a0a, #1a1a1a); border-radius: 12px; padding: 15px 20px; margin-bottom: 20px; border: 2px solid var(--phone-green-dark); }
         .display-number { font-family: 'JetBrains Mono', monospace; font-size: 1.8rem; font-weight: 700; color: var(--accent-1); text-shadow: 0 0 10px var(--accent-1); }
-        .rotary-dial { width: 280px; height: 280px; border-radius: 50%; background: linear-gradient(145deg, #3a3a3a, #1a1a1a); position: relative; cursor: grab; }
+        .rotary-dial { width: 280px; height: 280px; border-radius: 50%; background: linear-gradient(145deg, #3a3a3a, #1a1a1a); position: relative; cursor: grab; margin: 0 auto; }
         .dial-plate { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 250px; height: 250px; border-radius: 50%; background: linear-gradient(145deg, #2a2a2a, #0a0a0a); transition: transform 0.1s linear; }
         .dial-hole { position: absolute; width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(145deg, #0a0a0a, #1a1a1a); box-shadow: inset 0 3px 8px rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; cursor: pointer; }
         .dial-number { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 1.1rem; font-weight: 700; color: var(--phone-gold); pointer-events: none; }
@@ -811,19 +906,16 @@
         </div>
     </div>
 
-    <!-- Windows 95 登入畫面 (現在包含舊日足跡 Fun Facts) -->
+    <!-- Windows 95 登入畫面 - 修正可見性問題 -->
     <div class="screen" id="win95LoginScreen">
         <div class="win95-desktop">
-            <div class="crt-overlay"></div>
             <div class="win95-icons">
                 <div class="win95-icon"><div class="win95-icon-img">🖥️</div><div class="win95-icon-label" data-i18n="myComputer">我的電腦</div></div>
                 <div class="win95-icon"><div class="win95-icon-img">📁</div><div class="win95-icon-label" data-i18n="gameFiles">遊戲檔案</div></div>
                 <div class="win95-icon"><div class="win95-icon-img">🗑️</div><div class="win95-icon-label" data-i18n="recycleBin">資源回收筒</div></div>
                 <div class="win95-icon"><div class="win95-icon-img">🌐</div><div class="win95-icon-label">GitHub</div></div>
             </div>
-            <div class="win95-login-image">
-                <img src="windows-login.jpg" alt="Windows Login">
-            </div>
+            
             <div class="win95-github-window">
                 <div class="win95-window">
                     <div class="win95-titlebar">
@@ -853,16 +945,19 @@
                     </div>
                 </div>
             </div>
+            
             <div class="win95-game-badge">
                 <div class="badge-title">迷途顯影</div>
                 <div class="badge-sub" data-i18n="passwordHint">🔑 密碼在第一個信封</div>
             </div>
+            
             <div class="win95-taskbar">
                 <button class="win95-start-btn"><span class="start-flag">🪟</span><span data-i18n="start">Start</span></button>
                 <div class="win95-taskbar-spacer"></div>
                 <div class="win95-taskbar-tray"><span>🔊</span><span id="win95Clock">14:00</span></div>
             </div>
         </div>
+        
         <!-- 舊日足跡 Fun Facts - 移到第一關 -->
         <div class="fact-container" style="margin-top: 20px; max-width: 420px; margin-left: auto; margin-right: auto;">
             <div class="fact-title"><span style="font-size:1.5rem;">🎢</span> <span data-i18n="oldHKTitle">舊日足跡</span></div>
