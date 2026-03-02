@@ -761,24 +761,24 @@
             <div class="menu-title" data-i18n="gameTitle">迷途顯影</div>
             <div class="menu-sub" data-i18n="gameSub">Race to the Peak</div>
             
-            <!-- 玩家數量選擇器 (移到主選單) -->
+            <!-- 玩家數量選擇器 (移到主選單) - 移除所有關於跳過第4關的提示 -->
             <div class="player-count-selector">
                 <div class="player-count-option selected" id="playerCount2" data-count="2">
                     <span class="player-count-icon">👥</span>
                     <div class="player-count-text">
                         <div class="player-count-title" data-i18n="multiplayer">多人模式</div>
-                        <div class="player-count-desc" data-i18n="multiplayerDesc">2+ 位玩家 · 完整體驗</div>
+                        <div class="player-count-desc" data-i18n="multiplayerDesc">2+ 位玩家</div>
                     </div>
                 </div>
                 <div class="player-count-option" id="playerCount1" data-count="1">
                     <span class="player-count-icon">🕹️</span>
                     <div class="player-count-text">
                         <div class="player-count-title" data-i18n="singleplayer">單人模式</div>
-                        <div class="player-count-desc" data-i18n="singleplayerDesc">1 位玩家 · 跳過第4關</div>
+                        <div class="player-count-desc" data-i18n="singleplayerDesc">1 位玩家</div>
                     </div>
                 </div>
             </div>
-            <div class="player-count-note" id="playerCountNote" data-i18n="playerCountNote">👥 已選擇: 多人模式 (完整體驗)</div>
+            <div class="player-count-note" id="playerCountNote" data-i18n="playerCountNote">👥 已選擇: 多人模式</div>
             
             <button class="menu-btn" id="menuStartBtn" data-i18n="startGame">開始遊戲</button>
             <div class="menu-credit" data-i18n="menuCredit">⚠️ 請先仔細閱讀說明書才打開任何信封<br>共五個信封，順序挑戰</div>
@@ -793,7 +793,7 @@
             <div class="timer-big">45:00</div>
             
             <!-- 在計時設定頁面顯示玩家選擇摘要 -->
-            <div class="player-count-note" id="timerPlayerCountNote">👥 多人模式 · 完整5關體驗</div>
+            <div class="player-count-note" id="timerPlayerCountNote">👥 多人模式</div>
             
             <button class="start-btn" id="startTimerBtn" data-i18n="startTimer">開始計時</button>
             <p style="color: var(--text-secondary); font-size: 0.9rem;" data-i18n="timerNote">計時開始後將進入登入畫面</p>
@@ -1135,11 +1135,11 @@
                 'finishTime': '完成時間',
                 'timeRemaining': '剩餘時間',
                 'multiplayer': '多人模式',
-                'multiplayerDesc': '2+ 位玩家 · 完整體驗',
+                'multiplayerDesc': '2+ 位玩家',
                 'singleplayer': '單人模式',
-                'singleplayerDesc': '1 位玩家 · 跳過第4關',
-                'playerCountNote': '👥 已選擇: 多人模式 (完整體驗)',
-                'playerCountNoteSingle': '🕹️ 已選擇: 單人模式 (跳過第4關)'
+                'singleplayerDesc': '1 位玩家',
+                'playerCountNote': '👥 已選擇: 多人模式',
+                'playerCountNoteSingle': '🕹️ 已選擇: 單人模式'
             },
             'en': {
                 'title': '迷途顯影 · Escape Room',
@@ -1233,11 +1233,11 @@
                 'finishTime': 'Finish Time',
                 'timeRemaining': 'Time Remaining',
                 'multiplayer': 'Multiplayer Mode',
-                'multiplayerDesc': '2+ Players · Full Experience',
+                'multiplayerDesc': '2+ Players',
                 'singleplayer': 'Single Player Mode',
-                'singleplayerDesc': '1 Player · Skip Level 4',
-                'playerCountNote': '👥 Selected: Multiplayer Mode (Full Experience)',
-                'playerCountNoteSingle': '🕹️ Selected: Single Player Mode (Skip Level 4)'
+                'singleplayerDesc': '1 Player',
+                'playerCountNote': '👥 Selected: Multiplayer Mode',
+                'playerCountNoteSingle': '🕹️ Selected: Single Player Mode'
             },
             'zh-cn': {
                 'title': '迷途显影 · 密室逃脱',
@@ -1331,11 +1331,11 @@
                 'finishTime': '完成时间',
                 'timeRemaining': '剩余时间',
                 'multiplayer': '多人模式',
-                'multiplayerDesc': '2+ 位玩家 · 完整体验',
+                'multiplayerDesc': '2+ 位玩家',
                 'singleplayer': '单人模式',
-                'singleplayerDesc': '1 位玩家 · 跳过第4关',
-                'playerCountNote': '👥 已选择: 多人模式 (完整体验)',
-                'playerCountNoteSingle': '🕹️ 已选择: 单人模式 (跳过第4关)'
+                'singleplayerDesc': '1 位玩家',
+                'playerCountNote': '👥 已选择: 多人模式',
+                'playerCountNoteSingle': '🕹️ 已选择: 单人模式'
             }
         };
 
@@ -1418,8 +1418,6 @@
         function initPlayerCountSelection() {
             const option2 = document.getElementById('playerCount2');
             const option1 = document.getElementById('playerCount1');
-            const playerCountNote = document.getElementById('playerCountNote');
-            const timerNote = document.getElementById('timerPlayerCountNote');
             
             option2.addEventListener('click', function() {
                 option2.classList.add('selected');
@@ -1441,11 +1439,11 @@
             const timerNote = document.getElementById('timerPlayerCountNote');
             
             if (playerCount === '2') {
-                playerCountNote.innerHTML = i18nStrings[currentLang]['playerCountNote'] || '👥 已選擇: 多人模式 (完整體驗)';
-                timerNote.innerHTML = '👥 多人模式 · 完整5關體驗';
+                playerCountNote.innerHTML = i18nStrings[currentLang]['playerCountNote'] || '👥 已選擇: 多人模式';
+                timerNote.innerHTML = '👥 多人模式';
             } else {
-                playerCountNote.innerHTML = i18nStrings[currentLang]['playerCountNoteSingle'] || '🕹️ 已選擇: 單人模式 (跳過第4關)';
-                timerNote.innerHTML = '🕹️ 單人模式 · 跳過第4關';
+                playerCountNote.innerHTML = i18nStrings[currentLang]['playerCountNoteSingle'] || '🕹️ 已選擇: 單人模式';
+                timerNote.innerHTML = '🕹️ 單人模式';
             }
         }
 
@@ -1784,12 +1782,12 @@
                 startWin95Clock();
             }
             
-            // 檢查玩家數量：如果是1人模式且到達第4關，自動跳過
+            // 檢查玩家數量：如果是1人模式且到達第4關，自動跳過 (但玩家不會知道)
             if (playerCount === '1' && screenId === 'questionsScreen') {
-                // 自動跳過第4關
+                // 自動跳過第4關 - 不告訴玩家
                 setTimeout(() => {
                     showScreen('level3Screen');
-                }, 1000); // 延遲1秒讓玩家看到畫面切換
+                }, 1000); // 延遲1秒讓畫面閃過
             }
         }
 
