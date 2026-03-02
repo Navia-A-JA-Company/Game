@@ -107,40 +107,6 @@
             flex-wrap: wrap;
         }
         
-        /* ----- 玩家數量選擇器 ----- */
-        .player-count-wrapper {
-            background: rgba(0,0,0,0.9);
-            backdrop-filter: blur(12px);
-            padding: 8px 16px;
-            border-radius: 40px;
-            border: 2px solid var(--accent-gold);
-            box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .player-count-wrapper label {
-            color: var(--accent-gold);
-            font-size: 0.9rem;
-            font-weight: 500;
-        }
-        .player-count-select {
-            background: rgba(40,40,50,0.9);
-            border: 1px solid var(--accent-gold);
-            color: var(--text-primary);
-            padding: 6px 10px;
-            border-radius: 30px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            cursor: pointer;
-            font-family: 'Noto Sans', sans-serif;
-            outline: none;
-        }
-        .player-count-select option {
-            background: #1a1a24;
-            color: #f0f0f5;
-        }
-        
         /* ----- 語言選擇器 ----- */
         .lang-selector-wrapper {
             background: rgba(0,0,0,0.9);
@@ -244,6 +210,72 @@
             padding: 3px 8px;
             border-radius: 30px;
             margin-left: 5px;
+        }
+
+        /* ----- 玩家數量選擇器 (開始畫面) ----- */
+        .player-count-selector {
+            margin: 30px 0 20px;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(8px);
+            padding: 20px 30px;
+            border-radius: 60px;
+            border: 3px solid var(--accent-gold);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .player-count-option {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            padding: 15px 30px;
+            border-radius: 50px;
+            background: rgba(20,20,30,0.8);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+        .player-count-option.selected {
+            border-color: var(--accent-gold);
+            background: rgba(255,215,0,0.15);
+            box-shadow: 0 0 30px rgba(255,215,0,0.3);
+            transform: scale(1.05);
+        }
+        .player-count-option:hover {
+            border-color: var(--accent-1);
+            background: rgba(0,255,136,0.1);
+        }
+        .player-count-icon {
+            font-size: 2.5rem;
+        }
+        .player-count-text {
+            text-align: left;
+        }
+        .player-count-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-gold);
+        }
+        .player-count-desc {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+        .player-count-note {
+            margin-top: 15px;
+            font-size: 1rem;
+            color: var(--accent-2);
+            font-weight: 500;
+            background: rgba(0,0,0,0.3);
+            padding: 8px 20px;
+            border-radius: 40px;
+            display: inline-block;
+        }
+        .player-count-note.hidden {
+            display: none;
         }
 
         /* ----- 提示浮層 (Windows 95 風格) ----- */
@@ -609,22 +641,17 @@
             .rotary-dial { width: 240px; height: 240px; }
             .dial-plate { width: 210px; height: 210px; }
             .dial-hole { width: 30px; height: 30px; }
+            .player-count-option { min-width: 150px; padding: 10px 20px; }
+            .player-count-icon { font-size: 2rem; }
+            .player-count-title { font-size: 1.1rem; }
+            .player-count-desc { font-size: 0.8rem; }
         }
     </style>
 </head>
 <body>
-    <!-- 頂部控制欄 - 包含語言選擇器、玩家數量選擇、提示按鈕和計時器 -->
+    <!-- 頂部控制欄 - 包含語言選擇器、提示按鈕和計時器 -->
     <div class="top-controls">
         <div class="left-controls">
-            <!-- 玩家數量選擇器 (新加) -->
-            <div class="player-count-wrapper">
-                <label for="playerCountSelect">👥</label>
-                <select class="player-count-select" id="playerCountSelect">
-                    <option value="2" selected>👥 2+ Players</option>
-                    <option value="1">🕹️ 1 Player (Skip Level 4)</option>
-                </select>
-            </div>
-            
             <!-- 語言選擇器 -->
             <div class="lang-selector-wrapper">
                 <label for="langDropdown" style="color:var(--accent-1);">🌐</label>
@@ -733,17 +760,41 @@
         <div class="menu-screen">
             <div class="menu-title" data-i18n="gameTitle">迷途顯影</div>
             <div class="menu-sub" data-i18n="gameSub">Race to the Peak</div>
+            
+            <!-- 玩家數量選擇器 (移到主選單) -->
+            <div class="player-count-selector">
+                <div class="player-count-option selected" id="playerCount2" data-count="2">
+                    <span class="player-count-icon">👥</span>
+                    <div class="player-count-text">
+                        <div class="player-count-title" data-i18n="multiplayer">多人模式</div>
+                        <div class="player-count-desc" data-i18n="multiplayerDesc">2+ 位玩家 · 完整體驗</div>
+                    </div>
+                </div>
+                <div class="player-count-option" id="playerCount1" data-count="1">
+                    <span class="player-count-icon">🕹️</span>
+                    <div class="player-count-text">
+                        <div class="player-count-title" data-i18n="singleplayer">單人模式</div>
+                        <div class="player-count-desc" data-i18n="singleplayerDesc">1 位玩家 · 跳過第4關</div>
+                    </div>
+                </div>
+            </div>
+            <div class="player-count-note" id="playerCountNote" data-i18n="playerCountNote">👥 已選擇: 多人模式 (完整體驗)</div>
+            
             <button class="menu-btn" id="menuStartBtn" data-i18n="startGame">開始遊戲</button>
             <div class="menu-credit" data-i18n="menuCredit">⚠️ 請先仔細閱讀說明書才打開任何信封<br>共五個信封，順序挑戰</div>
         </div>
     </div>
 
-    <!-- 計時設定 -->
+    <!-- 計時設定 (也顯示玩家選擇) -->
     <div class="screen" id="timerSetupScreen">
         <div class="timer-setup">
             <h2 class="game-title" data-i18n="countdownTitle">倒數計時</h2>
             <p class="timer-label" data-i18n="timeLimit">限時 45 分鐘</p>
             <div class="timer-big">45:00</div>
+            
+            <!-- 在計時設定頁面顯示玩家選擇摘要 -->
+            <div class="player-count-note" id="timerPlayerCountNote">👥 多人模式 · 完整5關體驗</div>
+            
             <button class="start-btn" id="startTimerBtn" data-i18n="startTimer">開始計時</button>
             <p style="color: var(--text-secondary); font-size: 0.9rem;" data-i18n="timerNote">計時開始後將進入登入畫面</p>
         </div>
@@ -1082,7 +1133,13 @@
                 'getHint': '獲取提示 (-3分鐘)',
                 'huaMaAnswer': 'C',
                 'finishTime': '完成時間',
-                'timeRemaining': '剩餘時間'
+                'timeRemaining': '剩餘時間',
+                'multiplayer': '多人模式',
+                'multiplayerDesc': '2+ 位玩家 · 完整體驗',
+                'singleplayer': '單人模式',
+                'singleplayerDesc': '1 位玩家 · 跳過第4關',
+                'playerCountNote': '👥 已選擇: 多人模式 (完整體驗)',
+                'playerCountNoteSingle': '🕹️ 已選擇: 單人模式 (跳過第4關)'
             },
             'en': {
                 'title': '迷途顯影 · Escape Room',
@@ -1174,7 +1231,13 @@
                 'getHint': 'Get Hint (-3 min)',
                 'huaMaAnswer': 'C',
                 'finishTime': 'Finish Time',
-                'timeRemaining': 'Time Remaining'
+                'timeRemaining': 'Time Remaining',
+                'multiplayer': 'Multiplayer Mode',
+                'multiplayerDesc': '2+ Players · Full Experience',
+                'singleplayer': 'Single Player Mode',
+                'singleplayerDesc': '1 Player · Skip Level 4',
+                'playerCountNote': '👥 Selected: Multiplayer Mode (Full Experience)',
+                'playerCountNoteSingle': '🕹️ Selected: Single Player Mode (Skip Level 4)'
             },
             'zh-cn': {
                 'title': '迷途显影 · 密室逃脱',
@@ -1266,7 +1329,13 @@
                 'getHint': '获取提示 (-3分钟)',
                 'huaMaAnswer': 'C',
                 'finishTime': '完成时间',
-                'timeRemaining': '剩余时间'
+                'timeRemaining': '剩余时间',
+                'multiplayer': '多人模式',
+                'multiplayerDesc': '2+ 位玩家 · 完整体验',
+                'singleplayer': '单人模式',
+                'singleplayerDesc': '1 位玩家 · 跳过第4关',
+                'playerCountNote': '👥 已选择: 多人模式 (完整体验)',
+                'playerCountNoteSingle': '🕹️ 已选择: 单人模式 (跳过第4关)'
             }
         };
 
@@ -1307,6 +1376,7 @@
         };
         let currentLevel = 1;
         let hintViewIndex = 0; // 當前查看的提示索引 (用於翻閱)
+        let playerCount = '2'; // 預設多人模式
 
         // ========== 語言切換函數 ==========
         function setLanguage(lang) {
@@ -1337,8 +1407,46 @@
             }
             document.getElementById('langDropdown').value = lang;
             
+            // 更新玩家數量顯示
+            updatePlayerCountDisplay();
+            
             // 更新提示顯示
             updateHintDisplay();
+        }
+
+        // ========== 玩家數量選擇函數 ==========
+        function initPlayerCountSelection() {
+            const option2 = document.getElementById('playerCount2');
+            const option1 = document.getElementById('playerCount1');
+            const playerCountNote = document.getElementById('playerCountNote');
+            const timerNote = document.getElementById('timerPlayerCountNote');
+            
+            option2.addEventListener('click', function() {
+                option2.classList.add('selected');
+                option1.classList.remove('selected');
+                playerCount = '2';
+                updatePlayerCountDisplay();
+            });
+            
+            option1.addEventListener('click', function() {
+                option1.classList.add('selected');
+                option2.classList.remove('selected');
+                playerCount = '1';
+                updatePlayerCountDisplay();
+            });
+        }
+        
+        function updatePlayerCountDisplay() {
+            const playerCountNote = document.getElementById('playerCountNote');
+            const timerNote = document.getElementById('timerPlayerCountNote');
+            
+            if (playerCount === '2') {
+                playerCountNote.innerHTML = i18nStrings[currentLang]['playerCountNote'] || '👥 已選擇: 多人模式 (完整體驗)';
+                timerNote.innerHTML = '👥 多人模式 · 完整5關體驗';
+            } else {
+                playerCountNote.innerHTML = i18nStrings[currentLang]['playerCountNoteSingle'] || '🕹️ 已選擇: 單人模式 (跳過第4關)';
+                timerNote.innerHTML = '🕹️ 單人模式 · 跳過第4關';
+            }
         }
 
         // ========== 音效函數 ==========
@@ -1677,7 +1785,6 @@
             }
             
             // 檢查玩家數量：如果是1人模式且到達第4關，自動跳過
-            const playerCount = document.getElementById('playerCountSelect').value;
             if (playerCount === '1' && screenId === 'questionsScreen') {
                 // 自動跳過第4關
                 setTimeout(() => {
@@ -1969,6 +2076,9 @@
             document.getElementById('langDropdown').addEventListener('change', function(e) {
                 setLanguage(this.value);
             });
+
+            // 初始化玩家數量選擇
+            initPlayerCountSelection();
 
             // 初始化轉盤
             initRotaryDial();
