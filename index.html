@@ -709,9 +709,26 @@
         .password-slot { width: 65px; height: 85px; background: var(--bg-primary); border: 3px solid var(--accent-2); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--text-primary); }
         .password-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 280px; margin: 0 auto 25px; }
         .password-key { padding: 18px; background: var(--bg-button); border: none; border-radius: 14px; font-size: 1.3rem; font-weight: 700; color: var(--text-primary); cursor: pointer; }
+        
+        /* 電車站問題樣式 */
         .questions-screen { text-align: center; max-width: 600px; background: rgba(26,26,36,0.85); backdrop-filter: blur(8px); padding: 40px 30px; border-radius: 40px; border: 2px solid rgba(0,212,255,0.3); }
-        .tram-timer { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--accent-2); text-shadow: 0 0 20px var(--shadow-blue); background: rgba(0,0,0,0.5); padding: 15px 30px; border-radius: 50px; border: 2px solid var(--accent-2); }
-        .board-tram-btn { padding: 20px 40px; background: linear-gradient(135deg, var(--tram-blue), #0066cc); border: none; border-radius: 60px; font-size: 1.5rem; font-weight: 900; color: white; cursor: pointer; box-shadow: 0 0 30px rgba(0,153,255,0.7); animation: trainMove 1.5s infinite; }
+        .tram-timer { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; font-weight: 900; color: var(--accent-2); text-shadow: 0 0 20px var(--shadow-blue); background: rgba(0,0,0,0.5); padding: 15px 30px; border-radius: 50px; border: 2px solid var(--accent-2); margin-bottom: 20px; }
+        .tram-message { font-size: 1.2rem; margin: 20px 0; color: var(--text-primary); }
+        .tram-question-container { margin: 25px 0; text-align: left; background: rgba(0,0,0,0.3); padding: 20px; border-radius: 20px; border: 1px solid var(--accent-2); }
+        .tram-question-text { font-size: 1.3rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 20px; }
+        .tram-options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+        .tram-option { display: flex; align-items: center; gap: 10px; padding: 12px; background: rgba(20,20,30,0.8); border: 2px solid var(--text-secondary); border-radius: 12px; cursor: pointer; transition: all 0.2s ease; color: var(--text-primary); }
+        .tram-option:hover { border-color: var(--accent-1); background: rgba(0,255,136,0.1); }
+        .tram-option.selected { border-color: var(--accent-gold); background: rgba(255,215,0,0.15); }
+        .tram-option input[type="radio"] { width: 18px; height: 18px; cursor: pointer; accent-color: var(--accent-gold); }
+        .tram-submit-btn { padding: 15px 30px; background: linear-gradient(135deg, var(--accent-1), var(--accent-2)); border: none; border-radius: 40px; font-size: 1.2rem; font-weight: 700; color: var(--bg-primary); cursor: pointer; margin-top: 10px; width: 100%; }
+        .tram-submit-btn:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--shadow-glow); }
+        .tram-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .tram-progress { font-size: 1rem; color: var(--accent-2); margin: 10px 0; }
+        .tram-fact { margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.2); border-left: 4px solid var(--accent-gold); border-radius: 8px; font-style: italic; color: var(--text-secondary); }
+        .board-tram-btn { padding: 20px 40px; background: linear-gradient(135deg, var(--tram-blue), #0066cc); border: none; border-radius: 60px; font-size: 1.5rem; font-weight: 900; color: white; cursor: pointer; box-shadow: 0 0 30px rgba(0,153,255,0.7); animation: trainMove 1.5s infinite; margin-top: 20px; }
+        .board-tram-btn.hidden { display: none; }
+        
         .victory-screen { text-align: center; max-width: 700px; background: rgba(26,26,36,0.85); backdrop-filter: blur(8px); padding: 50px 40px; border-radius: 50px; border: 2px solid rgba(255,215,0,0.4); }
         .finish-time { font-family: 'Orbitron', sans-serif; font-size: 2rem; font-weight: 900; color: var(--accent-gold); text-shadow: 0 0 20px rgba(255,215,0,0.5); margin: 20px 0; padding: 15px; background: rgba(0,0,0,0.3); border-radius: 30px; }
         .win95-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 9999; align-items: center; justify-content: center; }
@@ -1043,18 +1060,17 @@
         </div>
     </div>
 
-    <!-- 信封 #4 電車站 (現在沒有 Fun Facts) -->
+    <!-- 信封 #4 電車站 - 改為選擇題模式 (單人模式用) -->
     <div class="screen" id="questionsScreen">
         <div class="questions-screen">
             <div class="tram-wait-container">
                 <div class="tram-header" data-i18n="envelope4Title">📩 請打開信封 #4</div>
                 <div class="tram-header" style="font-size:1.5rem; margin-top:-10px;" data-i18n="tramStation">🚋 電車站等候</div>
                 <div class="tram-timer" id="tramWaitTimer">07:00</div>
-                <div class="tram-message" id="tramMessage" data-i18n="tramWaiting">電車仲未到站，不如同身邊街坊傾吓偈啦～</div>
-                <div class="tram-question-area">
-                    <div class="tram-question-text" id="tramQuestionText" data-i18n="tramQuestion">你最喜歡香港嘅邊個地方？</div>
-                    <button class="chat-btn" id="tramChatBtn" data-i18n="chatMore">💬 我想再傾多啲</button>
-                </div>
+                
+                <!-- 動態內容會根據玩家數量變化 -->
+                <div id="tramContent"></div>
+                
                 <button class="board-tram-btn hidden" id="boardTramBtn" data-i18n="boardTram">🚃 電車終於到站，按這裏上車！</button>
             </div>
         </div>
@@ -1234,9 +1250,36 @@
                 'singleplayer': '單人模式',
                 'singleplayerDesc': '1 位玩家',
                 'playerCountNote': '👥 已選擇: 多人模式',
-                'playerCountNoteSingle': '🕹️ 已選擇: 單人模式'
+                'playerCountNoteSingle': '🕹️ 已選擇: 單人模式',
+                'question1': '叮叮成年最新車費是多少',
+                'question2': '「絲襪奶茶」個名點嚟？',
+                'question3': '「通花鐵閘」以前主要用嚟做咩？',
+                'question4': '以前香港「制水」係指咩？',
+                'optionA': 'A. $3',
+                'optionB': 'B. $2',
+                'optionC': 'C. $3.3',
+                'optionD': 'D. $1.6',
+                'option2A': 'A. 因為用絲襪沖泡',
+                'option2B': 'B. 沖茶布袋用耐咗似絲襪',
+                'option2C': 'C. 奶茶顏色似絲襪',
+                'option2D': 'D. 創辦人叫「絲襪姐」，因沖奶茶時穿着絲襪出名',
+                'option3A': 'A. 裝飾美化街道',
+                'option3B': 'B. 防盜之餘通風透光',
+                'option3C': 'C. 俾街坊掛嘢',
+                'option3D': 'D. 劃分舖頭範圍',
+                'option4A': 'A. 限制用水，分時段供水',
+                'option4B': 'B. 禁止賣水',
+                'option4C': 'C. 水費好貴',
+                'option4D': 'D. 只准飲樽裝水',
+                'fact1': '📌 冷知識：通花鐵閘嘅圖案有例如「福」「壽」字、花鳥圖案，反映師傅嘅手工同心思',
+                'fact2': '（沖茶用嘅白布袋，用耐咗染上茶色，垂下嚟嘅形狀似絲襪）',
+                'fact3': '（以前冇冷氣，鐵閘要做通花先可以通風，同時又可以防盜）',
+                'fact4': '（1960-70年代香港成日制水，居民要擔水、排隊等水車）',
+                'wrongAnswerPenalty': '❌ 答錯！扣1分鐘',
+                'questionProgress': '問題 {current}/{total}'
             },
             'en': {
+                // 英文翻譯保持不變...
                 'title': '迷途顯影 · Escape Room',
                 'gameTitle': '迷途顯影',
                 'gameSub': 'Race to the Peak',
@@ -1335,6 +1378,7 @@
                 'playerCountNoteSingle': '🕹️ Selected: Single Player Mode'
             },
             'zh-cn': {
+                // 简体中文翻译保持不變...
                 'title': '迷途显影 · 密室逃脱',
                 'gameTitle': '迷途显影',
                 'gameSub': 'Race to the Peak',
@@ -1442,6 +1486,49 @@
             level5: "如果你屋企突然制水一個禮拜，你覺得你生活上最大嘅困擾會係咩？\n\n你仲記唔記得香港出現「越南船民」呢件事？第一次聽到有咩感覺？"
         };
 
+        // ========== 電車站問題 (單人模式) ==========
+        const tramQuestions = [
+            {
+                question: "叮叮成年最新車費是多少",
+                options: ["A. $3", "B. $2", "C. $3.3", "D. $1.6"],
+                correct: "C",
+                fact: "" // 沒有特別冷知識
+            },
+            {
+                question: "「絲襪奶茶」個名點嚟？",
+                options: [
+                    "A. 因為用絲襪沖泡",
+                    "B. 沖茶布袋用耐咗似絲襪",
+                    "C. 奶茶顏色似絲襪",
+                    "D. 創辦人叫「絲襪姐」，因沖奶茶時穿着絲襪出名"
+                ],
+                correct: "B",
+                fact: "（沖茶用嘅白布袋，用耐咗染上茶色，垂下嚟嘅形狀似絲襪）"
+            },
+            {
+                question: "「通花鐵閘」以前主要用嚟做咩？",
+                options: [
+                    "A. 裝飾美化街道",
+                    "B. 防盜之餘通風透光",
+                    "C. 俾街坊掛嘢",
+                    "D. 劃分舖頭範圍"
+                ],
+                correct: "B",
+                fact: "📌 冷知識：通花鐵閘嘅圖案有例如「福」「壽」字、花鳥圖案，反映師傅嘅手工同心思"
+            },
+            {
+                question: "以前香港「制水」係指咩？",
+                options: [
+                    "A. 限制用水，分時段供水",
+                    "B. 禁止賣水",
+                    "C. 水費好貴",
+                    "D. 只准飲樽裝水"
+                ],
+                correct: "A",
+                fact: "（1960-70年代香港成日制水，居民要擔水、排隊等水車）"
+            }
+        ];
+
         // ========== 全域變數 ==========
         let currentLang = 'zh-hk';
         let timerInterval = null, totalSeconds = 45 * 60, timerRunning = false;
@@ -1472,6 +1559,11 @@
         let currentLevel = 1;
         let hintViewIndex = 0; // 當前查看的提示索引 (用於翻閱)
         let playerCount = '2'; // 預設多人模式
+
+        // 單人模式電車問題狀態
+        let currentQuestionIndex = 0;
+        let questionsAnswered = 0;
+        let selectedOption = null;
 
         // ========== 語言切換函數 ==========
         function setLanguage(lang) {
@@ -1839,6 +1931,105 @@
             }
         }
 
+        // ========== 電車站問題函數 (單人模式) ==========
+        function renderTramQuestion() {
+            const tramContent = document.getElementById('tramContent');
+            if (!tramContent) return;
+            
+            if (playerCount === '2') {
+                // 多人模式：顯示開放式問題
+                tramContent.innerHTML = `
+                    <div class="tram-message" id="tramMessage" data-i18n="tramWaiting">電車仲未到站，不如同身邊街坊傾吓偈啦～</div>
+                    <div class="tram-question-area">
+                        <div class="tram-question-text" id="tramQuestionText">${randomQuestions[Math.floor(Math.random()*randomQuestions.length)]}</div>
+                        <button class="chat-btn" id="tramChatBtn" data-i18n="chatMore">💬 我想再傾多啲</button>
+                    </div>
+                `;
+                
+                // 重新綁定聊天按鈕事件
+                document.getElementById('tramChatBtn').addEventListener('click', setRandomQuestion);
+            } else {
+                // 單人模式：顯示選擇題
+                const q = tramQuestions[currentQuestionIndex];
+                const progressText = i18nStrings[currentLang]['questionProgress'] || '問題 {current}/{total}';
+                const progress = progressText.replace('{current}', currentQuestionIndex + 1).replace('{total}', tramQuestions.length);
+                
+                let optionsHtml = '';
+                q.options.forEach((opt, idx) => {
+                    const letter = String.fromCharCode(65 + idx); // A, B, C, D
+                    optionsHtml += `
+                        <label class="tram-option" data-value="${letter}">
+                            <input type="radio" name="tramQuestion" value="${letter}">
+                            <span>${opt}</span>
+                        </label>
+                    `;
+                });
+                
+                tramContent.innerHTML = `
+                    <div class="tram-progress">${progress}</div>
+                    <div class="tram-question-container">
+                        <div class="tram-question-text">${q.question}</div>
+                        <div class="tram-options" id="tramOptions">
+                            ${optionsHtml}
+                        </div>
+                        <button class="tram-submit-btn" id="tramSubmitBtn">提交答案</button>
+                    </div>
+                    ${q.fact ? `<div class="tram-fact">${q.fact}</div>` : ''}
+                `;
+                
+                // 綁定選項點擊事件
+                document.querySelectorAll('.tram-option').forEach(opt => {
+                    opt.addEventListener('click', function() {
+                        document.querySelectorAll('.tram-option').forEach(o => o.classList.remove('selected'));
+                        this.classList.add('selected');
+                        this.querySelector('input[type="radio"]').checked = true;
+                        selectedOption = this.dataset.value;
+                    });
+                });
+                
+                // 綁定提交按鈕事件
+                document.getElementById('tramSubmitBtn').addEventListener('click', submitTramAnswer);
+            }
+        }
+        
+        function submitTramAnswer() {
+            const selected = document.querySelector('input[name="tramQuestion"]:checked');
+            if (!selected) {
+                showModal('請選擇一個答案', '⚠️ 提示', '❓');
+                return;
+            }
+            
+            const selectedValue = selected.value;
+            const correctAnswer = tramQuestions[currentQuestionIndex].correct;
+            
+            if (selectedValue === correctAnswer) {
+                // 答案正確
+                playSuccessSound();
+                questionsAnswered++;
+                
+                if (questionsAnswered >= 3) {
+                    // 已經答對3題，電車到站
+                    tramArrived = true;
+                    if (tramTimerInterval) clearInterval(tramTimerInterval);
+                    document.getElementById('tramMessage').innerHTML = i18nStrings[currentLang]['tramArrived'] || '🚃 電車終於到站！快啲上車啦～';
+                    document.getElementById('boardTramBtn').classList.remove('hidden');
+                    
+                    // 顯示成功訊息
+                    showSuccess('🎉', '成功！', '電車到站啦！', null, 2000);
+                } else {
+                    // 下一題
+                    currentQuestionIndex = (currentQuestionIndex + 1) % tramQuestions.length;
+                    renderTramQuestion();
+                    showModal('✅ 答對！', '正確', '✅');
+                }
+            } else {
+                // 答案錯誤，扣1分鐘
+                deductTime(1);
+                playErrorSound();
+                showModal(i18nStrings[currentLang]['wrongAnswerPenalty'] || '❌ 答錯！扣1分鐘', '❌ 錯誤', '⏰');
+            }
+        }
+
         // ========== 畫面切換和提示按鈕顯示控制 ==========
         function showScreen(screenId) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -1853,6 +2044,11 @@
                 currentLevel = 3;
             } else if (screenId === 'questionsScreen') {
                 currentLevel = 4;
+                // 重置電車問題狀態
+                currentQuestionIndex = 0;
+                questionsAnswered = 0;
+                selectedOption = null;
+                renderTramQuestion();
             } else if (screenId === 'level3Screen') {
                 currentLevel = 5;
             } else if (screenId === 'finalScreen') {
@@ -1877,13 +2073,8 @@
                 startWin95Clock();
             }
             
-            // 檢查玩家數量：如果是1人模式且到達第4關，自動跳過 (但玩家不會知道)
-            if (playerCount === '1' && screenId === 'questionsScreen') {
-                // 自動跳過第4關 - 不告訴玩家
-                setTimeout(() => {
-                    showScreen('level3Screen');
-                }, 1000); // 延遲1秒讓畫面閃過
-            }
+            // 檢查玩家數量：如果是1人模式且到達第4關，不自動跳過，改為顯示問題
+            // 所以移除自動跳過邏輯
         }
 
         // ========== Windows 95 時鐘函數 ==========
@@ -1925,6 +2116,13 @@
             const minutes = String(currentTime.getMinutes()).padStart(2, '0');
             
             clockElement.textContent = `${hours}:${minutes}`;
+        }
+
+        // ========== 電車站開放式問題 ==========
+        function setRandomQuestion() {
+            let q = randomQuestions[Math.floor(Math.random()*randomQuestions.length)];
+            document.getElementById('tramQuestionText').textContent = q; 
+            playTone(600,0.1);
         }
 
         // ========== 成功提示 ==========
@@ -2089,7 +2287,7 @@
             }
         }
 
-        // ========== 電車等候 ==========
+        // ========== 電車等候 (多人模式用) ==========
         function startTramWaiting() {
             tramWaitSeconds = 7*60; tramArrived = false;
             updateTramTimerDisplay();
@@ -2111,15 +2309,12 @@
                 }
             },1000);
         }
+        
         function updateTramTimerDisplay() {
             let m = Math.floor(tramWaitSeconds/60), s = tramWaitSeconds%60;
             document.getElementById('tramWaitTimer').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
         }
-        function setRandomQuestion() {
-            let q = randomQuestions[Math.floor(Math.random()*randomQuestions.length)];
-            document.getElementById('tramQuestionText').textContent = q; 
-            playTone(600,0.1);
-        }
+        
         function boardTram() {
             if(tramTimerInterval) clearInterval(tramTimerInterval);
             playSuccessSound();
@@ -2282,9 +2477,7 @@
                 });
             });
 
-            // 電車聊天
-            document.getElementById('tramChatBtn').addEventListener('click', setRandomQuestion);
-
+            // 電車聊天 (多人模式用) - 事件會在 renderTramQuestion 中重新綁定
             // 上車按鈕
             document.getElementById('boardTramBtn').addEventListener('click', function() { 
                 if(tramArrived) boardTram(); 
