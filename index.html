@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <style>
-        /* ----- 完整保留所有原始樣式 ----- */
+        /* ----- 完整保留所有原始樣式 (保持不變) ----- */
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
@@ -1492,7 +1492,8 @@
                 question: "叮叮成年最新車費是多少",
                 options: ["A. $3", "B. $2", "C. $3.3", "D. $1.6"],
                 correct: "C",
-                fact: "" // 沒有特別冷知識
+                fact: "",
+                answered: false
             },
             {
                 question: "「絲襪奶茶」個名點嚟？",
@@ -1503,7 +1504,8 @@
                     "D. 創辦人叫「絲襪姐」，因沖奶茶時穿着絲襪出名"
                 ],
                 correct: "B",
-                fact: "（沖茶用嘅白布袋，用耐咗染上茶色，垂下嚟嘅形狀似絲襪）"
+                fact: "（沖茶用嘅白布袋，用耐咗染上茶色，垂下嚟嘅形狀似絲襪）",
+                answered: false
             },
             {
                 question: "「通花鐵閘」以前主要用嚟做咩？",
@@ -1514,7 +1516,8 @@
                     "D. 劃分舖頭範圍"
                 ],
                 correct: "B",
-                fact: "📌 冷知識：通花鐵閘嘅圖案有例如「福」「壽」字、花鳥圖案，反映師傅嘅手工同心思"
+                fact: "📌 冷知識：通花鐵閘嘅圖案有例如「福」「壽」字、花鳥圖案，反映師傅嘅手工同心思",
+                answered: false
             },
             {
                 question: "以前香港「制水」係指咩？",
@@ -1525,7 +1528,8 @@
                     "D. 只准飲樽裝水"
                 ],
                 correct: "A",
-                fact: "（1960-70年代香港成日制水，居民要擔水、排隊等水車）"
+                fact: "（1960-70年代香港成日制水，居民要擔水、排隊等水車）",
+                answered: false
             }
         ];
 
@@ -1949,10 +1953,35 @@
                 // 重新綁定聊天按鈕事件
                 document.getElementById('tramChatBtn').addEventListener('click', setRandomQuestion);
             } else {
-                // 單人模式：顯示選擇題
+                // 單人模式：重置已回答標記 (如果第一次進入)
+                if (currentQuestionIndex === 0 && questionsAnswered === 0) {
+                    tramQuestions.forEach(q => q.answered = false);
+                }
+                
+                // 尋找第一個未回答的問題
+                let nextUnansweredIndex = -1;
+                for (let i = 0; i < tramQuestions.length; i++) {
+                    if (!tramQuestions[i].answered) {
+                        nextUnansweredIndex = i;
+                        break;
+                    }
+                }
+                
+                if (nextUnansweredIndex === -1 || questionsAnswered >= 3) {
+                    // 所有問題都答完了，電車到站
+                    tramArrived = true;
+                    if (tramTimerInterval) clearInterval(tramTimerInterval);
+                    
+                    tramContent.innerHTML = `<div class="tram-message" id="tramMessage">🚃 電車終於到站！快啲上車啦～</div>`;
+                    document.getElementById('boardTramBtn').classList.remove('hidden');
+                    return;
+                }
+                
+                currentQuestionIndex = nextUnansweredIndex;
                 const q = tramQuestions[currentQuestionIndex];
                 const progressText = i18nStrings[currentLang]['questionProgress'] || '問題 {current}/{total}';
-                const progress = progressText.replace('{current}', currentQuestionIndex + 1).replace('{total}', tramQuestions.length);
+                const answeredCount = tramQuestions.filter(q => q.answered).length;
+                const progress = progressText.replace('{current}', answeredCount + 1).replace('{total}', tramQuestions.length);
                 
                 let optionsHtml = '';
                 q.options.forEach((opt, idx) => {
@@ -2007,18 +2036,36 @@
                 playSuccessSound();
                 questionsAnswered++;
                 
-                if (questionsAnswered >= 3) {
-                    // 已經答對3題，電車到站
+                // 標記當前問題為已回答
+                tramQuestions[currentQuestionIndex].answered = true;
+                
+                // 尋找下一個未回答的問題
+                let nextIndex = -1;
+                for (let i = 0; i < tramQuestions.length; i++) {
+                    if (!tramQuestions[i].answered) {
+                        nextIndex = i;
+                        break;
+                    }
+                }
+                
+                if (questionsAnswered >= 3 || nextIndex === -1) {
+                    // 已經答對3題或所有問題都答完了，電車到站
                     tramArrived = true;
                     if (tramTimerInterval) clearInterval(tramTimerInterval);
-                    document.getElementById('tramMessage').innerHTML = i18nStrings[currentLang]['tramArrived'] || '🚃 電車終於到站！快啲上車啦～';
+                    
+                    // 顯示成功訊息和上車按鈕
+                    const tramContent = document.getElementById('tramContent');
+                    if (tramContent) {
+                        tramContent.innerHTML = `<div class="tram-message" id="tramMessage">🚃 電車終於到站！快啲上車啦～</div>`;
+                    }
+                    
                     document.getElementById('boardTramBtn').classList.remove('hidden');
                     
                     // 顯示成功訊息
                     showSuccess('🎉', '成功！', '電車到站啦！', null, 2000);
                 } else {
                     // 下一題
-                    currentQuestionIndex = (currentQuestionIndex + 1) % tramQuestions.length;
+                    currentQuestionIndex = nextIndex;
                     renderTramQuestion();
                     showModal('✅ 答對！', '正確', '✅');
                 }
@@ -2048,7 +2095,13 @@
                 currentQuestionIndex = 0;
                 questionsAnswered = 0;
                 selectedOption = null;
+                tramQuestions.forEach(q => q.answered = false);
                 renderTramQuestion();
+                
+                // 如果是多人模式，啟動計時器
+                if (playerCount === '2') {
+                    startTramWaiting();
+                }
             } else if (screenId === 'level3Screen') {
                 currentLevel = 5;
             } else if (screenId === 'finalScreen') {
@@ -2072,9 +2125,6 @@
             if (screenId === 'win95LoginScreen') {
                 startWin95Clock();
             }
-            
-            // 檢查玩家數量：如果是1人模式且到達第4關，不自動跳過，改為顯示問題
-            // 所以移除自動跳過邏輯
         }
 
         // ========== Windows 95 時鐘函數 ==========
@@ -2279,7 +2329,6 @@
                     function() { 
                         showReflection(3);
                         showScreen('questionsScreen'); 
-                        startTramWaiting(); 
                     }, 5000);
             } else { 
                 showInputStatus('level2Status', i18nStrings[currentLang]['passwordError'] || '密碼錯誤，請重試！', 'error'); 
@@ -2477,7 +2526,6 @@
                 });
             });
 
-            // 電車聊天 (多人模式用) - 事件會在 renderTramQuestion 中重新綁定
             // 上車按鈕
             document.getElementById('boardTramBtn').addEventListener('click', function() { 
                 if(tramArrived) boardTram(); 
