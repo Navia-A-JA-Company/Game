@@ -740,6 +740,57 @@
         .success-overlay.show { display: flex; }
         .success-content { text-align: center; padding: 50px; background: var(--bg-card); border-radius: 30px; border: 4px solid var(--accent-1); box-shadow: 0 0 60px var(--shadow-glow); max-width: 450px; }
         .hidden { display: none !important; }
+
+        /* 新樣式：密碼錯誤的明顯反饋 */
+        .input-status.error {
+            color: var(--danger);
+            font-weight: bold;
+            background: rgba(255, 71, 87, 0.2);
+            border: 1px solid var(--danger);
+            padding: 10px;
+            border-radius: 8px;
+            animation: shake 0.4s ease-in-out;
+            margin-top: 10px;
+        }
+        .input-status.success {
+            color: var(--success);
+            font-weight: bold;
+            background: rgba(46, 213, 115, 0.2);
+            border: 1px solid var(--success);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .input-status.show {
+            display: block;
+        }
+
+        .password-input-error {
+            border: 3px solid var(--danger) !important;
+            box-shadow: 0 0 15px var(--danger);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        /* 音量提示橫幅 */
+        .volume-prompt {
+            background: rgba(255, 215, 0, 0.9);
+            color: #000;
+            font-weight: bold;
+            padding: 12px 30px;
+            border-radius: 50px;
+            margin: 20px auto 30px;
+            max-width: 600px;
+            text-align: center;
+            font-size: 1.3rem;
+            border: 2px solid white;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.8);
+            animation: pulse 1.5s infinite;
+            backdrop-filter: blur(4px);
+        }
+        .volume-prompt span {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
         @media (max-width: 480px) {
             .menu-title { font-size: 2.8rem; } 
             .menu-btn { padding: 18px 50px; font-size: 1.5rem; }
@@ -872,6 +923,11 @@
         <div class="menu-screen">
             <div class="menu-title" data-i18n="gameTitle">迷途顯影</div>
             <div class="menu-sub" data-i18n="gameSub">Race to the Peak</div>
+
+            <!-- 音量提示橫幅 (新增) -->
+            <div class="volume-prompt">
+                <span>🔊</span> 請先開啟裝置音量，遊戲包含重要音效！ <span>🔊</span>
+            </div>
             
             <!-- 玩家數量選擇器 (移到主選單) - 移除所有關於跳過第4關的提示 -->
             <div class="player-count-selector">
@@ -1222,14 +1278,14 @@
                 'confirm': '確定',
                 'success': '成功！',
                 'continueNext': '繼續下一關',
-                'loginError': '密碼錯誤，請重新輸入！',
+                'loginError': '❌ 密碼錯誤，請重新輸入！',
                 'loginFail': '登入失敗',
                 'accessDenied': '存取被拒',
-                'wrongNumber': '號碼錯誤，請重試！',
+                'wrongNumber': '❌ 號碼錯誤，請重試！',
                 'callWrong': '打錯了！這是',
                 'callWrong2': '的電話。',
                 'enterNumber': '請先輸入號碼',
-                'passwordError': '密碼錯誤，請重試！',
+                'passwordError': '❌ 密碼錯誤，請重試！',
                 'enterFull': '請輸入完整密碼',
                 'enterFullNumber': '請輸入完整號碼',
                 'tramArrived': '🚃 電車終於到站！快啲上車啦～',
@@ -1347,14 +1403,14 @@
                 'confirm': 'OK',
                 'success': 'Success!',
                 'continueNext': 'Continue to next level',
-                'loginError': 'Incorrect password, please try again!',
+                'loginError': '❌ Incorrect password, please try again!',
                 'loginFail': 'Login Failed',
                 'accessDenied': 'Access Denied',
-                'wrongNumber': 'Wrong number, please try again!',
+                'wrongNumber': '❌ Wrong number, please try again!',
                 'callWrong': 'Wrong number! This is ',
                 'callWrong2': '\'s phone.',
                 'enterNumber': 'Please enter a number',
-                'passwordError': 'Incorrect password, please try again!',
+                'passwordError': '❌ Incorrect password, please try again!',
                 'enterFull': 'Please enter full password',
                 'enterFullNumber': 'Please enter full number',
                 'tramArrived': '🚃 Tram has finally arrived! Board now!',
@@ -1446,14 +1502,14 @@
                 'confirm': '确定',
                 'success': '成功！',
                 'continueNext': '继续下一关',
-                'loginError': '密码错误，请重新输入！',
+                'loginError': '❌ 密码错误，请重新输入！',
                 'loginFail': '登录失败',
                 'accessDenied': '存取被拒',
-                'wrongNumber': '号码错误，请重试！',
+                'wrongNumber': '❌ 号码错误，请重试！',
                 'callWrong': '打错了！这是',
                 'callWrong2': '的电话。',
                 'enterNumber': '请先输入号码',
-                'passwordError': '密码错误，请重试！',
+                'passwordError': '❌ 密码错误，请重试！',
                 'enterFull': '请输入完整密码',
                 'enterFullNumber': '请输入完整号码',
                 'tramArrived': '🚃 电车终于到站！快上车吧～',
@@ -2331,8 +2387,15 @@
                         showScreen('questionsScreen'); 
                     }, 5000);
             } else { 
-                showInputStatus('level2Status', i18nStrings[currentLang]['passwordError'] || '密碼錯誤，請重試！', 'error'); 
+                // 密碼錯誤，顯示紅色錯誤訊息並加入動畫
+                showInputStatus('level2Status', i18nStrings[currentLang]['passwordError'] || '❌ 密碼錯誤，請重試！', 'error'); 
                 playErrorSound(); 
+                // 添加抖動動畫到輸入槽
+                const displaySlots = document.querySelectorAll('#password2Display .password-slot');
+                displaySlots.forEach(slot => {
+                    slot.classList.add('password-input-error');
+                    setTimeout(() => slot.classList.remove('password-input-error'), 500);
+                });
             }
         }
 
@@ -2399,8 +2462,15 @@
                         showScreen('finalScreen'); 
                     }, 5000);
             } else { 
-                showInputStatus('level3Status', i18nStrings[currentLang]['wrongNumber'] || '號碼錯誤，請重試！', 'error'); 
+                // 密碼錯誤，顯示紅色錯誤訊息並加入動畫
+                showInputStatus('level3Status', i18nStrings[currentLang]['wrongNumber'] || '❌ 號碼錯誤，請重試！', 'error'); 
                 playErrorSound(); 
+                // 添加抖動動畫到輸入槽
+                const displaySlots = document.querySelectorAll('#password3Display .password-slot');
+                displaySlots.forEach(slot => {
+                    slot.classList.add('password-input-error');
+                    setTimeout(() => slot.classList.remove('password-input-error'), 500);
+                });
             }
         }
 
@@ -2470,8 +2540,13 @@
                         }, 3000);
                 } else {
                     playErrorSound();
-                    showModal(i18nStrings[currentLang]['loginError'] || '密碼錯誤，請重新輸入！', 
+                    // 密碼錯誤，顯示Modal和明顯視覺提示
+                    showModal(i18nStrings[currentLang]['loginError'] || '❌ 密碼錯誤，請重新輸入！', 
                              i18nStrings[currentLang]['loginFail'] || '登入失敗', '⛔');
+                    // 添加抖動動畫到輸入框
+                    const passInput = document.getElementById('win95pass');
+                    passInput.classList.add('password-input-error');
+                    setTimeout(() => passInput.classList.remove('password-input-error'), 500);
                 }
             });
 
