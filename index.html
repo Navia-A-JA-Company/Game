@@ -1720,6 +1720,22 @@
             if (audioContext.state === 'suspended') audioContext.resume();
             return audioContext;
         }
+        // ========== 播放音頻文件 ==========
+function playAudio(filename) {
+    // GitHub 原始檔案 URL - 請替換為你的實際路徑
+    const baseUrl = 'https://raw.githubusercontent.com/Navia-A-JA-Company/Game/main/';
+    const audioUrl = baseUrl + filename;
+    
+    console.log(`嘗試播放: ${audioUrl}`);
+    
+    // 創建並播放音頻
+    const audio = new Audio(audioUrl);
+    audio.play().catch(e => {
+        console.log('音頻播放失敗:', e);
+        // 如果播放失敗，用音效代替
+        playTone(400, 0.2);
+    });
+}
         function playTone(freq, dur) { 
             let ctx = getAudioContext(); if (!ctx) return;
             let osc = ctx.createOscillator(), gn = ctx.createGain();
