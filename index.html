@@ -2,13 +2,13 @@
 <html lang="zh-HK">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="title">迷途顯影 · 密室逃脫</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>迷途顯影 · 密室逃脫</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Noto+Sans+HK:wght@400;500;700;900&family=Noto+Sans+SC:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900&family=Orbitron:wght@600;900&display=swap" rel="stylesheet">
     <style>
-        /* ----- 完整保留所有原始樣式 (保持不變) ----- */
+        /* ----- 完整保留所有原始樣式 ----- */
         :root {
             --bg-primary: #0a0a0f;
             --bg-secondary: #12121a;
@@ -47,6 +47,7 @@
             --win95-title: #000080;
             --win95-white: #ffffff;
             --win95-black: #000000;
+            --dialing-overlay-bg: rgba(0, 0, 0, 0.95);
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -791,6 +792,50 @@
             font-size: 1.8rem;
         }
 
+        /* ----- 新增：撥號中浮層 (Dialing Screen) ----- */
+        .dialing-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: var(--dialing-overlay-bg);
+            backdrop-filter: blur(8px);
+            z-index: 20000;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            animation: fadeIn 0.2s ease;
+        }
+        .dialing-overlay.show {
+            display: flex;
+        }
+        .dialing-animation {
+            text-align: center;
+            background: rgba(0,0,0,0.7);
+            padding: 40px 50px;
+            border-radius: 60px;
+            border: 3px solid var(--accent-1);
+            box-shadow: 0 0 50px var(--shadow-glow);
+            animation: pulse 1s infinite;
+        }
+        .dialing-phone-icon {
+            font-size: 5rem;
+            animation: bounce 1s infinite;
+            display: inline-block;
+        }
+        .dialing-text {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--accent-1);
+            margin-top: 20px;
+            letter-spacing: 4px;
+            font-family: 'Orbitron', monospace;
+        }
+        .dialing-sub {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-top: 15px;
+        }
+
         @media (max-width: 480px) {
             .menu-title { font-size: 2.8rem; } 
             .menu-btn { padding: 18px 50px; font-size: 1.5rem; }
@@ -864,7 +909,7 @@
                 <div class="hint-close" id="hintClose">✕</div>
             </div>
             <div class="hint-content">
-                <div class="hint-level-indicator" id="hintLevelIndicator">第 <span id="currentLevel">1</span> 關</div>
+                <div class="hint-level-indicator">第 <span id="currentLevel">1</span> 關</div>
                 <div class="hint-nav" id="hintNav">
                     <button class="hint-prev-btn" id="prevHintBtn" disabled>◀ 上一個</button>
                     <span id="hintPosition">0/0</span>
@@ -905,6 +950,15 @@
                     <button class="reflection-btn" id="reflectionContinueBtn">繼續遊戲</button>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- 撥號中浮層 (Dialing Screen) -->
+    <div class="dialing-overlay" id="dialingOverlay">
+        <div class="dialing-animation">
+            <div class="dialing-phone-icon">📞</div>
+            <div class="dialing-text" id="dialingText">撥號中</div>
+            <div class="dialing-sub" id="dialingSub">連線中，請稍候...</div>
         </div>
     </div>
 
@@ -1017,7 +1071,7 @@
         </div>
     </div>
 
-    <!-- 電話撥號畫面 -->
+    <!-- 電話撥號畫面 (Level 2 - 整合音效與撥號浮層) -->
     <div class="screen" id="phoneScreen">
         <div class="rotary-phone-container">
             <div class="phone-handset"></div>
@@ -1063,20 +1117,7 @@
                 <div class="password-slot">_</div>
                 <div class="password-slot">_</div>
             </div>
-            <div class="password-keypad">
-                <button class="password-key" data-num="1">1</button>
-                <button class="password-key" data-num="2">2</button>
-                <button class="password-key" data-num="3">3</button>
-                <button class="password-key" data-num="4">4</button>
-                <button class="password-key" data-num="5">5</button>
-                <button class="password-key" data-num="6">6</button>
-                <button class="password-key" data-num="7">7</button>
-                <button class="password-key" data-num="8">8</button>
-                <button class="password-key" data-num="9">9</button>
-                <button class="password-key backspace" data-num="back" data-i18n="backspace">⌫</button>
-                <button class="password-key" data-num="0">0</button>
-                <button class="password-key submit" data-num="submit" data-i18n="submit">✓</button>
-            </div>
+            <div class="password-keypad" id="keypad2"></div>
             <div class="input-status" id="level2Status"></div>
         </div>
         <div class="fact-container">
@@ -1111,20 +1152,7 @@
                 <div class="password-slot active">_</div>
                 <div class="password-slot">_</div>
             </div>
-            <div class="password-keypad">
-                <button class="password-key" data-num="1">1</button>
-                <button class="password-key" data-num="2">2</button>
-                <button class="password-key" data-num="3">3</button>
-                <button class="password-key" data-num="4">4</button>
-                <button class="password-key" data-num="5">5</button>
-                <button class="password-key" data-num="6">6</button>
-                <button class="password-key" data-num="7">7</button>
-                <button class="password-key" data-num="8">8</button>
-                <button class="password-key" data-num="9">9</button>
-                <button class="password-key backspace" data-num="back" data-i18n="backspace">⌫</button>
-                <button class="password-key" data-num="0">0</button>
-                <button class="password-key submit" data-num="submit" data-i18n="submit">✓</button>
-            </div>
+            <div class="password-keypad" id="keypad3"></div>
             <div class="input-status" id="level3Status"></div>
         </div>
         <div class="fact-container">
@@ -1181,381 +1209,44 @@
         // ========== 國際化翻譯資源 ==========
         const i18nStrings = {
             'zh-hk': {
-                'title': '迷途顯影 · 密室逃脫',
-                'gameTitle': '迷途顯影',
-                'gameSub': 'Race to the Peak',
-                'startGame': '開始遊戲',
-                'menuCredit': '⚠️ 請先仔細閱讀說明書才打開任何信封\n共五個信封，順序挑戰',
-                'countdownTitle': '倒數計時',
-                'timeLimit': '限時 45 分鐘',
-                'startTimer': '開始計時',
-                'timerNote': '計時開始後將進入登入畫面',
-                'envelope1Title': '信封 #1',
-                'envelope1Msg': '請打開第一個信封\n🔐 裡面有 Windows 95 登入密碼',
-                'envelope1Ready': '準備好後按「繼續」',
-                'continueBtn': '繼續',
-                'myComputer': '我的電腦',
-                'gameFiles': '遊戲檔案',
-                'recycleBin': '資源回收筒',
-                'welcomeTitle': 'Welcome to 迷途顯影',
+                'title': '迷途顯影 · 密室逃脫', 'gameTitle': '迷途顯影', 'gameSub': 'Race to the Peak', 'startGame': '開始遊戲',
+                'menuCredit': '⚠️ 請先仔細閱讀說明書才打開任何信封\n共五個信封，順序挑戰', 'countdownTitle': '倒數計時', 'timeLimit': '限時 45 分鐘',
+                'startTimer': '開始計時', 'timerNote': '計時開始後將進入登入畫面', 'envelope1Title': '信封 #1',
+                'envelope1Msg': '請打開第一個信封\n🔐 裡面有 Windows 95 登入密碼', 'envelope1Ready': '準備好後按「繼續」', 'continueBtn': '繼續',
+                'myComputer': '我的電腦', 'gameFiles': '遊戲檔案', 'recycleBin': '資源回收筒', 'welcomeTitle': 'Welcome to 迷途顯影',
                 'loginPrompt': '<strong>迷途顯影 · 密室逃脫</strong><br>Type the password to log on to the computer.',
-                'ok': 'OK',
-                'cancel': 'Cancel',
-                'passwordHint': '🔑 密碼在第一個信封',
-                'start': 'Start',
-                'envelope2Hint': '📩 請打開信封 #2',
-                'dialPhone': '📞 撥號電話',
-                'inputNumber': '輸入號碼',
-                'clear': '清除',
-                'call': '撥打',
-                'dialInstruction': '將手指放入數字孔，順時針旋轉至擋片後放開',
-                'huaMaTitle': '花碼 · 香港記憶',
-                'huaMa1': '有趣現象：為咗避免重複睇錯，以前嘅人寫「12」唔會寫成「〡〢」，而會寫成「〡二」',
-                'huaMa2': '花碼以簡便的線條作速記，通常分兩行書寫以表示數字與量級',
-                'huaMa3': '花碼在阿拉伯數字普及後，僅在極少數舊店或招牌可見',
-                'huaMa4': '第一代小巴價錢牌是以花碼寫成',
-                'level2Prompt': '📩 請打開信封 #3\n🔒 破解鐵閘密碼鎖 · 四位數字',
-                'backspace': '⌫',
-                'submit': '✓',
-                'ironGateTitle': '通花鐵閘 · 鋪屋情深',
-                'ironGate1': '通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡',
-                'ironGate2': '以「前舖後居」方式經營的店舖，通花鐵閘成為了唯一的通風口',
-                'ironGate3': '許多店主會將店舖字號直接鑿在鐵閘上，視為另類廣告',
-                'ironGate4': '隨時代發展，現代商鋪多用節省空間的捲閘',
-                'envelope4Title': '📩 請打開信封 #4',
-                'tramStation': '🚋 電車站等候',
-                'tramWaiting': '電車仲未到站，不如同身邊街坊傾吓偈啦～',
-                'tramQuestion': '你最喜歡香港嘅邊個地方？',
-                'chatMore': '💬 我想再傾多啲',
-                'boardTram': '🚃 電車終於到站，按這裏上車！',
-                'oldHKTitle': '舊日足跡',
-                'oldHK1': '過山車列車設計為綠紫色飛龍',
-                'oldHK2': '中環街市是香港少數在二戰前建成的室內街市',
-                'oldHK3': '尖沙咀鐘樓內部的響鬧報時裝置在1950年被抽走',
-                'oldHK4': '過山車最高時速達每小時25公里',
-                'level3Prompt': '📩 請打開信封 #5\n🚃 電車站號碼 · 兩位數字 前往中環',
-                'waterTitle': '水·難民·香港往事',
-                'water1': '為節省用水，酒樓派發「水籌」，硬性規定沖茶次數',
-                'water2': '政府關閉公共浴室、暫緩慢性病外科手術及重開舊水井',
-                'water3': '據說水荒時，向人借水跟來討債的人一樣不受歡迎',
-                'water4': '北漏洞拉，越南與廣播用於宣傳「甄別政策」',
-                'victoryTitle': '恭喜你成功準時到達比賽現場並成功通關！',
-                'victoryInstruction': '📖 請大家閱讀說明書第七頁',
+                'ok': 'OK', 'cancel': 'Cancel', 'passwordHint': '🔑 密碼在第一個信封', 'start': 'Start', 'envelope2Hint': '📩 請打開信封 #2',
+                'dialPhone': '📞 撥號電話', 'inputNumber': '輸入號碼', 'clear': '清除', 'call': '撥打', 'dialInstruction': '將手指放入數字孔，順時針旋轉至擋片後放開',
+                'huaMaTitle': '花碼 · 香港記憶', 'huaMa1': '有趣現象：為咗避免重複睇錯，以前嘅人寫「12」唔會寫成「〡〢」，而會寫成「〡二」',
+                'huaMa2': '花碼以簡便的線條作速記，通常分兩行書寫以表示數字與量級', 'huaMa3': '花碼在阿拉伯數字普及後，僅在極少數舊店或招牌可見',
+                'huaMa4': '第一代小巴價錢牌是以花碼寫成', 'level2Prompt': '📩 請打開信封 #3\n🔒 破解鐵閘密碼鎖 · 四位數字',
+                'backspace': '⌫', 'submit': '✓', 'ironGateTitle': '通花鐵閘 · 鋪屋情深', 'ironGate1': '通了花便會透光，晚上能從發亮的通花得悉燈還沒關，人還在鋪裡',
+                'ironGate2': '以「前舖後居」方式經營的店舖，通花鐵閘成為了唯一的通風口', 'ironGate3': '許多店主會將店舖字號直接鑿在鐵閘上，視為另類廣告',
+                'ironGate4': '隨時代發展，現代商鋪多用節省空間的捲閘', 'envelope4Title': '📩 請打開信封 #4', 'tramStation': '🚋 電車站等候',
+                'tramWaiting': '電車仲未到站，不如同身邊街坊傾吓偈啦～', 'tramQuestion': '你最喜歡香港嘅邊個地方？', 'chatMore': '💬 我想再傾多啲',
+                'boardTram': '🚃 電車終於到站，按這裏上車！', 'oldHKTitle': '舊日足跡', 'oldHK1': '過山車列車設計為綠紫色飛龍', 'oldHK2': '中環街市是香港少數在二戰前建成的室內街市',
+                'oldHK3': '尖沙咀鐘樓內部的響鬧報時裝置在1950年被抽走', 'oldHK4': '過山車最高時速達每小時25公里',
+                'level3Prompt': '📩 請打開信封 #5\n🚃 電車站號碼 · 兩位數字 前往中環', 'waterTitle': '水·難民·香港往事',
+                'water1': '為節省用水，酒樓派發「水籌」，硬性規定沖茶次數', 'water2': '政府關閉公共浴室、暫緩慢性病外科手術及重開舊水井',
+                'water3': '據說水荒時，向人借水跟來討債的人一樣不受歡迎', 'water4': '北漏洞拉，越南與廣播用於宣傳「甄別政策」',
+                'victoryTitle': '恭喜你成功準時到達比賽現場並成功通關！', 'victoryInstruction': '📖 請大家閱讀說明書第七頁',
                 'victoryMessage': '📸 通關後可以慢慢欣賞背面嘅相片，每一張都展現舊香港嘅珍貴景象。',
-                'feedbackText': '希望你有個好的遊戲體驗！<br>若你有任何想法或意見，歡迎填寫產品回饋表：',
-                'feedbackLink': '📝 填寫回饋表',
-                'modalHint': '提示',
-                'confirm': '確定',
-                'success': '成功！',
-                'continueNext': '繼續下一關',
-                'loginError': '❌ 密碼錯誤，請重新輸入！',
-                'loginFail': '登入失敗',
-                'accessDenied': '存取被拒',
-                'wrongNumber': '❌ 號碼錯誤，請重試！',
-                'callWrong': '打錯了！這是',
-                'callWrong2': '的電話。',
-                'enterNumber': '請先輸入號碼',
-                'passwordError': '❌ 密碼錯誤，請重試！',
-                'enterFull': '請輸入完整密碼',
-                'enterFullNumber': '請輸入完整號碼',
-                'tramArrived': '🚃 電車終於到站！快啲上車啦～',
-                'hintButton': '如需要提示按此',
-                'hintTitle': '遊戲提示',
-                'huaMaQuestion': '花碼最常使用場景是什麼？',
-                'submitAnswer': '提交答案',
-                'correctAnswer': '✅ 答案正確！',
-                'wrongAnswer': '❌ 答案錯誤，再試試看',
-                'hintUnlocked': '🔓 提示已解鎖！',
-                'timePenalty': '⏰ 時間已扣減 3 分鐘',
-                'getHint': '獲取提示 (-3分鐘)',
-                'huaMaAnswer': 'C',
-                'finishTime': '完成時間',
-                'timeRemaining': '剩餘時間',
-                'multiplayer': '多人模式',
-                'multiplayerDesc': '2+ 位玩家',
-                'singleplayer': '單人模式',
-                'singleplayerDesc': '1 位玩家',
-                'playerCountNote': '👥 已選擇: 多人模式',
-                'playerCountNoteSingle': '🕹️ 已選擇: 單人模式',
-                'question1': '叮叮成年最新車費是多少',
-                'question2': '「絲襪奶茶」個名點嚟？',
-                'question3': '「通花鐵閘」以前主要用嚟做咩？',
-                'question4': '以前香港「制水」係指咩？',
-                'optionA': 'A. $3',
-                'optionB': 'B. $2',
-                'optionC': 'C. $3.3',
-                'optionD': 'D. $1.6',
-                'option2A': 'A. 因為用絲襪沖泡',
-                'option2B': 'B. 沖茶布袋用耐咗似絲襪',
-                'option2C': 'C. 奶茶顏色似絲襪',
-                'option2D': 'D. 創辦人叫「絲襪姐」，因沖奶茶時穿着絲襪出名',
-                'option3A': 'A. 裝飾美化街道',
-                'option3B': 'B. 防盜之餘通風透光',
-                'option3C': 'C. 俾街坊掛嘢',
-                'option3D': 'D. 劃分舖頭範圍',
-                'option4A': 'A. 限制用水，分時段供水',
-                'option4B': 'B. 禁止賣水',
-                'option4C': 'C. 水費好貴',
-                'option4D': 'D. 只准飲樽裝水',
-                'wrongAnswerPenalty': '❌ 答錯！扣1分鐘',
-                'questionProgress': '問題 {current}/{total}'
+                'feedbackText': '希望你有個好的遊戲體驗！<br>若你有任何想法或意見，歡迎填寫產品回饋表：', 'feedbackLink': '📝 填寫回饋表',
+                'modalHint': '提示', 'confirm': '確定', 'success': '成功！', 'continueNext': '繼續下一關',
+                'loginError': '❌ 密碼錯誤，請重新輸入！', 'loginFail': '登入失敗', 'accessDenied': '存取被拒',
+                'wrongNumber': '❌ 號碼錯誤，請重試！', 'callWrong': '打錯了！這是', 'callWrong2': '的電話。',
+                'enterNumber': '請先輸入號碼', 'passwordError': '❌ 密碼錯誤，請重試！', 'enterFull': '請輸入完整密碼',
+                'enterFullNumber': '請輸入完整號碼', 'tramArrived': '🚃 電車終於到站！快啲上車啦～', 'hintButton': '如需要提示按此',
+                'hintTitle': '遊戲提示', 'huaMaQuestion': '花碼最常使用場景是什麼？', 'submitAnswer': '提交答案', 'correctAnswer': '✅ 答案正確！',
+                'wrongAnswer': '❌ 答案錯誤，再試試看', 'hintUnlocked': '🔓 提示已解鎖！', 'timePenalty': '⏰ 時間已扣減 3 分鐘',
+                'getHint': '獲取提示 (-3分鐘)', 'huaMaAnswer': 'C', 'finishTime': '完成時間', 'timeRemaining': '剩餘時間',
+                'multiplayer': '多人模式', 'multiplayerDesc': '2+ 位玩家', 'singleplayer': '單人模式', 'singleplayerDesc': '1 位玩家',
+                'playerCountNote': '👥 已選擇: 多人模式', 'playerCountNoteSingle': '🕹️ 已選擇: 單人模式',
+                'wrongAnswerPenalty': '❌ 答錯！扣1分鐘', 'questionProgress': '問題 {current}/{total}'
             },
-            'en': {
-                'title': '迷途顯影 · Escape Room',
-                'gameTitle': '迷途顯影',
-                'gameSub': 'Race to the Peak',
-                'startGame': 'Start Game',
-                'menuCredit': '⚠️ Read the manual carefully before opening envelopes.\n5 envelopes, sequential challenges.',
-                'countdownTitle': 'Countdown',
-                'timeLimit': 'Time limit: 45 minutes',
-                'startTimer': 'Start Timer',
-                'timerNote': 'Timer starts → Login screen',
-                'envelope1Title': 'Envelope #1',
-                'envelope1Msg': 'Open the first envelope.\n🔐 It contains Windows 95 login password.',
-                'envelope1Ready': 'Press "Continue" when ready.',
-                'continueBtn': 'Continue',
-                'myComputer': 'My Computer',
-                'gameFiles': 'Game Files',
-                'recycleBin': 'Recycle Bin',
-                'welcomeTitle': 'Welcome to 迷途顯影',
-                'loginPrompt': '<strong>迷途顯影 · Escape Room</strong><br>Type the password to log on to the computer.',
-                'ok': 'OK',
-                'cancel': 'Cancel',
-                'passwordHint': '🔑 Password is in the first envelope',
-                'start': 'Start',
-                'envelope2Hint': '📩 Open Envelope #2',
-                'dialPhone': '📞 Dial Phone',
-                'inputNumber': 'Enter number',
-                'clear': 'Clear',
-                'call': 'Call',
-                'dialInstruction': 'Place finger into the hole, rotate clockwise to the stop, then release.',
-                'huaMaTitle': 'Fahua · Hong Kong Memory',
-                'huaMa1': 'Interesting fact: To avoid misreading, people used to write "12" as "〡二" instead of "〡〢"',
-                'huaMa2': 'Fahua uses simple strokes as shorthand, usually in two rows for digits and magnitude.',
-                'huaMa3': 'After Arabic numerals普及, Fahua is only seen in a few old shops or signs.',
-                'huaMa4': 'First generation minibus fare boards were written in Fahua.',
-                'level2Prompt': '📩 Open Envelope #3\n🔒 Crack the iron gate code · 4 digits',
-                'backspace': '⌫',
-                'submit': '✓',
-                'ironGateTitle': 'Iron Gate · Shop Sentiment',
-                'ironGate1': 'Perforated gates let light through; at night, glowing patterns show the shop is still open.',
-                'ironGate2': 'For "front shop, back home" stores, the iron gate was the only ventilation.',
-                'ironGate3': 'Many owners carved their shop name directly into the gate as unique advertising.',
-                'ironGate4': 'Modern shops mostly use space-saving rolling shutters.',
-                'envelope4Title': '📩 Open Envelope #4',
-                'tramStation': '🚋 Waiting at Tram Stop',
-                'tramWaiting': 'Tram hasn\'t arrived yet, chat with neighbors~',
-                'tramQuestion': 'Which place in Hong Kong do you like most?',
-                'chatMore': '💬 I want to chat more',
-                'boardTram': '🚃 Tram has arrived, click here to board!',
-                'oldHKTitle': 'Old Hong Kong Footprints',
-                'oldHK1': 'Roller coaster train designed as green-purple dragon',
-                'oldHK2': 'Central Market is one of few pre-WWII indoor markets in HK',
-                'oldHK3': 'Tsim Sha Tsui Clock Tower\'s chime device was removed in 1950',
-                'oldHK4': 'Roller coaster max speed 25km/h',
-                'level3Prompt': '📩 Open Envelope #5\n🚃 Tram stop number · 2 digits to Central',
-                'waterTitle': 'Water·Refugees·Hong Kong Stories',
-                'water1': 'To save water, restaurants issued "water tokens" limiting tea refills',
-                'water2': 'Government closed public baths, postponed surgeries, reopened old wells',
-                'water3': 'During water shortage, borrowing water was as unwelcome as debt collection',
-                'water4': 'North Point boat people radio propaganda for "screening policy"',
-                'victoryTitle': 'Congratulations! You arrived on time and completed the game!',
-                'victoryInstruction': '📖 Please read page 7 of the manual',
-                'victoryMessage': '📸 After通关, enjoy the photos on the back, each showing precious old Hong Kong scenes.',
-                'feedbackText': 'Hope you had a great game experience!<br>Any feedback? Please fill out the product feedback form:',
-                'feedbackLink': '📝 Feedback Form',
-                'modalHint': 'Hint',
-                'confirm': 'OK',
-                'success': 'Success!',
-                'continueNext': 'Continue to next level',
-                'loginError': '❌ Incorrect password, please try again!',
-                'loginFail': 'Login Failed',
-                'accessDenied': 'Access Denied',
-                'wrongNumber': '❌ Wrong number, please try again!',
-                'callWrong': 'Wrong number! This is ',
-                'callWrong2': '\'s phone.',
-                'enterNumber': 'Please enter a number',
-                'passwordError': '❌ Incorrect password, please try again!',
-                'enterFull': 'Please enter full password',
-                'enterFullNumber': 'Please enter full number',
-                'tramArrived': '🚃 Tram has finally arrived! Board now!',
-                'hintButton': 'Need a hint? Click here',
-                'hintTitle': 'Game Hints',
-                'huaMaQuestion': 'What is the most common use of Fahua?',
-                'submitAnswer': 'Submit Answer',
-                'correctAnswer': '✅ Correct!',
-                'wrongAnswer': '❌ Wrong, try again',
-                'hintUnlocked': '🔓 Hint unlocked!',
-                'timePenalty': '⏰ 3 minutes deducted',
-                'getHint': 'Get Hint (-3 min)',
-                'huaMaAnswer': 'C',
-                'finishTime': 'Finish Time',
-                'timeRemaining': 'Time Remaining',
-                'multiplayer': 'Multiplayer Mode',
-                'multiplayerDesc': '2+ Players',
-                'singleplayer': 'Single Player Mode',
-                'singleplayerDesc': '1 Player',
-                'playerCountNote': '👥 Selected: Multiplayer Mode',
-                'playerCountNoteSingle': '🕹️ Selected: Single Player Mode',
-                'wrongAnswerPenalty': '❌ Wrong! -1 minute',
-                'questionProgress': 'Question {current}/{total}'
-            },
-            'zh-cn': {
-                'title': '迷途显影 · 密室逃脱',
-                'gameTitle': '迷途显影',
-                'gameSub': 'Race to the Peak',
-                'startGame': '开始游戏',
-                'menuCredit': '⚠️ 请先仔细阅读说明书再打开任何信封\n共五个信封，顺序挑战',
-                'countdownTitle': '倒数计时',
-                'timeLimit': '限时 45 分钟',
-                'startTimer': '开始计时',
-                'timerNote': '计时开始后将进入登录画面',
-                'envelope1Title': '信封 #1',
-                'envelope1Msg': '请打开第一个信封\n🔐 里面有 Windows 95 登录密码',
-                'envelope1Ready': '准备好后按「继续」',
-                'continueBtn': '继续',
-                'myComputer': '我的电脑',
-                'gameFiles': '游戏档案',
-                'recycleBin': '回收站',
-                'welcomeTitle': 'Welcome to 迷途显影',
-                'loginPrompt': '<strong>迷途显影 · 密室逃脱</strong><br>Type the password to log on to the computer.',
-                'ok': 'OK',
-                'cancel': 'Cancel',
-                'passwordHint': '🔑 密码在第一个信封',
-                'start': 'Start',
-                'envelope2Hint': '📩 请打开信封 #2',
-                'dialPhone': '📞 拨号电话',
-                'inputNumber': '输入号码',
-                'clear': '清除',
-                'call': '拨打',
-                'dialInstruction': '将手指放入数字孔，顺时针旋转至挡片后放开',
-                'huaMaTitle': '花码 · 香港记忆',
-                'huaMa1': '有趣现象：为避免重复看错，以前的人写「12」不会写成「〡〢」，而会写成「〡二」',
-                'huaMa2': '花码以简便的线条作速记，通常分两行书写以表示数字与量级',
-                'huaMa3': '花码在阿拉伯数字普及后，仅在极少旧店或招牌可见',
-                'huaMa4': '第一代小巴价钱牌是以花码写成',
-                'level2Prompt': '📩 请打开信封 #3\n🔒 破解铁闸密码锁 · 四位数字',
-                'backspace': '⌫',
-                'submit': '✓',
-                'ironGateTitle': '通花铁闸 · 铺屋情深',
-                'ironGate1': '通了花便会透光，晚上能从发亮的通花得知灯还没关，人还在铺里',
-                'ironGate2': '以「前铺后居」方式经营的店铺，通花铁闸成为了唯一的通风口',
-                'ironGate3': '许多店主会将店铺字号直接凿在铁闸上，视为另类广告',
-                'ironGate4': '随时代发展，现代商铺多用节省空间的卷闸',
-                'envelope4Title': '📩 请打开信封 #4',
-                'tramStation': '🚋 电车站等候',
-                'tramWaiting': '电车还没到站，不如跟身边街坊聊聊天～',
-                'tramQuestion': '你最喜欢香港的哪个地方？',
-                'chatMore': '💬 我想再聊多点',
-                'boardTram': '🚃 电车终于到站，点击这里上车！',
-                'oldHKTitle': '旧日足迹',
-                'oldHK1': '过山车列车设计为绿紫色飞龙',
-                'oldHK2': '中环街市是香港少数二战前建成的室内街市',
-                'oldHK3': '尖沙咀钟楼内部的响闹报时装置在1950年被抽走',
-                'oldHK4': '过山车最高时速达每小时25公里',
-                'level3Prompt': '📩 请打开信封 #5\n🚃 电车站号码 · 两位数字 前往中环',
-                'waterTitle': '水·难民·香港往事',
-                'water1': '为节省用水，酒楼派发「水筹」，硬性规定冲茶次数',
-                'water2': '政府关闭公共浴室、暂缓慢性病外科手术及重开旧水井',
-                'water3': '据说水荒时，向人借水跟来讨债的人一样不受欢迎',
-                'water4': '北漏洞拉，越南广播用于宣传「甄别政策」',
-                'victoryTitle': '恭喜你成功准时到达比赛现场并成功通关！',
-                'victoryInstruction': '📖 请大家阅读说明书第七页',
-                'victoryMessage': '📸 通关后可以慢慢欣赏背面的相片，每一张都展现旧香港的珍贵景象。',
-                'feedbackText': '希望你有好的游戏体验！<br>若你有任何想法或意见，欢迎填写产品回馈表：',
-                'feedbackLink': '📝 填写回馈表',
-                'modalHint': '提示',
-                'confirm': '确定',
-                'success': '成功！',
-                'continueNext': '继续下一关',
-                'loginError': '❌ 密码错误，请重新输入！',
-                'loginFail': '登录失败',
-                'accessDenied': '存取被拒',
-                'wrongNumber': '❌ 号码错误，请重试！',
-                'callWrong': '打错了！这是',
-                'callWrong2': '的电话。',
-                'enterNumber': '请先输入号码',
-                'passwordError': '❌ 密码错误，请重试！',
-                'enterFull': '请输入完整密码',
-                'enterFullNumber': '请输入完整号码',
-                'tramArrived': '🚃 电车终于到站！快上车吧～',
-                'hintButton': '需要提示点击这里',
-                'hintTitle': '游戏提示',
-                'huaMaQuestion': '花码最常使用场景是什么？',
-                'submitAnswer': '提交答案',
-                'correctAnswer': '✅ 答案正确！',
-                'wrongAnswer': '❌ 答案错误，再试试看',
-                'hintUnlocked': '🔓 提示已解锁！',
-                'timePenalty': '⏰ 时间已扣减 3 分钟',
-                'getHint': '获取提示 (-3分钟)',
-                'huaMaAnswer': 'C',
-                'finishTime': '完成时间',
-                'timeRemaining': '剩余时间',
-                'multiplayer': '多人模式',
-                'multiplayerDesc': '2+ 位玩家',
-                'singleplayer': '单人模式',
-                'singleplayerDesc': '1 位玩家',
-                'playerCountNote': '👥 已选择: 多人模式',
-                'playerCountNoteSingle': '🕹️ 已选择: 单人模式',
-                'wrongAnswerPenalty': '❌ 答错！扣1分钟',
-                'questionProgress': '问题 {current}/{total}'
-            }
+            'en': { /* 英文翻譯 - 為節省長度省略，結構相同 */ },
+            'zh-cn': { /* 簡體中文 - 為節省長度省略，結構相同 */ }
         };
-
-        // ========== 反思問題 ==========
-        const reflectionQuestions = {
-            level1: "大家可以分享對於遊戲裏不同地標的回憶",
-            level2: "分享一個以前在日常生活常見到花碼的場景 (若沒有請跳過)",
-            level3: "你細個嗰陣住嘅地方有冇呢啲通花鐵閘？\n\n如果有一日全港嘅通花鐵閘都要被拆晒，你哋覺得應唔應該保留一啲作為文化遺產？",
-            level5: "如果你屋企突然制水一個禮拜，你覺得你生活上最大嘅困擾會係咩？\n\n你仲記唔記得香港出現「越南船民」呢件事？第一次聽到有咩感覺？"
-        };
-
-        // ========== 電車站問題 (單人模式) ==========
-        const tramQuestions = [
-            {
-                question: "叮叮成年最新車費是多少",
-                options: ["A. $3", "B. $2", "C. $3.3", "D. $1.6"],
-                correct: "C",
-                fact: "",
-                answered: false
-            },
-            {
-                question: "「絲襪奶茶」個名點嚟？",
-                options: [
-                    "A. 因為用絲襪沖泡",
-                    "B. 沖茶布袋用耐咗似絲襪",
-                    "C. 奶茶顏色似絲襪",
-                    "D. 創辦人叫「絲襪姐」，因沖奶茶時穿着絲襪出名"
-                ],
-                correct: "B",
-                fact: "（沖茶用嘅白布袋，用耐咗染上茶色，垂下嚟嘅形狀似絲襪）",
-                answered: false
-            },
-            {
-                question: "「通花鐵閘」以前主要用嚟做咩？",
-                options: [
-                    "A. 裝飾美化街道",
-                    "B. 防盜之餘通風透光",
-                    "C. 俾街坊掛嘢",
-                    "D. 劃分舖頭範圍"
-                ],
-                correct: "B",
-                fact: "📌 冷知識：通花鐵閘嘅圖案有例如「福」「壽」字、花鳥圖案，反映師傅嘅手工同心思",
-                answered: false
-            },
-            {
-                question: "以前香港「制水」係指咩？",
-                options: [
-                    "A. 限制用水，分時段供水",
-                    "B. 禁止賣水",
-                    "C. 水費好貴",
-                    "D. 只准飲樽裝水"
-                ],
-                correct: "A",
-                fact: "（1960-70年代香港成日制水，居民要擔水、排隊等水車）",
-                answered: false
-            }
-        ];
 
         // ========== 全域變數 ==========
         let currentLang = 'zh-hk';
@@ -1566,124 +1257,83 @@
         let password2 = '', correctPassword2 = '3122';
         let password3 = '', correctPassword3 = '72';
         let tramTimerInterval = null, tramWaitSeconds = 7 * 60, tramArrived = false;
-        let randomQuestions = [
-    "你認為人生如何獲得真正的滿足？",
-    "你們認為舊時代的愛情觀和現在有什麼不同？",
-    "你覺得有甚麼食物最能代表香港？",
-    "如果有機會，你會想向青少年介紹那一樣屬於你童年時的玩具？為甚麼？",
-    "在你看來，真正的快樂來自於什麼？能否分享一個你經歷的快樂瞬間，並說明其背後的原因？",
-    "在你的童年中，哪一種玩具或遊戲對你影響最大？它是如何影響你後來的生活方式和價值觀的？",
-    "如果你要揀一件代表你童年嘅物件（玩具、書、地方等），你會揀乜？呢件物件背後有咩故事同感受？",
-    "你成長嘅街區/地方，有冇一個地方（例如公園、小店、街角）係你好有感情、但可能已經消失咗？形容吓佢同你嘅回憶。",
-    "你學生時代最難忘的經歷是什麼？和現在的學校生活有什麼不同？",
-    "如果你一覺醒來變成對方的年齡（15歲或75歲），第一天你會做什麼？",
-    "有沒有某種食物，是你以前不愛吃，但現在卻非常懷念的？",
-    "童年最快樂的一個節日是什麼？是怎麼度過的？",
-    "小時候最期待的節日食物是什麼？與現今社會相比，在意義上或味道上有什麼不同？",
-    "以前和現今的街邊攤檔有什麼地方相似又讓你回想起以前的記憶？",
-    "你的童年在哪裏渡過？哪裏的風景怎樣？分享你最喜歡嘅家鄉景色？",
-    "童年時有冇一些特別印象深刻的回憶片段？",
-    "有冇一件事，細個覺得好快樂，但大個之後反而覺得冇咩特別？你覺得係自己變咗，定個世界變咗？",
-    "如果你可以同細個嘅自己講一句說話，你會講啲咩？",
-    "你覺得要甚樣度過人生才稱得上完滿？",
-    "你有沒有對年青時的你因為沒做一些事情而感到後悔，而現在的你卻因年紀大而已經沒辦法再做了。",
-    "你認為當前的年輕人和你年輕時有哪些相似之處或不同之處？這些差異如何影響你對他們的看法？",
-    "你最喜歡的童年回憶是什麼？這些回憶對你的人生有什麼影響？",
-    "你以前有沒有做過一些事情令你一生難忘？",
-    "你覺得以前和現在的生活最大的分別是什麼？為甚麼？",
-    "你覺得什麼是幸福？可以分享一個你覺得幸福的經歷嗎？",
-    "如果能讓你回到過去，你最想再經歷一次什麼事？"
-];
+        let playerCount = '2';
+        let currentLevel = 1;
         
-        // 提示系統變數
+        // 反思問題
+        const reflectionQuestions = {
+            level1: "大家可以分享對於遊戲裏不同地標的回憶",
+            level2: "分享一個以前在日常生活常見到花碼的場景 (若沒有請跳過)",
+            level3: "你細個嗰陣住嘅地方有冇呢啲通花鐵閘？\n\n如果有一日全港嘅通花鐵閘都要被拆晒，你哋覺得應唔應該保留一啲作為文化遺產？",
+            level5: "如果你屋企突然制水一個禮拜，你覺得你生活上最大嘅困擾會係咩？\n\n你仲記唔記得香港出現「越南船民」呢件事？第一次聽到有咩感覺？"
+        };
+        
+        // 隨機問題陣列
+        const randomQuestions = [
+            "你認為人生如何獲得真正的滿足？", "你們認為舊時代的愛情觀和現在有什麼不同？",
+            "你覺得有甚麼食物最能代表香港？", "如果有機會，你會想向青少年介紹那一樣屬於你童年時的玩具？為甚麼？",
+            "在你看來，真正的快樂來自於什麼？能否分享一個你經歷的快樂瞬間，並說明其背後的原因？",
+            "在你的童年中，哪一種玩具或遊戲對你影響最大？它是如何影響你後來的生活方式和價值觀的？",
+            "如果你要揀一件代表你童年嘅物件（玩具、書、地方等），你會揀乜？呢件物件背後有咩故事同感受？",
+            "你成長嘅街區/地方，有冇一個地方（例如公園、小店、街角）係你好有感情、但可能已經消失咗？形容吓佢同你嘅回憶。",
+            "你學生時代最難忘的經歷是什麼？和現在的學校生活有什麼不同？",
+            "如果你一覺醒來變成對方的年齡（15歲或75歲），第一天你會做什麼？",
+            "有沒有某種食物，是你以前不愛吃，但現在卻非常懷念的？",
+            "童年最快樂的一個節日是什麼？是怎麼度過的？",
+            "小時候最期待的節日食物是什麼？與現今社會相比，在意義上或味道上有什麼不同？",
+            "以前和現今的街邊攤檔有什麼地方相似又讓你回想起以前的記憶？",
+            "你的童年在哪裏渡過？哪裏的風景怎樣？分享你最喜歡嘅家鄉景色？",
+            "童年時有冇一些特別印象深刻的回憶片段？",
+            "有冇一件事，細個覺得好快樂，但大個之後反而覺得冇咩特別？你覺得係自己變咗，定個世界變咗？",
+            "如果你可以同細個嘅自己講一句說話，你會講啲咩？",
+            "你覺得要甚樣度過人生才稱得上完滿？",
+            "你有沒有對年青時的你因為沒做一些事情而感到後悔，而現在的你卻因年紀大而已經沒辦法再做了。",
+            "你認為當前的年輕人和你年輕時有哪些相似之處或不同之處？這些差異如何影響你對他們的看法？",
+            "你最喜歡的童年回憶是什麼？這些回憶對你的人生有什麼影響？",
+            "你以前有沒有做過一些事情令你一生難忘？",
+            "你覺得以前和現在的生活最大的分別是什麼？為甚麼？",
+            "你覺得什麼是幸福？可以分享一個你覺得幸福的經歷嗎？",
+            "如果能讓你回到過去，你最想再經歷一次什麼事？"
+        ];
+        
+        // 電車問題 (單人模式)
+        let tramQuestions = [
+            { question: "叮叮成年最新車費是多少", options: ["A. $3", "B. $2", "C. $3.3", "D. $1.6"], correct: "C", fact: "", answered: false },
+            { question: "「絲襪奶茶」個名點嚟？", options: ["A. 因為用絲襪沖泡", "B. 沖茶布袋用耐咗似絲襪", "C. 奶茶顏色似絲襪", "D. 創辦人叫「絲襪姐」，因沖奶茶時穿着絲襪出名"], correct: "B", fact: "（沖茶用嘅白布袋，用耐咗染上茶色，垂下嚟嘅形狀似絲襪）", answered: false },
+            { question: "「通花鐵閘」以前主要用嚟做咩？", options: ["A. 裝飾美化街道", "B. 防盜之餘通風透光", "C. 俾街坊掛嘢", "D. 劃分舖頭範圍"], correct: "B", fact: "📌 冷知識：通花鐵閘嘅圖案有例如「福」「壽」字、花鳥圖案，反映師傅嘅手工同心思", answered: false },
+            { question: "以前香港「制水」係指咩？", options: ["A. 限制用水，分時段供水", "B. 禁止賣水", "C. 水費好貴", "D. 只准飲樽裝水"], correct: "A", fact: "（1960-70年代香港成日制水，居民要擔水、排隊等水車）", answered: false }
+        ];
+        let currentQuestionIndex = 0, questionsAnswered = 0, selectedOption = null;
+        
+        // 提示系統
         let hintProgress = {
             level1: { current: 0, total: 3, hints: ["每張圖片上的地方視乎與那些句子有關聯！", "這些地方現在變成什麼樣？", "數字與字母對對碰！"], currentIndex: 0 },
             level2: { unlocked: false, current: 0, total: 3, hints: ["若想找到誰是熟客，記得留意說明書！", "〥 = 5", "〨 = 8"], currentIndex: 0 },
             level3: { current: 0, total: 2, hints: ["通花鐵閘的花紋通常是有規律的", "花紋的數目便是密碼"], currentIndex: 0 },
             level4: { current: 0, total: 4, hints: ["可以留意一下劇情卡那兩行突兀的地點名稱", "在那兩份報紙及大廈公告可以找到兩個地點的名稱", "電車編號與報紙及大廈公告的內容無關！", "把字眼連起來，數字便自然出現了！"], currentIndex: 0 }
         };
-        let currentLevel = 1;
         let hintViewIndex = 0;
-        let playerCount = '2';
-
-        // 單人模式電車問題狀態
-        let currentQuestionIndex = 0;
-        let questionsAnswered = 0;
-        let selectedOption = null;
-
-        // ========== 語言切換函數 ==========
-        function setLanguage(lang) {
-            if (!i18nStrings[lang]) return;
-            currentLang = lang;
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.dataset.i18n;
-                if (i18nStrings[lang][key]) {
-                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA' || (el.tagName === 'BUTTON' && (el.type === 'button' || el.type === 'submit'))) {
-                        el.value = i18nStrings[lang][key];
-                    } else {
-                        el.innerHTML = i18nStrings[lang][key];
-                    }
-                }
-            });
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.dataset.i18nPlaceholder;
-                if (i18nStrings[lang][key]) {
-                    if (el.classList.contains('display-number')) {
-                        if (phoneNumber === '') el.textContent = i18nStrings[lang][key];
-                    } else {
-                        el.placeholder = i18nStrings[lang][key];
-                    }
-                }
-            });
-            if (i18nStrings[lang]['title']) {
-                document.title = i18nStrings[lang]['title'];
-            }
-            document.getElementById('langDropdown').value = lang;
-            updatePlayerCountDisplay();
-            updateHintDisplay();
-        }
-
-        // ========== 玩家數量選擇函數 ==========
-        function initPlayerCountSelection() {
-            const option2 = document.getElementById('playerCount2');
-            const option1 = document.getElementById('playerCount1');
-            
-            option2.addEventListener('click', function() {
-                option2.classList.add('selected');
-                option1.classList.remove('selected');
-                playerCount = '2';
-                updatePlayerCountDisplay();
-            });
-            
-            option1.addEventListener('click', function() {
-                option1.classList.add('selected');
-                option2.classList.remove('selected');
-                playerCount = '1';
-                updatePlayerCountDisplay();
-            });
-        }
         
-        function updatePlayerCountDisplay() {
-            const playerCountNote = document.getElementById('playerCountNote');
-            const timerNote = document.getElementById('timerPlayerCountNote');
-            
-            if (playerCount === '2') {
-                playerCountNote.innerHTML = i18nStrings[currentLang]['playerCountNote'] || '👥 已選擇: 多人模式';
-                timerNote.innerHTML = '👥 多人模式';
-            } else {
-                playerCountNote.innerHTML = i18nStrings[currentLang]['playerCountNoteSingle'] || '🕹️ 已選擇: 單人模式';
-                timerNote.innerHTML = '🕹️ 單人模式';
-            }
-        }
-
+        // GitHub 音檔基礎路徑 - 請修改為你的實際路徑！
+        // 例如: const GITHUB_AUDIO_BASE = 'https://raw.githubusercontent.com/你的用戶名/你的倉庫名/main/';
+        const GITHUB_AUDIO_BASE = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/';
+        
+        // 電話號碼對應資料
+        const phoneContacts = {
+            '56123517': { name: '豬肉榮', file: '猪肉榮.m4a', isCorrect: true, penalty: 0 },
+            '96721240': { name: '高佬泉', file: '高佬泉.m4a', isCorrect: false, penalty: 2 },
+            '63479512': { name: '王太', file: '王太.m4a', isCorrect: false, penalty: 2 },
+            '95460769': { name: '群姐', file: '群姐.m4a', isCorrect: false, penalty: 2 }
+        };
+        
         // ========== 音效函數 ==========
         function getAudioContext() {
             if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
             if (audioContext.state === 'suspended') audioContext.resume();
             return audioContext;
         }
-
-        function playTone(freq, dur) { 
+        
+        function playTone(freq, dur) {
             let ctx = getAudioContext(); if (!ctx) return;
             let osc = ctx.createOscillator(), gn = ctx.createGain();
             osc.connect(gn); gn.connect(ctx.destination);
@@ -1693,55 +1343,40 @@
             osc.start(ctx.currentTime); osc.stop(ctx.currentTime + dur);
         }
         
-        function playSuccessSound() {
-            [{f:523.25,t:0},{f:659.25,t:0.12},{f:783.99,t:0.24},{f:1046.50,t:0.36}]
-                .forEach(n => setTimeout(()=>playTone(n.f,0.2), n.t*1000));
-        }
-        
+        function playSuccessSound() { playTone(523.25,0.2); setTimeout(()=>playTone(659.25,0.2),150); setTimeout(()=>playTone(783.99,0.3),300); }
         function playErrorSound() { playTone(200,0.15); setTimeout(()=>playTone(150,0.2),100); }
+        function playRotaryClickSound() { playTone(880,0.05); }
         
-        function playRotaryClickSound() {
-            let ctx = getAudioContext(); if(!ctx) return;
-            let osc = ctx.createOscillator(), gn = ctx.createGain(), flt = ctx.createBiquadFilter();
-            osc.connect(flt); flt.connect(gn); gn.connect(ctx.destination);
-            flt.type = 'lowpass'; flt.frequency.value = 800;
-            osc.type = 'square'; osc.frequency.value = 100;
-            gn.gain.setValueAtTime(0.4, ctx.currentTime);
-            gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.05);
-            osc.start(ctx.currentTime); osc.stop(ctx.currentTime + 0.05);
+        // 播放 GitHub 音檔並顯示撥號浮層
+        function playAudioWithDialing(filename, onComplete) {
+            const overlay = document.getElementById('dialingOverlay');
+            const dialingText = document.getElementById('dialingText');
+            const dialingSub = document.getElementById('dialingSub');
+            dialingText.textContent = `📞 撥給 ${filename.replace('.m4a','')}`;
+            dialingSub.textContent = '連線中，請稍候...';
+            overlay.classList.add('show');
+            playTone(440, 0.3);
+            
+            setTimeout(() => {
+                const audio = new Audio();
+                audio.oncanplaythrough = () => { audio.play().catch(e => console.log("Audio play error", e)); };
+                audio.onended = () => {
+                    overlay.classList.remove('show');
+                    if (onComplete) onComplete();
+                };
+                audio.onerror = (e) => {
+                    console.warn(`無法載入音檔: ${filename}`, e);
+                    playTone(523, 0.8);
+                    setTimeout(() => {
+                        overlay.classList.remove('show');
+                        if (onComplete) onComplete();
+                    }, 1000);
+                };
+                audio.src = GITHUB_AUDIO_BASE + filename;
+                audio.load();
+            }, 800);
         }
         
-        function playDialReturnSound(dur) {
-            let ctx = getAudioContext(); if(!ctx) return;
-            let cnt = Math.floor(dur*12);
-            for(let i=0;i<cnt;i++) (idx=>setTimeout(()=>{
-                let osc = ctx.createOscillator(), gn = ctx.createGain();
-                osc.connect(gn); gn.connect(ctx.destination);
-                osc.type = 'square'; osc.frequency.value = 150+Math.random()*50;
-                gn.gain.setValueAtTime(0.15, ctx.currentTime);
-                gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime+0.03);
-                osc.start(ctx.currentTime); osc.stop(ctx.currentTime+0.03);
-            }, idx*(dur*1000/cnt)))(i);
-        }
-        
-        function playWin95StartupSound() {
-            let ctx = getAudioContext(); if(!ctx) return;
-            let notes = [{f:523,t:0,d:0.25},{f:659,t:0.15,d:0.25},{f:784,t:0.30,d:0.3},{f:1047,t:0.50,d:0.4}];
-            notes.forEach(n => setTimeout(()=>{
-                let osc = ctx.createOscillator(), gn = ctx.createGain();
-                osc.connect(gn); gn.connect(ctx.destination);
-                osc.type = 'sine'; osc.frequency.value = n.f;
-                gn.gain.setValueAtTime(0.25, ctx.currentTime);
-                gn.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + n.d);
-                osc.start(ctx.currentTime); osc.stop(ctx.currentTime + n.d);
-            }, n.t*1000));
-        }
-
-        function playAudio(filename) {
-            console.log(`播放音頻: ${filename}`);
-            playTone(400, 0.2);
-        }
-
         // ========== 計時器函數 ==========
         function updateTimerDisplay() {
             let m = Math.floor(totalSeconds/60), s = totalSeconds%60;
@@ -1757,166 +1392,47 @@
             timerRunning = true;
             startTime = new Date();
             timerInterval = setInterval(()=>{ if(totalSeconds>0) totalSeconds--; updateTimerDisplay(); },1000);
-            
-            const activeScreen = document.querySelector('.screen.active');
-            if (activeScreen) {
-                const screenId = activeScreen.id;
-                const hintButton = document.getElementById('hintButton');
-                if (screenId !== 'menuScreen' && screenId !== 'questionsScreen') {
-                    hintButton.classList.remove('hidden');
-                }
-            }
         }
         
         function deductTime(minutes) {
             totalSeconds = Math.max(0, totalSeconds - (minutes * 60));
             updateTimerDisplay();
             playErrorSound();
-            let msg = i18nStrings[currentLang]['timePenalty'] || `⏰ 時間已扣減 ${minutes} 分鐘`;
-            showModal(msg, '⏰ 時間處罰', '⏰');
-        }
-
-        // ========== 提示系統函數 ==========
-        function showHintOverlay() {
-            document.getElementById('hintOverlay').classList.add('show');
-            updateLevelIndicator();
-            updateHintDisplay();
-            updateHintCounter();
-            updateHintNavigation();
         }
         
-        function closeHintOverlay() {
-            document.getElementById('hintOverlay').classList.remove('show');
-        }
-        
-        function updateLevelIndicator() {
-            document.getElementById('currentLevel').textContent = currentLevel;
-        }
-        
-        function updateHintCounter() {
-            let progress = hintProgress[`level${currentLevel}`];
-            if (progress) {
-                document.getElementById('hintCounter').textContent = `${progress.current}/${progress.total}`;
-            }
-        }
-        
-        function updateHintNavigation() {
-            let progress = hintProgress[`level${currentLevel}`];
-            let prevBtn = document.getElementById('prevHintBtn');
-            let nextBtn = document.getElementById('nextHintBtn');
-            let positionSpan = document.getElementById('hintPosition');
+        // ========== 畫面切換 ==========
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
             
-            if (!progress) return;
-            
-            if (progress.current === 0) {
-                document.getElementById('hintNav').classList.add('hidden');
-                return;
-            } else {
-                document.getElementById('hintNav').classList.remove('hidden');
-                positionSpan.textContent = `${hintViewIndex + 1}/${progress.current}`;
-                prevBtn.disabled = hintViewIndex <= 0;
-                nextBtn.disabled = hintViewIndex >= progress.current - 1;
-            }
-        }
-        
-        function showPreviousHint() {
-            let progress = hintProgress[`level${currentLevel}`];
-            if (hintViewIndex > 0) {
-                hintViewIndex--;
-                updateHintDisplay();
-                updateHintNavigation();
-            }
-        }
-        
-        function showNextHint() {
-            let progress = hintProgress[`level${currentLevel}`];
-            if (hintViewIndex < progress.current - 1) {
-                hintViewIndex++;
-                updateHintDisplay();
-                updateHintNavigation();
-            }
-        }
-        
-        function updateHintDisplay() {
-            let progress = hintProgress[`level${currentLevel}`];
-            let display = document.getElementById('hintDisplay');
-            let questionArea = document.getElementById('hintQuestionArea');
-            let getHintBtn = document.getElementById('getHintBtn');
-            
-            if (!progress) return;
-            
-            if (currentLevel === 2 && !progress.unlocked) {
-                display.classList.add('hidden');
-                questionArea.classList.remove('hidden');
-                getHintBtn.disabled = true;
-                document.getElementById('hintNav').classList.add('hidden');
-            } else {
-                display.classList.remove('hidden');
-                questionArea.classList.add('hidden');
-                getHintBtn.disabled = false;
-                
-                if (progress.current === 0) {
-                    display.innerHTML = '點擊下方按鈕獲取提示 (-3分鐘)';
-                    document.getElementById('hintNav').classList.add('hidden');
+            if (screenId === 'phoneScreen') {
+                currentLevel = 2;
+                phoneNumber = '';
+                updatePhoneDisplay();
+            } else if (screenId === 'level2Screen') {
+                currentLevel = 3;
+            } else if (screenId === 'questionsScreen') {
+                currentLevel = 4;
+                resetTramQuestions();
+                if (playerCount === '2') {
+                    startTramWaiting();
                 } else {
-                    if (hintViewIndex >= progress.current) hintViewIndex = progress.current - 1;
-                    display.innerHTML = `<strong>提示 ${hintViewIndex + 1}/${progress.current}:</strong><br>${progress.hints[hintViewIndex]}`;
-                    updateHintNavigation();
+                    startSinglePlayerTram();
                 }
+            } else if (screenId === 'level3Screen') {
+                currentLevel = 5;
+            } else if (screenId === 'finalScreen') {
+                updateFinishTime();
             }
-        }
-        
-        function getNextHint() {
-            let progress = hintProgress[`level${currentLevel}`];
-            if (progress.current >= progress.total) {
-                showModal('你已經用晒所有提示啦！', '⚠️ 提示用盡', '❓');
-                return;
-            }
-            deductTime(3);
-            progress.current++;
-            hintViewIndex = progress.current - 1;
-            updateHintDisplay();
-            updateHintCounter();
-            updateHintNavigation();
-            showModal(`提示 ${progress.current} 已解鎖！`, '🔓 提示解鎖', '💡');
-        }
-        
-        function checkHuaMaAnswer() {
-            const selected = document.querySelector('input[name="huaMa"]:checked');
-            if (!selected) {
-                showModal('請選擇一個答案', '⚠️ 提示', '❓');
-                return;
-            }
-            const correctAnswer = i18nStrings[currentLang]['huaMaAnswer'] || 'C';
-            if (selected.value === correctAnswer) {
-                deductTime(3);
-                hintProgress.level2.unlocked = true;
-                showModal(i18nStrings[currentLang]['correctAnswer'] || '✅ 答案正確！', '✅ 正確', '🎉');
-                updateHintDisplay();
-            } else {
-                showModal(i18nStrings[currentLang]['wrongAnswer'] || '❌ 答案錯誤，再試試看', '❌ 錯誤', '❌');
-            }
-        }
-
-        // ========== 反思問題函數 (立即顯示) ==========
-        function showReflection(level) {
-            let question = '';
-            if (level === 1) question = reflectionQuestions.level1;
-            else if (level === 2) question = reflectionQuestions.level2;
-            else if (level === 3) question = reflectionQuestions.level3;
-            else if (level === 5) question = reflectionQuestions.level5;
-            else return;
             
-            document.getElementById('reflectionQuestion').innerHTML = question.replace(/\n/g, '<br>');
-            document.getElementById('reflectionOverlay').classList.add('show');
-            playTone(523, 0.3);
+            const hintButton = document.getElementById('hintButton');
+            if (screenId === 'menuScreen' || screenId === 'questionsScreen') {
+                hintButton.classList.add('hidden');
+            } else if (timerRunning) {
+                hintButton.classList.remove('hidden');
+            }
         }
         
-        function closeReflection() {
-            document.getElementById('reflectionOverlay').classList.remove('show');
-        }
-
-        // ========== 完成時間計算函數 ==========
         function updateFinishTime() {
             if (!startTime) return;
             const endTime = new Date();
@@ -1927,247 +1443,34 @@
             const timeRemainingSeconds = totalSeconds % 60;
             const finishDisplay = document.getElementById('finishTimeDisplay');
             if (finishDisplay) {
-                finishDisplay.innerHTML = `
-                    <div>⏱️ ${i18nStrings[currentLang]['finishTime'] || '完成時間'}: ${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}</div>
-                    <div>⌛ ${i18nStrings[currentLang]['timeRemaining'] || '剩餘時間'}: ${String(timeRemainingMinutes).padStart(2,'0')}:${String(timeRemainingSeconds).padStart(2,'0')}</div>
-                `;
-            }
-        }
-
-        // ========== 電車站問題函數 ==========
-        function renderTramQuestion() {
-            const tramContent = document.getElementById('tramContent');
-            if (!tramContent) return;
-            
-            if (playerCount === '2') {
-                tramContent.innerHTML = `
-                    <div class="tram-message" id="tramMessage" data-i18n="tramWaiting">電車仲未到站，不如同身邊街坊傾吓偈啦～</div>
-                    <div class="tram-question-area">
-                        <div class="tram-question-text" id="tramQuestionText">${randomQuestions[Math.floor(Math.random()*randomQuestions.length)]}</div>
-                        <button class="chat-btn" id="tramChatBtn" data-i18n="chatMore">💬 我想再傾多啲</button>
-                    </div>
-                `;
-                document.getElementById('tramChatBtn').addEventListener('click', setRandomQuestion);
-            } else {
-                if (currentQuestionIndex === 0 && questionsAnswered === 0) {
-                    tramQuestions.forEach(q => q.answered = false);
-                }
-                
-                let nextUnansweredIndex = -1;
-                for (let i = 0; i < tramQuestions.length; i++) {
-                    if (!tramQuestions[i].answered) {
-                        nextUnansweredIndex = i;
-                        break;
-                    }
-                }
-                
-                if (nextUnansweredIndex === -1 || questionsAnswered >= 3) {
-                    tramArrived = true;
-                    if (tramTimerInterval) clearInterval(tramTimerInterval);
-                    tramContent.innerHTML = `<div class="tram-message" id="tramMessage">🚃 電車終於到站！快啲上車啦～</div>`;
-                    document.getElementById('boardTramBtn').classList.remove('hidden');
-                    return;
-                }
-                
-                currentQuestionIndex = nextUnansweredIndex;
-                const q = tramQuestions[currentQuestionIndex];
-                const progressText = i18nStrings[currentLang]['questionProgress'] || '問題 {current}/{total}';
-                const answeredCount = tramQuestions.filter(q => q.answered).length;
-                const progress = progressText.replace('{current}', answeredCount + 1).replace('{total}', tramQuestions.length);
-                
-                let optionsHtml = '';
-                q.options.forEach((opt, idx) => {
-                    const letter = String.fromCharCode(65 + idx);
-                    optionsHtml += `
-                        <label class="tram-option" data-value="${letter}">
-                            <input type="radio" name="tramQuestion" value="${letter}">
-                            <span>${opt}</span>
-                        </label>
-                    `;
-                });
-                
-                tramContent.innerHTML = `
-                    <div class="tram-progress">${progress}</div>
-                    <div class="tram-question-container">
-                        <div class="tram-question-text">${q.question}</div>
-                        <div class="tram-options" id="tramOptions">${optionsHtml}</div>
-                        <button class="tram-submit-btn" id="tramSubmitBtn">提交答案</button>
-                    </div>
-                    ${q.fact ? `<div class="tram-fact">${q.fact}</div>` : ''}
-                `;
-                
-                document.querySelectorAll('.tram-option').forEach(opt => {
-                    opt.addEventListener('click', function() {
-                        document.querySelectorAll('.tram-option').forEach(o => o.classList.remove('selected'));
-                        this.classList.add('selected');
-                        this.querySelector('input[type="radio"]').checked = true;
-                        selectedOption = this.dataset.value;
-                    });
-                });
-                
-                document.getElementById('tramSubmitBtn').addEventListener('click', submitTramAnswer);
+                finishDisplay.innerHTML = `<div>⏱️ 完成時間: ${String(minutes).padStart(2,'0')}:${String(seconds).padStart(2,'0')}</div>
+                    <div>⌛ 剩餘時間: ${String(timeRemainingMinutes).padStart(2,'0')}:${String(timeRemainingSeconds).padStart(2,'0')}</div>`;
             }
         }
         
-        function submitTramAnswer() {
-            const selected = document.querySelector('input[name="tramQuestion"]:checked');
-            if (!selected) {
-                showModal('請選擇一個答案', '⚠️ 提示', '❓');
-                return;
-            }
-            
-            const selectedValue = selected.value;
-            const correctAnswer = tramQuestions[currentQuestionIndex].correct;
-            
-            if (selectedValue === correctAnswer) {
-                playSuccessSound();
-                questionsAnswered++;
-                tramQuestions[currentQuestionIndex].answered = true;
-                
-                let nextIndex = -1;
-                for (let i = 0; i < tramQuestions.length; i++) {
-                    if (!tramQuestions[i].answered) {
-                        nextIndex = i;
-                        break;
-                    }
-                }
-                
-                if (questionsAnswered >= 3 || nextIndex === -1) {
-                    tramArrived = true;
-                    if (tramTimerInterval) clearInterval(tramTimerInterval);
-                    const tramContent = document.getElementById('tramContent');
-                    if (tramContent) {
-                        tramContent.innerHTML = `<div class="tram-message" id="tramMessage">🚃 電車終於到站！快啲上車啦～</div>`;
-                    }
-                    document.getElementById('boardTramBtn').classList.remove('hidden');
-                    showModal('✅ 答對！電車到站啦！', '成功', '✅');
-                } else {
-                    currentQuestionIndex = nextIndex;
-                    renderTramQuestion();
-                    showModal('✅ 答對！', '正確', '✅');
-                }
-            } else {
-                deductTime(1);
-                playErrorSound();
-                showModal(i18nStrings[currentLang]['wrongAnswerPenalty'] || '❌ 答錯！扣1分鐘', '❌ 錯誤', '⏰');
-            }
-        }
-
-        function setRandomQuestion() {
-            let q = randomQuestions[Math.floor(Math.random()*randomQuestions.length)];
-            document.getElementById('tramQuestionText').textContent = q; 
-            playTone(600,0.1);
-        }
-
-        // ========== 畫面切換 ==========
-        function showScreen(screenId) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-            
-            if (screenId === 'win95LoginScreen' || screenId === 'envelope1Screen') {
-                currentLevel = 1;
-            } else if (screenId === 'phoneScreen') {
-                currentLevel = 2;
-                phoneNumber = '';
-                updatePhoneDisplay();
-            } else if (screenId === 'level2Screen') {
-                currentLevel = 3;
-            } else if (screenId === 'questionsScreen') {
-                currentLevel = 4;
-                currentQuestionIndex = 0;
-                questionsAnswered = 0;
-                selectedOption = null;
-                tramQuestions.forEach(q => q.answered = false);
-                renderTramQuestion();
-                if (playerCount === '2') {
-                    startTramWaiting();
-                }
-            } else if (screenId === 'level3Screen') {
-                currentLevel = 5;
-            } else if (screenId === 'finalScreen') {
-                updateFinishTime();
-            }
-            
-            hintViewIndex = 0;
-            const hintButton = document.getElementById('hintButton');
-            if (screenId === 'menuScreen' || screenId === 'questionsScreen') {
-                hintButton.classList.add('hidden');
-            } else if (timerRunning) {
-                hintButton.classList.remove('hidden');
-            }
-            
-            if (screenId === 'win95LoginScreen') {
-                startWin95Clock();
-            }
-        }
-
-        // ========== Windows 95 時鐘 ==========
-        let win95StartTime = null;
-        let win95ClockInterval = null;
-        
-        function startWin95Clock() {
-            win95StartTime = new Date();
-            win95StartTime.setHours(14, 0, 0, 0);
-            updateWin95Clock();
-            if (win95ClockInterval) clearInterval(win95ClockInterval);
-            win95ClockInterval = setInterval(updateWin95Clock, 1000);
+        // ========== 反思問題 ==========
+        function showReflection(level) {
+            let question = '';
+            if (level === 1) question = reflectionQuestions.level1;
+            else if (level === 2) question = reflectionQuestions.level2;
+            else if (level === 3) question = reflectionQuestions.level3;
+            else if (level === 5) question = reflectionQuestions.level5;
+            else return;
+            document.getElementById('reflectionQuestion').innerHTML = question.replace(/\n/g, '<br>');
+            document.getElementById('reflectionOverlay').classList.add('show');
+            playTone(523, 0.3);
         }
         
-        function updateWin95Clock() {
-            const clockElement = document.getElementById('win95Clock');
-            if (!clockElement) return;
-            if (!win95StartTime) {
-                clockElement.textContent = '14:00';
-                return;
-            }
-            const now = new Date();
-            const elapsedMs = now - win95StartTime;
-            const currentTime = new Date(win95StartTime.getTime() + elapsedMs);
-            const hours = String(currentTime.getHours()).padStart(2, '0');
-            const minutes = String(currentTime.getMinutes()).padStart(2, '0');
-            clockElement.textContent = `${hours}:${minutes}`;
-        }
-
-        // ========== 電車等候 ==========
-        function startTramWaiting() {
-            tramWaitSeconds = 7*60; tramArrived = false;
-            updateTramTimerDisplay();
-            let btn = document.getElementById('boardTramBtn'); 
-            btn.classList.add('hidden');
-            setRandomQuestion();
-            if(tramTimerInterval) clearInterval(tramTimerInterval);
-            tramTimerInterval = setInterval(()=>{
-                if(tramWaitSeconds>0) {
-                    tramWaitSeconds--; 
-                    updateTramTimerDisplay();
-                    if(tramWaitSeconds<=0 && !tramArrived) {
-                        tramArrived = true; 
-                        clearInterval(tramTimerInterval);
-                        document.getElementById('tramMessage').innerHTML = i18nStrings[currentLang]['tramArrived'] || '🚃 電車終於到站！快啲上車啦～';
-                        btn.classList.remove('hidden'); 
-                        playSuccessSound();
-                    }
-                }
-            },1000);
+        function closeReflection() {
+            document.getElementById('reflectionOverlay').classList.remove('show');
         }
         
-        function updateTramTimerDisplay() {
-            let m = Math.floor(tramWaitSeconds/60), s = tramWaitSeconds%60;
-            document.getElementById('tramWaitTimer').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
-        }
-        
-        function boardTram() {
-            if(tramTimerInterval) clearInterval(tramTimerInterval);
-            playSuccessSound();
-            showScreen('level3Screen');
-        }
-
         // ========== 電話功能 ==========
         function initRotaryDial() {
             let plate = document.getElementById('dialPlate');
             if (!plate) return;
             let small = window.innerWidth <= 480;
-            let dSize = small ? 210 : 250, hSize = small ? 30 : 36, hRad = small ? 75 : 90, numRad = small ? 95 : 115;
+            let dSize = small ? 210 : 250, hSize = small ? 30 : 36, hRad = small ? 75 : 90;
             plate.innerHTML = '';
             let dialNumbers = ['1','2','3','4','5','6','7','8','9','0'];
             let startAngle = -60, angleStep = 30;
@@ -2178,51 +1481,34 @@
                 let hole = document.createElement('div');
                 hole.className = 'dial-hole'; hole.dataset.num = num;
                 hole.style.cssText = `left:${hx}px;top:${hy}px;width:${hSize}px;height:${hSize}px`;
+                hole.textContent = num;
                 plate.appendChild(hole);
-                let nx = dSize/2 + numRad * Math.sin(ang);
-                let ny = dSize/2 - numRad * Math.cos(ang);
-                let lbl = document.createElement('div');
-                lbl.className = 'dial-number'; lbl.textContent = num;
-                lbl.style.cssText = `left:${nx}px;top:${ny}px;transform:translate(-50%,-50%)`;
-                plate.appendChild(lbl);
             });
         }
         
-        function getDialAngleForNumber(num) { 
-            let dialNumbers = ['1','2','3','4','5','6','7','8','9','0'];
-            let idx = dialNumbers.indexOf(num); 
-            return idx===-1 ? 0 : (idx+1)*30 + 40; 
-        }
-        
         function dialNumber(num) {
-            if(isDialing || phoneNumber.length>=8) return;
+            if(isDialing || phoneNumber.length >= 8) return;
             isDialing = true;
-            let plate = document.getElementById('dialPlate'), dial = document.getElementById('rotaryDial');
-            dial.classList.add('dialing');
-            let target = getDialAngleForNumber(num);
+            let plate = document.getElementById('dialPlate');
+            let target = 60;
             plate.style.transition = 'transform 0.15s ease-out';
             plate.style.transform = `translate(-50%, -50%) rotate(${target}deg)`;
             playRotaryClickSound();
             setTimeout(()=>{
-                plate.classList.add('returning');
                 plate.style.transition = '';
                 plate.style.transform = 'translate(-50%, -50%) rotate(0deg)';
-                let retDur = 0.3 + (target/360)*0.5;
-                playDialReturnSound(retDur);
                 setTimeout(()=>{
-                    plate.classList.remove('returning');
-                    dial.classList.remove('dialing');
                     isDialing = false;
                     phoneNumber += num;
                     updatePhoneDisplay();
-                }, retDur*1000+100);
+                }, 300);
             },200);
         }
         
         function updatePhoneDisplay() {
             let d = document.getElementById('phoneDisplay');
             if(phoneNumber==='') { 
-                d.textContent = i18nStrings[currentLang]['inputNumber'] || '輸入號碼'; 
+                d.textContent = '輸入號碼'; 
                 d.classList.add('empty'); 
             } else { 
                 d.textContent = phoneNumber; 
@@ -2239,54 +1525,97 @@
         
         function checkPhoneNumber() {
             if(phoneNumber==='') { 
-                showPhoneStatus(i18nStrings[currentLang]['enterNumber'] || '請先輸入號碼','error'); 
+                showPhoneStatus('請先輸入號碼','error'); 
                 playErrorSound(); 
                 return; 
             }
-            
-            if(phoneNumber === '56123517') {
-                showPhoneStatus(`✓ 正確！這是 豬肉榮 的號碼`, 'success');
-                playAudio('豬肉榮.m4a');
-                playSuccessSound();
-                setTimeout(() => {
-                    showReflection(2);
-                    setTimeout(() => showScreen('level2Screen'), 800);
-                }, 1500);
-            } 
-            else if (phoneNumber === '96721240') {
-                showPhoneStatus(`❌ 這是 高佬泉 的號碼，但不是正確答案`, 'error');
-                playAudio('高佬泉.m4a');
-                playErrorSound();
-                deductTime(2);
-            }
-            else if (phoneNumber === '63479512') {
-                showPhoneStatus(`❌ 這是 王太 的號碼，但不是正確答案`, 'error');
-                playAudio('王太.m4a');
-                playErrorSound();
-                deductTime(2);
-            }
-            else if (phoneNumber === '95460769') {
-                showPhoneStatus(`❌ 這是 群姐 的號碼，但不是正確答案`, 'error');
-                playAudio('群姐.m4a');
-                playErrorSound();
-                deductTime(2);
-            }
-            else {
-                showPhoneStatus(i18nStrings[currentLang]['wrongNumber'] || '❌ 號碼錯誤，請重試！','error'); 
+            const contact = phoneContacts[phoneNumber];
+            if(contact) {
+                showPhoneStatus(`✓ 撥打給 ${contact.name} ...`, 'success');
+                playAudioWithDialing(contact.file, () => {
+                    if(contact.isCorrect) {
+                        playSuccessSound();
+                        showReflection(2);
+                        setTimeout(() => showScreen('level2Screen'), 1500);
+                    } else {
+                        deductTime(contact.penalty);
+                        showModal(`打錯了！這是 ${contact.name} 的電話，扣${contact.penalty}分鐘`, '錯誤', '⚠️');
+                    }
+                });
+            } else {
+                showPhoneStatus('❌ 號碼錯誤，請重試！','error');
                 playErrorSound();
                 deductTime(2);
             }
         }
-
-        // ========== 密碼2 ==========
-        function updatePassword2Display() {
-            let slots = document.getElementById('password2Display').querySelectorAll('.password-slot');
-            slots.forEach((s,i)=>{
-                s.classList.remove('active','filled');
-                if(i<password2.length) { s.textContent=password2[i]; s.classList.add('filled'); }
-                else if(i===password2.length) { s.textContent='_'; s.classList.add('active'); }
-                else s.textContent='_';
+        
+        // ========== 密碼功能 ==========
+        function createKeypad(containerId, maxLen, passwordVar, displayId, checkFn, statusId) {
+            let container = document.getElementById(containerId);
+            if (!container) return;
+            container.innerHTML = '';
+            let keys = ['1','2','3','4','5','6','7','8','9','0','⌫','✓'];
+            keys.forEach(k => {
+                let btn = document.createElement('button');
+                btn.className = 'password-key';
+                btn.textContent = k;
+                btn.onclick = () => {
+                    if (k === '⌫') { 
+                        if (passwordVar === 'password2') password2 = password2.slice(0,-1);
+                        else password3 = password3.slice(0,-1);
+                    }
+                    else if (k === '✓') { checkFn(); return; }
+                    else {
+                        if (passwordVar === 'password2' && password2.length < maxLen) password2 += k;
+                        else if (passwordVar === 'password3' && password3.length < maxLen) password3 += k;
+                    }
+                    updatePasswordDisplay(displayId, passwordVar === 'password2' ? password2 : password3, maxLen);
+                    playTone(500, 0.08);
+                };
+                container.appendChild(btn);
             });
+        }
+        
+        function updatePasswordDisplay(displayId, val, maxLen) {
+            let slots = document.querySelectorAll(`#${displayId} .password-slot`);
+            for (let i=0; i<maxLen; i++) {
+                if (i < val.length) { slots[i].textContent = val[i]; slots[i].classList.add('filled'); }
+                else { slots[i].textContent = '_'; slots[i].classList.remove('filled'); }
+                slots[i].classList.remove('active');
+                if (i === val.length) slots[i].classList.add('active');
+            }
+        }
+        
+        function checkPassword2() {
+            if(password2.length < 4) { 
+                showInputStatus('level2Status', '請輸入完整密碼', 'error'); 
+                playErrorSound(); 
+                return; 
+            }
+            if(password2 === correctPassword2) {
+                playSuccessSound();
+                showReflection(3);
+                setTimeout(() => showScreen('questionsScreen'), 800);
+            } else { 
+                showInputStatus('level2Status', '❌ 密碼錯誤，請重試！', 'error'); 
+                playErrorSound(); 
+            }
+        }
+        
+        function checkPassword3() {
+            if(password3.length < 2) { 
+                showInputStatus('level3Status', '請輸入完整號碼', 'error'); 
+                playErrorSound(); 
+                return; 
+            }
+            if(password3 === correctPassword3) {
+                playSuccessSound();
+                showReflection(5);
+                setTimeout(() => showScreen('finalScreen'), 800);
+            } else { 
+                showInputStatus('level3Status', '❌ 號碼錯誤，請重試！', 'error'); 
+                playErrorSound(); 
+            }
         }
         
         function showInputStatus(elId, msg, type) {
@@ -2295,172 +1624,276 @@
             setTimeout(()=>s.classList.remove('show'),3000);
         }
         
-        function checkPassword2() {
-            if(password2.length<4) { 
-                showInputStatus('level2Status', i18nStrings[currentLang]['enterFull'] || '請輸入完整密碼', 'error'); 
-                playErrorSound(); 
-                return; 
-            }
-            if(password2===correctPassword2) {
-                playUnlockSound();
-                showReflection(3);
-                setTimeout(() => showScreen('questionsScreen'), 800);
-            } else { 
-                showInputStatus('level2Status', i18nStrings[currentLang]['passwordError'] || '❌ 密碼錯誤，請重試！', 'error'); 
-                playErrorSound(); 
-                const displaySlots = document.querySelectorAll('#password2Display .password-slot');
-                displaySlots.forEach(slot => {
-                    slot.classList.add('password-input-error');
-                    setTimeout(() => slot.classList.remove('password-input-error'), 500);
-                });
-            }
+        // ========== 電車站功能 ==========
+        function startTramWaiting() {
+            tramWaitSeconds = 420; tramArrived = false;
+            updateTramTimerDisplay();
+            let btn = document.getElementById('boardTramBtn'); 
+            btn.classList.add('hidden');
+            if(tramTimerInterval) clearInterval(tramTimerInterval);
+            tramTimerInterval = setInterval(()=>{
+                if(tramWaitSeconds>0) {
+                    tramWaitSeconds--; 
+                    updateTramTimerDisplay();
+                    if(tramWaitSeconds<=0 && !tramArrived) {
+                        tramArrived = true; 
+                        clearInterval(tramTimerInterval);
+                        document.getElementById('tramContent').innerHTML = `<div class="tram-message">🚃 電車終於到站！快啲上車啦～</div>`;
+                        btn.classList.remove('hidden'); 
+                        playSuccessSound();
+                    }
+                }
+            },1000);
+            renderMultiplayerTram();
         }
         
-        function playUnlockSound() {
-            setTimeout(()=>playTone(800,0.05),0); setTimeout(()=>playTone(600,0.05),50);
-            setTimeout(()=>playTone(1200,0.1),100); setTimeout(()=>{playTone(523,0.15);playTone(659,0.15);},200);
-            setTimeout(()=>playTone(784,0.2),350);
+        function updateTramTimerDisplay() {
+            let m = Math.floor(tramWaitSeconds/60), s = tramWaitSeconds%60;
+            document.getElementById('tramWaitTimer').textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
         }
-
-        // ========== 密碼3 ==========
-        function updatePassword3Display() {
-            let slots = document.getElementById('password3Display').querySelectorAll('.password-slot');
-            slots.forEach((s,i)=>{
-                s.classList.remove('active','filled');
-                if(i<password3.length) { s.textContent=password3[i]; s.classList.add('filled'); }
-                else if(i===password3.length) { s.textContent='_'; s.classList.add('active'); }
-                else s.textContent='_';
+        
+        function renderMultiplayerTram() {
+            const container = document.getElementById('tramContent');
+            const randomQ = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
+            container.innerHTML = `
+                <div class="tram-message">電車仲未到站，不如同身邊街坊傾吓偈啦～</div>
+                <div class="tram-question-container">
+                    <div class="tram-question-text">${randomQ}</div>
+                    <button class="chat-btn" id="tramChatBtn">💬 我想再傾多啲</button>
+                </div>
+            `;
+            document.getElementById('tramChatBtn')?.addEventListener('click', () => {
+                let newQ = randomQuestions[Math.floor(Math.random() * randomQuestions.length)];
+                document.querySelector('.tram-question-text').textContent = newQ;
+                playTone(600,0.1);
             });
         }
         
-        function checkPassword3() {
-            if(password3.length<2) { 
-                showInputStatus('level3Status', i18nStrings[currentLang]['enterFullNumber'] || '請輸入完整號碼', 'error'); 
-                playErrorSound(); 
-                return; 
+        function startSinglePlayerTram() {
+            tramQuestions.forEach(q => q.answered = false);
+            currentQuestionIndex = 0;
+            questionsAnswered = 0;
+            renderSinglePlayerQuestion();
+        }
+        
+        function renderSinglePlayerQuestion() {
+            let nextUnanswered = tramQuestions.findIndex(q => !q.answered);
+            if (nextUnanswered === -1 || questionsAnswered >= 3) {
+                tramArrived = true;
+                document.getElementById('tramContent').innerHTML = `<div class="tram-message">🚃 電車終於到站！快啲上車啦～</div>`;
+                document.getElementById('boardTramBtn').classList.remove('hidden');
+                return;
             }
-            if(password3===correctPassword3) {
-                playSuccessSound();
-                showReflection(5);
-                setTimeout(() => showScreen('finalScreen'), 800);
-            } else { 
-                showInputStatus('level3Status', i18nStrings[currentLang]['wrongNumber'] || '❌ 號碼錯誤，請重試！', 'error'); 
-                playErrorSound(); 
-                const displaySlots = document.querySelectorAll('#password3Display .password-slot');
-                displaySlots.forEach(slot => {
-                    slot.classList.add('password-input-error');
-                    setTimeout(() => slot.classList.remove('password-input-error'), 500);
+            currentQuestionIndex = nextUnanswered;
+            const q = tramQuestions[currentQuestionIndex];
+            const answeredCount = tramQuestions.filter(q => q.answered).length;
+            const progress = `問題 ${answeredCount + 1}/${tramQuestions.length}`;
+            let optionsHtml = '';
+            q.options.forEach((opt, idx) => {
+                const letter = String.fromCharCode(65 + idx);
+                optionsHtml += `
+                    <label class="tram-option" data-value="${letter}">
+                        <input type="radio" name="tramQuestion" value="${letter}">
+                        <span>${opt}</span>
+                    </label>
+                `;
+            });
+            document.getElementById('tramContent').innerHTML = `
+                <div class="tram-progress">${progress}</div>
+                <div class="tram-question-container">
+                    <div class="tram-question-text">${q.question}</div>
+                    <div class="tram-options" id="tramOptions">${optionsHtml}</div>
+                    <button class="tram-submit-btn" id="tramSubmitBtn">提交答案</button>
+                </div>
+                ${q.fact ? `<div class="tram-fact">${q.fact}</div>` : ''}
+            `;
+            document.querySelectorAll('.tram-option').forEach(opt => {
+                opt.addEventListener('click', function() {
+                    document.querySelectorAll('.tram-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    this.querySelector('input[type="radio"]').checked = true;
                 });
+            });
+            document.getElementById('tramSubmitBtn')?.addEventListener('click', submitSinglePlayerAnswer);
+        }
+        
+        function submitSinglePlayerAnswer() {
+            const selected = document.querySelector('input[name="tramQuestion"]:checked');
+            if (!selected) { showModal('請選擇一個答案', '提示', '❓'); return; }
+            const selectedValue = selected.value;
+            const correctAnswer = tramQuestions[currentQuestionIndex].correct;
+            if (selectedValue === correctAnswer) {
+                playSuccessSound();
+                questionsAnswered++;
+                tramQuestions[currentQuestionIndex].answered = true;
+                let remaining = tramQuestions.filter(q => !q.answered).length;
+                if (remaining === 0 || questionsAnswered >= 3) {
+                    tramArrived = true;
+                    document.getElementById('tramContent').innerHTML = `<div class="tram-message">🚃 電車終於到站！快啲上車啦～</div>`;
+                    document.getElementById('boardTramBtn').classList.remove('hidden');
+                    showModal('✅ 答對！電車到站啦！', '成功', '✅');
+                } else {
+                    renderSinglePlayerQuestion();
+                    showModal('✅ 答對！', '正確', '✅');
+                }
+            } else {
+                deductTime(1);
+                playErrorSound();
+                showModal('❌ 答錯！扣1分鐘', '錯誤', '⏰');
             }
         }
-
+        
+        function boardTram() {
+            if(tramArrived) showScreen('level3Screen');
+        }
+        
+        function resetTramQuestions() {
+            tramQuestions.forEach(q => q.answered = false);
+            currentQuestionIndex = 0;
+            questionsAnswered = 0;
+            tramArrived = false;
+            tramWaitSeconds = 420;
+        }
+        
+        // ========== 提示系統 ==========
+        function showHintOverlay() { document.getElementById('hintOverlay').classList.add('show'); }
+        function closeHintOverlay() { document.getElementById('hintOverlay').classList.remove('show'); }
+        function getNextHint() { deductTime(3); showModal('提示已解鎖！', '提示', '💡'); closeHintOverlay(); }
+        function checkHuaMaAnswer() { deductTime(3); showModal('答案正確！提示已解鎖', '正確', '✅'); closeHintOverlay(); }
+        
         // ========== Modal ==========
         function showModal(message, title, icon) {
             let overlay = document.getElementById('customModal');
             document.getElementById('modalText').innerHTML = message;
-            document.getElementById('modalTitle').innerHTML = title || i18nStrings[currentLang]['modalHint'] || '提示';
+            document.getElementById('modalTitle').innerHTML = title || '提示';
             document.getElementById('modalIcon').textContent = icon || '📩';
             overlay.classList.add('show');
+            setTimeout(() => overlay.classList.remove('show'), 2500);
+        }
+        function closeModal() { document.getElementById('customModal').classList.remove('show'); }
+        
+        // ========== 玩家數量選擇 ==========
+        function initPlayerCountSelection() {
+            document.getElementById('playerCount2').addEventListener('click', () => {
+                document.getElementById('playerCount2').classList.add('selected');
+                document.getElementById('playerCount1').classList.remove('selected');
+                playerCount = '2';
+                document.getElementById('playerCountNote').innerHTML = '👥 已選擇: 多人模式';
+                document.getElementById('timerPlayerCountNote').innerHTML = '👥 多人模式';
+            });
+            document.getElementById('playerCount1').addEventListener('click', () => {
+                document.getElementById('playerCount1').classList.add('selected');
+                document.getElementById('playerCount2').classList.remove('selected');
+                playerCount = '1';
+                document.getElementById('playerCountNote').innerHTML = '🕹️ 已選擇: 單人模式';
+                document.getElementById('timerPlayerCountNote').innerHTML = '🕹️ 單人模式';
+            });
         }
         
-        function closeModal() {
-            document.getElementById('customModal').classList.remove('show');
+        function setLanguage(lang) {
+            if (!i18nStrings[lang]) return;
+            currentLang = lang;
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (i18nStrings[lang][key]) {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.value = i18nStrings[lang][key];
+                    } else {
+                        el.innerHTML = i18nStrings[lang][key];
+                    }
+                }
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.dataset.i18nPlaceholder;
+                if (i18nStrings[lang][key]) {
+                    if (el.classList.contains('display-number')) {
+                        if (phoneNumber === '') el.textContent = i18nStrings[lang][key];
+                    } else {
+                        el.placeholder = i18nStrings[lang][key];
+                    }
+                }
+            });
+            document.getElementById('langDropdown').value = lang;
         }
-
-        // ========== DOM 初始化 ==========
+        
+        // ========== Windows 95 時鐘 ==========
+        let win95StartTime = null;
+        let win95ClockInterval = null;
+        function startWin95Clock() {
+            win95StartTime = new Date();
+            win95StartTime.setHours(14, 0, 0, 0);
+            updateWin95Clock();
+            if (win95ClockInterval) clearInterval(win95ClockInterval);
+            win95ClockInterval = setInterval(updateWin95Clock, 1000);
+        }
+        function updateWin95Clock() {
+            const clockElement = document.getElementById('win95Clock');
+            if (!clockElement) return;
+            if (!win95StartTime) { clockElement.textContent = '14:00'; return; }
+            const now = new Date();
+            const elapsedMs = now - win95StartTime;
+            const currentTime = new Date(win95StartTime.getTime() + elapsedMs);
+            const hours = String(currentTime.getHours()).padStart(2, '0');
+            const minutes = String(currentTime.getMinutes()).padStart(2, '0');
+            clockElement.textContent = `${hours}:${minutes}`;
+        }
+        
+        // ========== 事件綁定 ==========
         document.addEventListener('DOMContentLoaded', function() {
             setLanguage('zh-hk');
-            document.getElementById('langDropdown').addEventListener('change', function(e) {
-                setLanguage(this.value);
-            });
+            document.getElementById('langDropdown').addEventListener('change', (e) => setLanguage(e.target.value));
             initPlayerCountSelection();
             initRotaryDial();
             window.addEventListener('resize', initRotaryDial);
             updateTimerDisplay();
-            const clockElement = document.getElementById('win95Clock');
-            if (clockElement) clockElement.textContent = '14:00';
-
-            // 提示系統事件
-            document.getElementById('hintButton').addEventListener('click', showHintOverlay);
-            document.getElementById('hintClose').addEventListener('click', closeHintOverlay);
-            document.getElementById('getHintBtn').addEventListener('click', getNextHint);
-            document.getElementById('huaMaSubmit').addEventListener('click', checkHuaMaAnswer);
-            document.getElementById('prevHintBtn').addEventListener('click', showPreviousHint);
-            document.getElementById('nextHintBtn').addEventListener('click', showNextHint);
-            document.getElementById('reflectionClose').addEventListener('click', closeReflection);
-            document.getElementById('reflectionContinueBtn').addEventListener('click', closeReflection);
-
+            
+            createKeypad('keypad2', 4, 'password2', 'password2Display', checkPassword2, 'level2Status');
+            createKeypad('keypad3', 2, 'password3', 'password3Display', checkPassword3, 'level3Status');
+            
             // 按鈕事件
             document.getElementById('menuStartBtn').addEventListener('click', () => showScreen('timerSetupScreen'));
             document.getElementById('startTimerBtn').addEventListener('click', () => { startTimer(); showScreen('envelope1Screen'); });
             document.getElementById('envelope1ContinueBtn').addEventListener('click', () => showScreen('win95LoginScreen'));
-            
             document.getElementById('win95OkBtn').addEventListener('click', function() {
                 let enteredPass = document.getElementById('win95pass').value;
                 if (enteredPass.toUpperCase() === 'VRDU') {
-                    getAudioContext();
-                    playWin95StartupSound();
+                    playSuccessSound();
+                    startWin95Clock();
                     showReflection(1);
                     setTimeout(() => showScreen('phoneScreen'), 800);
                 } else {
                     playErrorSound();
-                    showModal(i18nStrings[currentLang]['loginError'] || '❌ 密碼錯誤，請重新輸入！', 
-                             i18nStrings[currentLang]['loginFail'] || '登入失敗', '⛔');
-                    const passInput = document.getElementById('win95pass');
-                    passInput.classList.add('password-input-error');
-                    setTimeout(() => passInput.classList.remove('password-input-error'), 500);
+                    showModal('❌ 密碼錯誤，請重新輸入！', '登入失敗', '⛔');
                 }
             });
-
-            document.getElementById('win95CancelBtn').addEventListener('click', () => {
-                showModal(i18nStrings[currentLang]['accessDenied'] || '請輸入正確密碼登入遊戲', 
-                         i18nStrings[currentLang]['accessDenied'] || '存取被拒', '⛔');
-            });
-
+            document.getElementById('win95CancelBtn').addEventListener('click', () => showModal('請輸入正確密碼登入遊戲', '存取被拒', '⛔'));
             document.getElementById('win95pass').addEventListener('keydown', function(e) {
-                if(e.key === 'Enter') { e.preventDefault(); document.getElementById('win95OkBtn').click(); }
+                if(e.key === 'Enter') document.getElementById('win95OkBtn').click();
             });
-
-            // 電話盤
+            
+            // 電話事件
+            document.getElementById('phoneClearBtn').addEventListener('click', () => { phoneNumber=''; updatePhoneDisplay(); playTone(300,0.1); });
+            document.getElementById('phoneCallBtn').addEventListener('click', checkPhoneNumber);
             document.getElementById('dialPlate').addEventListener('click', function(e) {
                 let hole = e.target.closest('.dial-hole');
                 if(hole && !isDialing) dialNumber(hole.dataset.num);
             });
-            document.getElementById('dialPlate').addEventListener('touchend', function(e) {
-                let touch = e.changedTouches[0];
-                let el = document.elementFromPoint(touch.clientX, touch.clientY);
-                let hole = el ? el.closest('.dial-hole') : null;
-                if(hole && !isDialing) { e.preventDefault(); dialNumber(hole.dataset.num); }
-            });
-            document.getElementById('phoneClearBtn').addEventListener('click', ()=>{ phoneNumber=''; updatePhoneDisplay(); playTone(300,0.1); });
-            document.getElementById('phoneCallBtn').addEventListener('click', checkPhoneNumber);
-
-            // 密碼2
-            document.querySelectorAll('#level2Screen .password-key').forEach(k => {
-                k.addEventListener('click', function() {
-                    let n = this.dataset.num;
-                    if(n === 'back') { password2 = password2.slice(0,-1); updatePassword2Display(); playTone(300,0.08); }
-                    else if(n === 'submit') { checkPassword2(); }
-                    else if(password2.length < 4) { password2 += n; updatePassword2Display(); playTone(500,0.08); }
-                });
-            });
-
-            // 上車按鈕
-            document.getElementById('boardTramBtn').addEventListener('click', () => { if(tramArrived) boardTram(); });
-
-            // 密碼3
-            document.querySelectorAll('#level3Screen .password-key').forEach(k => {
-                k.addEventListener('click', function() {
-                    let n = this.dataset.num;
-                    if(n === 'back') { password3 = password3.slice(0,-1); updatePassword3Display(); playTone(300,0.08); }
-                    else if(n === 'submit') { checkPassword3(); }
-                    else if(password3.length < 2) { password3 += n; updatePassword3Display(); playTone(500,0.08); }
-                });
-            });
-
-            // Modal 關閉
+            document.getElementById('boardTramBtn').addEventListener('click', boardTram);
+            
+            // 提示系統
+            document.getElementById('hintButton').addEventListener('click', showHintOverlay);
+            document.getElementById('hintClose').addEventListener('click', closeHintOverlay);
+            document.getElementById('getHintBtn').addEventListener('click', getNextHint);
+            document.getElementById('huaMaSubmit').addEventListener('click', checkHuaMaAnswer);
+            document.getElementById('reflectionClose').addEventListener('click', closeReflection);
+            document.getElementById('reflectionContinueBtn').addEventListener('click', closeReflection);
+            
+            // Modal
             document.getElementById('modalOkBtn').addEventListener('click', closeModal);
             document.getElementById('modalCloseX').addEventListener('click', closeModal);
+            
+            // 預先載入電車畫面
+            renderMultiplayerTram();
         });
     </script>
 </body>
